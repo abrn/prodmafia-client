@@ -2160,7 +2160,9 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                     _local14.setCredits(_local12);
                     break;
                 case StatData.MERCHANDISE_PRICE_STAT:
-                    (param1 as SellableObject).setPrice(_local12);
+                    if (param1 is SellableObject) {
+                        param1.setPrice(_local12);
+                    }
                     break;
                 case StatData.ACTIVE_STAT:
                     (param1 as Portal).active_ = _local12 != 0;
@@ -2329,6 +2331,41 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                     param1.condition_[1] = _local12;
                     param1.updateStatuses();
                     break;
+                case StatData.EXALTED_HP:
+                  (param1 as Player).exaltedHealth = _local12;
+                  continue;
+                case StatData.EXALTED_MANA:
+                  (param1 as Player).exaltedMana = _local12;
+                  continue;
+                case StatData.EXALTED_ATT:
+                  (param1 as Player).exaltedAttack = _local12;
+                  continue;
+                case StatData.EXALTED_DEF:
+                  (param1 as Player).exaltedDefense = _local12;
+                  continue;
+                case StatData.EXALTED_SPD:
+                  (param1 as Player).exaltedSpeed = _local12;
+                  continue;
+                case StatData.EXALTED_DEX:
+                  (param1 as Player).exaltedDexterity = _local12;
+                  continue;
+                case StatData.EXALTED_VIT:
+                  (param1 as Player).exaltedVitality = _local12;
+                  continue;
+                case StatData.EXALTED_WIS:
+                  (param1 as Player).exaltedWisdom = _local12;
+                  continue;
+                case StatData.EXALTED_HP:
+                  (param1 as Player).exaltationDamageMultiplier = _local12 / 10;
+                  continue;
+                case 104:
+                  (param1 as Portal).openedAtTimestamp = _local12;
+                  continue;
+                case 115:
+                    continue;
+                default:
+                    trace("Unhandled stat type:",_local5_,"statVal:",_local12,"strStatVal:",_local10.strStatValue_,"name:",param1.name_);
+                    continue;
             }
             _local9++;
         }
@@ -2447,13 +2484,12 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
     private function onReconnect(packet :Reconnect):void {
         
-        /if (Parameters.ignoreRecon) {
-            /if (!Parameters.usingPortal) {
-                /this.addTextLine.dispatch(ChatMessage.make(packet.key_.length.toString(), packet.toString()));
-            /}
-            /return;
-        /}
-
+        if (Parameters.ignoreRecon) {
+            (!Parameters.usingPortal) {
+                this.addTextLine.dispatch(ChatMessage.make(packet.key_.length.toString(), packet.toString()));
+            }
+            return;
+        }
 
         var CurrentServer:Server = new Server().setName(packet.name_).setAddress(packet.host_ != "" ? packet.host_ : server_.address).setPort(packet.host_ != "" ? packet.port_ : int(server_.port));
         var gameId:int = packet.gameId_;
@@ -2594,25 +2630,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                 Parameters.save();
                 return;
             }
-        }
-        var _local3:Boolean = false;
-        var _local2:SavedCharacter = this.gs_.model.getCharacterById(this.charId_);
-        if(_local2) {
-            if(_local2.objectType() == 796) {
-                _local3 = true;
-            }
-        } else {
-            _local5 = this.classesModel.getSelected();
-            if(_local5.id == 796) {
-                _local3 = true;
-            }
-        }
-        if(_local3) {
-            this.addTextLine.dispatch(ChatMessage.make("*Help*",
-                    "Bard usage disabled, Exalt Mode is not available"));
-            this.disconnect();
-            setTimeout(this.gs_.closed.dispatch,500 * 60);
-            return;
         }
         if(Parameters.preload) {
             this.charId_ = Parameters.forceCharId;

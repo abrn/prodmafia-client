@@ -17,8 +17,10 @@ import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 
 public class Parameters {
-    public static const CLIENT_VERSION:String = "1.0.1.0";
+    public static const CLIENT_VERSION:String = "1.2.0.1.0";
     public static const PORT:int = 2050;
+    public static const UNITY_LAUNCHER_VERSION:String = "2019.3.14f1";
+    public static const UNITY_GAME_VERSION:String = "2019.4.9f1";
     public static const FELLOW_GUILD_COLOR:uint = 10944349;
     public static const NAME_CHOSEN_COLOR:uint = 16572160;
     public static const PLAYER_ROTATE_SPEED:Number = 0.003;
@@ -38,26 +40,26 @@ public class Parameters {
     public static const TERMS_OF_USE_URL:String = "http://legal.decagames.com/tos/";
     public static const PRIVACY_POLICY_URL:String = "http://legal.decagames.com/privacy/";
     public static const USER_GENERATED_CONTENT_TERMS:String = "/UGDTermsofUse.html";
-    public static const RANDOM1:String = "6a39570cc9de4ec71d64821894";
-    public static const RANDOM2:String = "c79332b197f92ba85ed281a023";
+    public static const RANDOM1:String = "5a4d2016bc16dc64883194ffd9";
+    public static const RANDOM2:String = "c91d9eec420160730d825604e0";
     public static const RSA_PUBLIC_KEY:String = "-----BEGIN PUBLIC KEY-----\n" +
             "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDCKFctVrhfF3m2Kes0FBL" +
             "/JFeOcmNg9eJz8k/hQy1kadD+XFUpluRqa//Uxp2s9W2qE0EoUCu59ugcf" +
             "/p7lGuL99UoSGmQEynkBvZct+/M40L0E0rZ4BVgzLOJmIbXMp0J4PnPcb6VLZ" +
             "vxazGcmSfjauC7F3yWYqUbZd/HCBtawwIDAQAB" +
             "\n-----END PUBLIC KEY-----";
-    public static const skinTypes16:Vector.<int> = new <int>[1027, 1028, 1029, 1030, 10973, 19494, 19531, 6346, 30056, 5505, 7766, 7769];
-    public static const itemTypes16:Vector.<int> = new <int>[5473, 5474, 5475, 5476, 10939, 19494, 19531, 6347, 5506];
-    public static const DefaultAAIgnore:Vector.<int> = new <int>[2312, 2313, 2370, 2392, 2393, 40 * 60, 2401, 3413, 3418, 3419, 57 * 60, 3421, 3427, 3454, 3638, 3645, 29594, 29597, 29710, 29711, 29742, 29743, 29746, 29748, 29781, 30001];
+    public static const skinTypes16:Vector.<int> = new <int>[1027,1028,1029,1030,10973,19494,19531,6346,30056,5505,7766,7769];
+    public static const itemTypes16:Vector.<int> = new <int>[5473,5474,5475,5476,10939,19494,19531,6347,5506];
+    public static const DefaultAAIgnore:Vector.<int> = new <int>[2312,2313,2370,2392,2393,2400,2401,3413,3418,3419,3420,3421,3427,3454,3638,3645,29594,29597,29710,29711,29742,29743,29746,29748,29781,30001];
     public static const DefaultAAException:Vector.<int> = new <int>[2309, 2310, 2311, 3448, 3449, 3472, 3334, 5952, 2354, 2369, 3368, 3366, 3367, 3391, 3389, 3390, 5920, 2314, 3412, 3639, 3634, 2327, 2335, 2336, 1755, 24582, 0x5f1f, 24363, 24135, 24133, 24134, 24132, 24136, 3356, 3357, 3358, 3359, 56 * 60, 3361, 3362, 3363, 3364, 2352, 2330, 28780, 28781, 28795, 28942, 28957, 28988, 28938, 29291, 29018, 29517, 24338, 493 * 60, 29712];
     public static const DefaultPriorityList:Vector.<int> = new Vector.<int>(0);
     public static const spamFilter:Vector.<String> = new <String>["reaimbags,net", "r0tmg.0rg", "oryxsh0p.net", "wh!tebag,net", "wh!tebag.net", "realmshop.info", "realmshop.lnfo", "rotmgmarket.c", "rpgstash,com", "rpgstash.com", "realmitems", "reaimitems", "reaimltems", "realmltems", "realmpower,net", "reaimpower.net", "realmpower.net", "reaimpower,net", "rea!mkings.xyz", "buyrotmg.c", "lifepot. org", "rotmgmax.me", "rotmgmax,me", "rotmgmax me", "oryx.ln", "rpgstash com", "rwtmg", "rotmg.io", "jasonprimate", "rotmgmax", "realmpower", "reaimpower"];
     public static const defaultExclusions:Vector.<int> = new Vector.<int>(0);
     public static const defaultInclusions:Vector.<int> = new <int>[10 * 60, 601, 602, 603, 2295, 2296, 2297, 2298, 2524, 2525, 2526, 2527, 8608, 8609, 8610, 8611, 8615, 8617, 8616, 8618, 8962, 9017, 9015, 9016, 9055, 9054, 9052, 9053, 9059, 9058, 9056, 9057, 9063, 9062, 151 * 60, 9061, 32697, 32698, 32699, 545 * 60, 3004, 3005, 3006, 3007, 3088, 3100, 3096, 3091, 3113, 3114, 3112, 3111, 3032, 3033, 3034, 3035, 3177, 3266];
-    public static const hpPotions:Vector.<int> = new <int>[1799, 2594, 2623, 2632, 2633, 2689, 2836, 2837, 2838, 2839, 2795, 2868, 2870, 2872, 2874, 2876];
-    public static const mpPotions:Vector.<int> = new <int>[2595, 2634, 2797, 2798, 2840, 2841, 2842, 2843, 2796, 2869, 2871, 2873, 2875, 2877, 3098];
-    public static const lmPotions:Vector.<int> = new <int>[2793, 9070, 5471, 9730, 2794, 9071, 5472, 9731];
-    public static const raPotions:Vector.<int> = new <int>[2591, 5465, 9064, 9729, 2592, 5466, 9065, 9727, 2593, 5467, 9066, 9726, 2612, 5468, 9067, 9724, 2613, 5469, 9068, 9725, 2636, 5470, 9069, 9728];
+    public static const hpPotions:Vector.<int> = new <int>[1799,2594,2623,2632,2633,2689,2836,2837,2838,2839,2795,2868,2870,2872,2874,2876];
+    public static const mpPotions:Vector.<int> = new <int>[2595,2634,2797,2798,2840,2841,2842,2843,2796,2869,2871,2873,2875,2877,3098];
+    public static const lmPotions:Vector.<int> = new <int>[2793,9070,5471,9730,2794,9071,5472,9731];
+    public static const raPotions:Vector.<int> = new <int>[2591,5465,9064,9729,2592,5466,9065,9727,2593,5467,9066,9726,2612,5468,9067,9724,2613,5469,9068,9725,2636,5470,9069,9728];
 
     public static var root:DisplayObject;
     public static var data:Object = null;

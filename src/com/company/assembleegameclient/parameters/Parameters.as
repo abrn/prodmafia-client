@@ -91,168 +91,87 @@ public class Parameters {
     public static var recvrName:String;
 
     public static var dailyCalendar1RunOnce:Boolean = false;
-
     public static var dailyCalendar2RunOnce:Boolean = false;
-
     public static var autoAcceptTrades:Boolean;
-
     public static var autoDrink:Boolean;
-
     public static var watchInv:Boolean;
-
     public static var timerActive:Boolean;
-
     public static var phaseChangeAt:int;
-
     public static var phaseName:String;
-
     public static var usingPortal:Boolean;
-
     public static var portalID:int;
-
     public static var portalSpamRate:int = 80;
-
     public static var realmJoining:Boolean;
-
     public static var realmName:String;
-
     public static var bazaarJoining:Boolean;
-
     public static var bazaarLR:String;
-
     public static var bazaarDist:Number;
-
     public static var invpm:Boolean;
-
     public static var manualTutorial:Boolean;
-
     public static var epmAVG:int = -1;
-
     public static var eLLength:int = 25;
-
     public static var fameBot:Boolean = false;
-
     public static var fameBotWatchingPortal:Boolean = false;
-
     public static var suicideMode:Boolean = false;
-
     public static var suicideAT:int = -1;
-
     public static var fameBotPortalId:int = 0;
-
     public static var fameBotPortal:Portal;
-
     public static var fameBotPortalPoint:Point;
-
     public static var famePointOffset:Number = 0;
-
     public static var fameSlideX:Number = 0;
-
     public static var fameSlideY:Number = 0;
-
     public static var fameWaitStartTime:int = 0;
-
     public static var fameWaitNTTime:int = 0;
-
     public static var fameWalkSleep_toFountainOrHall:int = 0;
-
     public static var fameWalkSleep_toRealms:int = 0;
-
     public static var fameWalkSleep2:int = 0;
-
     public static var fameWalkSleepStart:int = 0;
-
     public static var fpmGain:int = 0;
-
     public static var fpmStart:int = -1;
-
     public static var warnDensity:Boolean = false;
-
     public static var drownDamagePerSec:int = 94;
     public static var VHS:int = 0;
-
     public static var VHSRecordLength:int = -1;
-
     public static var VHSIndex:int = -1;
-
     public static var abi:Boolean = true;
-
     public static var oldFSmode:String = "exactFit";
-
     public static var keyHolders:String;
-
     public static var statsChar:String = "α";
-
     public static var keyk:Boolean;
-
     public static var keynames:String;
-
     public static var keyrate:int = 90;
-
     public static var needToRecalcDesireables:Boolean = false;
-
     public static var needsMapCheck:int = 0;
-
     public static var worldMessage:String = "";
-
     public static var constructToggle:Boolean = false;
-
     public static var paramIPJoinedOnce:Boolean = true;
-
     public static var paramServerJoinedOnce:Boolean = true;
-
     public static var currentMapHash:ByteArray = null;
-
     public static var savingMap_:Boolean = false;
-
     public static var swapINVandBP:Boolean = false;
-
     public static var swapINVandBPcounter:int = 0;
-
     public static var threadSupport:Boolean = false;
-
     public static var enteringRealm:Boolean = false;
-
     public static var RANDOM1_BA:ByteArray = new ByteArray();
-
     public static var RANDOM2_BA:ByteArray = new ByteArray();
-
     public static var reconList:Dictionary = new Dictionary();
-
     public static var appendage:Vector.<String> = new Vector.<String>(0);
-
     public static var filtered:Vector.<String> = new Vector.<String>(0);
-
     public static var dmgCounter:Array = [];
-
     public static var emptyOffer:Vector.<Boolean> = new <Boolean>[false, false, false, false, false, false, false, false, false, false, false, false];
-
     public static var potionsToTrade:Vector.<Boolean> = new <Boolean>[false, false, false, false, false, false, false, false, false, false, false, false];
-
     public static var timerPhaseTimes:Dictionary = new Dictionary();
-
     public static var timerPhaseNames:Dictionary = new Dictionary();
-
     public static var famePoint:Point = new Point(0, 0);
-
     public static var VHSRecord:Vector.<Point> = new Vector.<Point>();
-
     public static var VHSNext:Point = new Point();
-
     public static var announcedBags:Vector.<int> = new Vector.<int>(0);
-
     public static var mapSavingExclusionClasses:Vector.<String> = new <String>["Player", "Pet"];
-
     public static var charNames:Vector.<String> = new Vector.<String>(0);
-
     public static var charIds:Vector.<int> = new Vector.<int>(0);
-
     public static var mystics:Vector.<String> = new Vector.<String>(0);
-
     private static var savedOptions_:SharedObject = null;
-
     private static var keyNames_:Dictionary = new Dictionary();
-
     private static var ctrlrInputNames_:Dictionary = new Dictionary();
 
     public static function load():void {
@@ -265,12 +184,11 @@ public class Parameters {
         setDefaults();
         setIgnores();
         setCustomPriorityList();
-        Parameters.RANDOM1_BA = MoreStringUtil.hexStringToByteArray("6a39570cc9de4ec71d64821894");
-        Parameters.RANDOM2_BA = MoreStringUtil.hexStringToByteArray("c79332b197f92ba85ed281a023");
+        Parameters.RANDOM1_BA = MoreStringUtil.hexStringToByteArray("5a4d2016bc16dc64883194ffd9");
+        Parameters.RANDOM2_BA = MoreStringUtil.hexStringToByteArray("c91d9eec420160730d825604e0");
         setTimerPhases();
         setAutolootDesireables();
         fixFilter();
-        checkCustomVersion();
         save();
     }
 
@@ -283,12 +201,6 @@ public class Parameters {
         }
     }
 
-    public static function checkCustomVersion():void {
-        if (Parameters.data.customVersion == "X34.2.1") {
-            Parameters.data.customVersion = "";
-        }
-    }
-
     public static function fixFilter():void {
         var _local9:Boolean = false;
         var _local7:int = 0;
@@ -298,14 +210,12 @@ public class Parameters {
         var _local10:* = null;
         var _local4:* = null;
         filtered.length = 0;
-        var _local6:Vector.<String> = new <String>["rwtmg","rwtstore","rwtshop",
-            "rotmgrwt","realmgood","reaimgood","rpgrip","rpgrlp",
-            "realmshop","reaimshop","realmsh0p","reaimsh0p","realmp0wer",
-            "reaimp0wer","realmpower","reaimpower","relmgood","reimgood",
-            "hyuk3d","realmservices","rotmgstore","nv9p4r","v4sfdb","wgajrj",
-            "4hzb5","realmrwt","rotmgcheap","realmgen","reaimgen","guills",
-            "rwtrealm","rwtgang","rea1mgen","rwtking","discordgg","discordio","discordcom",
-            "realmstock"];
+        var _local6:Vector.<String> = new <String>["rwtmg","rwtstore","rwtshop","rotmgrwt",
+        "realmgood","reaimgood","rpgrip","rpgrlp","realmshop","reaimshop","realmsh0p","reaimsh0p",
+        "realmp0wer","reaimp0wer","realmpower","reaimpower","relmgood","reimgood","hyuk3d",
+        "realmservices","rotmgstore","nv9p4r","v4sfdb","wgajrj","4hzb5","realmrwt","rotmgcheap",
+        "realmgen","reaimgen","guills","rwtrealm","rwtgang","rea1mgen","rwtking","discordgg",
+        "discordio","discordcom","realmstock","r883q5c"];
         for each(var _local5:String in _local6) {
             _local9 = false;
             for each(var _local2:String in data.spamFilter) {
@@ -651,7 +561,6 @@ public class Parameters {
         setDefault("preferredChallengerServer", null);
         setDefault("bestChallengerServer", null);
         setDefault("needsTutorial", false);
-
         setDefault("cameraAngle", 0);
         setDefault("defaultCameraAngle", 0);
         setDefault("showQuestPortraits", true);
@@ -815,7 +724,6 @@ public class Parameters {
         setDefault("ignoreIce", false);
         setDefaultKey("TextPause", 113);
         setDefaultKey("TextThessal", 114);
-        setDefaultKey("TextDraconis", 115);
         setDefaultKey("TextCem", 112);
         setDefault("AAException", DefaultAAException);
         setDefault("AAIgnore", DefaultAAIgnore);

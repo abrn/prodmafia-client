@@ -95,7 +95,6 @@ public class CharacterDetailsMediator extends Mediator {
     private function onGotoNexus():void {
         this.tellModel.clearRecipients();
         this.hudModel.gameSprite.gsc_.escape();
-        Parameters.data.needsRandomRealm = false;
         Parameters.save();
     }
 

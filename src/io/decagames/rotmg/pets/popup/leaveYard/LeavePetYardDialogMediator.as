@@ -31,7 +31,6 @@ public class LeavePetYardDialogMediator extends Mediator {
 
     private function onLeave(_arg_1:BaseButton):void {
         this.hudModel.gameSprite.gsc_.escape();
-        Parameters.data.needsRandomRealm = false;
         Parameters.save();
         this.closeAll.dispatch();
     }

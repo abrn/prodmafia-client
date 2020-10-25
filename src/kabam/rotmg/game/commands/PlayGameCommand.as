@@ -90,8 +90,6 @@ public class PlayGameCommand {
         var _local1:int = 0;
         if (Parameters.data.needsTutorial) {
             _local1 = -1;
-        } else if (Parameters.data.needsRandomRealm) {
-            _local1 = -3;
         } else {
             _local1 = -2;
         }

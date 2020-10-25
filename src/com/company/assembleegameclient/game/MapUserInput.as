@@ -598,7 +598,6 @@ public class MapUserInput {
                 this.gs_.gsc_.disconnect();
                 this.gs_.dispatchEvent(Parameters.reconNexus);
             }
-            Parameters.data.needsRandomRealm = false;
             Parameters.save();
             StaticInjectorContext.getInjector().getInstance(CloseAllPopupsSignal).dispatch();
         } else if (_local15 == Parameters.data.useInvSlot1) {
@@ -765,12 +764,6 @@ public class MapUserInput {
                                     Parameters.reconRealm = _local7;
                                     this.gs_.dispatchEvent(Parameters.reconRealm);
                                 }
-                            }
-                            StaticInjectorContext.getInjector().getInstance(CloseAllPopupsSignal).dispatch();
-                        } else if (_local15 == Parameters.data.RandomRealm) {
-                            if (!Parameters.lockRecon) {
-                                _local11 = new ReconnectEvent(Parameters.reconNexus.server_, -3, false, this.gs_.gsc_.charId_, -1, null, false);
-                                this.gs_.dispatchEvent(_local11);
                             }
                             StaticInjectorContext.getInjector().getInstance(CloseAllPopupsSignal).dispatch();
                         } else if (_local15 == Parameters.data.DrinkAllHotkey) {

@@ -651,7 +651,7 @@ public class Parameters {
         setDefault("preferredChallengerServer", null);
         setDefault("bestChallengerServer", null);
         setDefault("needsTutorial", false);
-        setDefault("needsRandomRealm", false);
+
         setDefault("cameraAngle", 0);
         setDefault("defaultCameraAngle", 0);
         setDefault("showQuestPortraits", true);

@@ -52,7 +52,6 @@ public class HandleNormalDeathCommand {
     }
 
     private function updateParameters():void {
-        Parameters.data.needsRandomRealm = false;
         Parameters.save();
     }
 

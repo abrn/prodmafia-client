@@ -731,8 +731,6 @@ public class MapUserInput {
                 this.gs_.gsc_.playerText("/pause");
             } else if (_local15 == Parameters.data.TextThessal) {
                 this.gs_.gsc_.playerText("He lives and reigns and conquers the world");
-            } else if (_local15 == Parameters.data.TextDraconis) {
-                this.gs_.gsc_.playerText("black");
             } else if (_local15 == Parameters.data.TextCem) {
                 this.gs_.gsc_.playerText("ready");
             } else if (_local15 == Parameters.data.addMoveRecPoint) {

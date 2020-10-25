@@ -391,7 +391,6 @@ public class Options extends Sprite {
         this.addOptionAndPosition(new ChoiceOption("safeWalk", makeOnOffLabels(), [true, false], "Safe Walk", "Makes lava tiles act as if they were unwalkable.", null));
         this.addOptionAndPosition(new KeyMapper("TextPause", "/pause", "Say \"/pause\""));
         this.addOptionAndPosition(new KeyMapper("TextThessal", "Dying Thessal Text", "Say the \"He lives\" quote"));
-        this.addOptionAndPosition(new KeyMapper("TextDraconis", "LoD Black Text", "Say \"black\""));
         this.addOptionAndPosition(new KeyMapper("TextCem", "Cem Ready Text", "Say \"ready\""));
         this.addOptionAndPosition(new KeyMapper("sayCustom1", "Custom 1", "Sends a custom message, set this message with /setmsg1"));
         this.addOptionAndPosition(new KeyMapper("sayCustom2", "Custom 2", "Sends a custom message, set this message with /setmsg2"));

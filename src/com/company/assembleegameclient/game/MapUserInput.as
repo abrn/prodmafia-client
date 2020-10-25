@@ -767,21 +767,6 @@ public class MapUserInput {
                                 }
                             }
                             StaticInjectorContext.getInjector().getInstance(CloseAllPopupsSignal).dispatch();
-                        } else if (_local15 == Parameters.data.ReconVault) {
-                            if (!Parameters.lockRecon) {
-                                if (Parameters.reconVault) {
-                                    Parameters.reconVault.charId_ = this.gs_.gsc_.charId_;
-                                    this.gs_.dispatchEvent(Parameters.reconVault);
-                                }
-                            }
-                            StaticInjectorContext.getInjector().getInstance(CloseAllPopupsSignal).dispatch();
-                        } else if (_local15 == Parameters.data.ReconDaily) {
-                            if (!Parameters.lockRecon) {
-                                if (Parameters.reconNexus) {
-                                    this.gs_.dispatchEvent(Parameters.reconDaily);
-                                }
-                            }
-                            StaticInjectorContext.getInjector().getInstance(CloseAllPopupsSignal).dispatch();
                         } else if (_local15 == Parameters.data.RandomRealm) {
                             if (!Parameters.lockRecon) {
                                 _local11 = new ReconnectEvent(Parameters.reconNexus.server_, -3, false, this.gs_.gsc_.charId_, -1, null, false);

@@ -70,10 +70,8 @@ public class Parameters {
     public static var player:Player = null;
     public static var reconRealm:ReconnectEvent = null;
     public static var reconDung:ReconnectEvent = null;
-    public static var reconVault:ReconnectEvent = null;
     public static var reconNexus:ReconnectEvent = null;
     public static var reconOryx:ReconnectEvent = null;
-    public static var reconDaily:ReconnectEvent = null;
     public static var dungTime:uint = 0;
     public static var ignoreRecon:Boolean;
     public static var lockRecon:Boolean = false;

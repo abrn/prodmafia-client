@@ -40,6 +40,17 @@ public class ParseChatMessageCommand {
         super();
     }
 
+    public static function uint_Zeropadded(param1:uint, param2:int = 0) {
+        var _loc4_:* = null;
+        _loc4_ = "0000";
+        var _loc3_:String = param1.toString(16);
+        while(_loc3_.length < param2)
+        {
+            _loc3_ = "0000".substr(0,param2 - _loc3_.length) + _loc3_;
+        }
+        return _loc3_;
+    } 
+
     public function execute() : void {
         var go:GameObject;
         var split:Array = this.data.split(" ");
@@ -112,13 +123,8 @@ public class ParseChatMessageCommand {
                 goto FPSCommand;
                 return;
             case "/ip":
-                if (split.length == 1) {
-                    var server:Server = this.hudModel.gameSprite.gsc_.server_;
-                    this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
-                            server.name + ": " + server.address));
-                } else this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
-                        "Invalid syntax! This command does not use any arguments."));
-                return;
+                var server:Server = this.hudModel.gameSprite.gsc_.server_;
+                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, server.name + ": " + server.address));
             case "/goto":
                 if (Parameters.data.shownGotoWarning) {
                     if (split.length == 2) {
@@ -147,12 +153,11 @@ public class ParseChatMessageCommand {
                 return;
             case "/pos":
             case "/loc":
-                if (split.length == 1) {
-                    var player:Player = this.hudModel.gameSprite.map.player_;
-                    this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
-                            "Your location is x='" + player.x_ + "', y='" + player.y_ + "'"));
-                } else this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
-                        "Invalid syntax! This command does not use any arguments."));
+            case "/l":
+                var player:Player = this.hudModel.gameSprite.map.player_;
+                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
+                            "Your location is x=" + player.x_.toFixed(2) + ", y=" + player.y_.toFixed(2)));
+                }
                 return;
             case "/mapscale":
             case "/mscale":
@@ -160,7 +165,7 @@ public class ParseChatMessageCommand {
                 switch (split.length) {
                     case 1:
                         this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
-                                "Your current Map Scale is: " + Parameters.data.mscale));
+                                "Your current map scale is: " + Parameters.data.mscale));
                         break;
                     case 2:
                         var mscale:Number = parseFloat(split[1]);
@@ -169,7 +174,7 @@ public class ParseChatMessageCommand {
                             Parameters.save();
                             Parameters.root.dispatchEvent(new Event(Event.RESIZE));
                             this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
-                                    "Map Scale set to: " + Parameters.data.mscale));
+                                    "Map scale set to: " + Parameters.data.mscale));
                         } else this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
                                 "Incorrect length! Make sure you are providing a number."));
                         break;
@@ -178,6 +183,27 @@ public class ParseChatMessageCommand {
                                 "Incorrect arguments! Syntax: /ms <float>"));
                         break;
                 }
+                return;
+            case '/gkick':
+                    if (split.length == 2) {
+                        this.hudModel.gameSprite.gsc_.guildRemove(split[1]);
+                    } else {
+                        this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
+                                "Please enter a player to kick: /gkick <player>"));
+                        break;
+                    }
+                return;
+            case '/gquit':
+                    this.hudModel.gameSprite.gsc_.guildRemove(this.hudModel.gameSprite.map.player_.name_);
+                return;
+            case '/grank':
+                    if (split.length == 3) {
+                        this.hudModel.gameSprite.gsc_.changeGuildRank(split[1],int(split[2]));
+                    } else {
+                        this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
+                                "Incorrect arguments: /grank <playername> <rank>"));
+                        break;
+                    }
                 return;
             case "/ao":
             case "/ta":
@@ -371,7 +397,7 @@ public class ParseChatMessageCommand {
                         this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
                                 fpsText + " set to: " + Parameters.data[fpsParam]));
                     } else this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
-                            "Incorrect length! Make sure you are providing an integer number. (no fractions)"));
+                            "Incorrect number! Make sure you are providing a whole number (no fractions)"));
                     break;
                 default:
                     this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
@@ -505,12 +531,6 @@ public class ParseChatMessageCommand {
             _local6.isNewGame = true;
             if (Parameters.reconNexus) {
                 Parameters.reconNexus.server_ = _local6.server;
-            }
-            if (Parameters.reconVault) {
-                Parameters.reconVault.server_ = _local6.server;
-            }
-            if (Parameters.reconDaily) {
-                Parameters.reconDaily.server_ = _local6.server;
             }
             this.playGame.dispatch(_local6);
         }

@@ -726,79 +726,79 @@ public class GameSprite extends AGameSprite {
         }
     }
 
-    public function onChatDown(_arg_1:MouseEvent):void {
+    public function onChatDown(event:MouseEvent):void {
         if (this.chatPlayerMenu != null) {
             this.removeChatPlayerMenu();
         }
-        mui_.onMouseDown(_arg_1);
+        mui_.onMouseDown(event);
     }
 
-    public function onChatUp(_arg_1:MouseEvent):void {
-        mui_.onMouseUp(_arg_1);
+    public function onChatUp(event: MouseEvent):void {
+        mui_.onMouseUp(event);
     }
 
-    public function onScreenResize(_arg_1:Event):void {
+    public function onScreenResize(event: Event):void {
         var _local4:Number = NaN;
-        var _local2:Boolean = Parameters.data.uiscale;
-        var _local6:Number = 800 / stage.stageWidth;
-        var _local3:Number = 600 / stage.stageHeight;
-        var _local7:Number = _local6 / _local3;
+        var scaleUI:Boolean = Parameters.data.uiscale;
+        var widthScale:Number = 800 / stage.stageWidth;
+        var heightScale:Number = 600 / stage.stageHeight;
+        var aspectRatio:Number = widthScale / heightScale;
         if (this.map) {
-            this.map.scaleX = _local6 * Parameters.data.mscale;
-            this.map.scaleY = _local3 * Parameters.data.mscale;
+            this.map.scaleX = widthScale * Parameters.data.mscale;
+            this.map.scaleY = heightScale * Parameters.data.mscale;
             this.map.mapHitArea.scaleX = 1 / this.map.scaleX;
             this.map.mapHitArea.scaleY = 1 / this.map.scaleY;
         }
         if (this.timerCounter) {
-            if (_local2) {
-                this.timerCounter.scaleX = _local7;
+            if (scaleUI) {
+                this.timerCounter.scaleX = aspectRatio;
                 this.timerCounter.scaleY = 1;
                 this.timerCounter.y = 3 * 60;
             } else {
-                this.timerCounter.scaleX = _local6;
-                this.timerCounter.scaleY = _local3;
+                this.timerCounter.scaleX = widthScale;
+                this.timerCounter.scaleY = heightScale;
             }
         }
         if (this.enemyCounter) {
-            if (_local2) {
-                this.enemyCounter.scaleX = _local7;
+            if (scaleUI) {
+                this.enemyCounter.scaleX = aspectRatio;
                 this.enemyCounter.scaleY = 1;
                 this.enemyCounter.y = 160;
             } else {
-                this.enemyCounter.scaleX = _local6;
-                this.enemyCounter.scaleY = _local3;
+                this.enemyCounter.scaleX = widthScale;
+                this.enemyCounter.scaleY = heightScale;
             }
         }
         if (this.stats) {
-            if (_local2) {
-                this.stats.scaleX = _local7;
+            if (scaleUI) {
+                this.stats.scaleX = aspectRatio;
                 this.stats.scaleY = 1;
                 this.stats.y = 5;
             } else {
-                this.stats.scaleX = _local6;
-                this.stats.scaleY = _local3;
+                this.stats.scaleX = widthScale;
+                this.stats.scaleY = heightScale;
             }
             this.stats.x = 5 * this.stats.scaleX;
             this.stats.y = 5 * this.stats.scaleY;
         }
         if (this.questBar) {
-            if (_local2) {
-                this.questBar.scaleX = _local7;
+            if (scaleUI) {
+                this.questBar.scaleX = aspectRatio;
                 this.questBar.scaleY = 1;
             } else {
-                this.questBar.scaleX = _local6;
-                this.questBar.scaleY = _local3;
+                this.questBar.scaleX = widthScale;
+                this.questBar.scaleY = heightScale;
             }
         }
         if (this.hudView) {
-            if (_local2) {
-                this.hudView.scaleX = _local7;
+            if (scaleUI) {
+                this.hudView.scaleX = aspectRatio;
                 this.hudView.scaleY = 1;
                 this.hudView.y = 0;
             } else {
-                this.hudView.scaleX = _local6;
-                this.hudView.scaleY = _local3;
-                this.hudView.y = 300 * (1 - _local3);
+                this.hudView.scaleX = widthScale;
+                this.hudView.scaleY = heightScale;
+                this.hudView.y = 300 * (1 - heightScale);
             }
             this.hudView.x = 800 - 200 * this.hudView.scaleX;
             if (this.creditDisplay_) {
@@ -806,112 +806,112 @@ public class GameSprite extends AGameSprite {
             }
         }
         if (this.chatBox_) {
-            if (_local2) {
-                this.chatBox_.scaleX = _local7;
+            if (scaleUI) {
+                this.chatBox_.scaleX = aspectRatio;
                 this.chatBox_.scaleY = 1;
             } else {
-                this.chatBox_.scaleX = _local6;
-                this.chatBox_.scaleY = _local3;
+                this.chatBox_.scaleX = widthScale;
+                this.chatBox_.scaleY = heightScale;
             }
             this.chatBox_.y = 5 * 60 + 300 * (1 - this.chatBox_.scaleY);
         }
         if (this.rankText_) {
-            if (_local2) {
-                this.rankText_.scaleX = _local7;
+            if (scaleUI) {
+                this.rankText_.scaleX = aspectRatio;
                 this.rankText_.scaleY = 1;
             } else {
-                this.rankText_.scaleX = _local6;
-                this.rankText_.scaleY = _local3;
+                this.rankText_.scaleX = widthScale;
+                this.rankText_.scaleY = heightScale;
             }
             this.rankText_.x = 8 * this.rankText_.scaleX;
             this.rankText_.y = 2 * this.rankText_.scaleY;
         }
         if (this.guildText_) {
-            if (_local2) {
-                this.guildText_.scaleX = _local7;
+            if (scaleUI) {
+                this.guildText_.scaleX = aspectRatio;
                 this.guildText_.scaleY = 1;
             } else {
-                this.guildText_.scaleX = _local6;
-                this.guildText_.scaleY = _local3;
+                this.guildText_.scaleX = widthScale;
+                this.guildText_.scaleY = heightScale;
             }
             this.guildText_.x = 86 * this.guildText_.scaleX;
             this.guildText_.y = 2 * this.guildText_.scaleY;
         }
         if (this.creditDisplay_) {
-            if (_local2) {
-                this.creditDisplay_.scaleX = _local7;
+            if (scaleUI) {
+                this.creditDisplay_.scaleX = aspectRatio;
                 this.creditDisplay_.scaleY = 1;
             } else {
-                this.creditDisplay_.scaleX = _local6;
-                this.creditDisplay_.scaleY = _local3;
+                this.creditDisplay_.scaleX = widthScale;
+                this.creditDisplay_.scaleY = heightScale;
             }
         }
         if (this.shopDisplay) {
-            if (_local2) {
-                this.shopDisplay.scaleX = _local7;
+            if (scaleUI) {
+                this.shopDisplay.scaleX = aspectRatio;
                 this.shopDisplay.scaleY = 1;
             } else {
-                this.shopDisplay.scaleX = _local6;
-                this.shopDisplay.scaleY = _local3;
+                this.shopDisplay.scaleX = widthScale;
+                this.shopDisplay.scaleY = heightScale;
             }
             this.shopDisplay.x = 6 * this.shopDisplay.scaleX;
             this.shopDisplay.y = 40 * this.shopDisplay.scaleY;
         }
         if (this.packageOffer) {
-            if (_local2) {
-                this.packageOffer.scaleX = _local7;
+            if (scaleUI) {
+                this.packageOffer.scaleX = aspectRatio;
                 this.packageOffer.scaleY = 1;
             } else {
-                this.packageOffer.scaleX = _local6;
-                this.packageOffer.scaleY = _local3;
+                this.packageOffer.scaleX = widthScale;
+                this.packageOffer.scaleY = heightScale;
             }
             this.packageOffer.x = 6 * this.packageOffer.scaleX;
             this.packageOffer.y = 31 * this.packageOffer.scaleY;
         }
         var _local5:int = 72;
         if (this.giftStatusDisplay) {
-            if (_local2) {
-                this.giftStatusDisplay.scaleX = _local7;
+            if (scaleUI) {
+                this.giftStatusDisplay.scaleX = aspectRatio;
                 this.giftStatusDisplay.scaleY = 1;
             } else {
-                this.giftStatusDisplay.scaleX = _local6;
-                this.giftStatusDisplay.scaleY = _local3;
+                this.giftStatusDisplay.scaleX = widthScale;
+                this.giftStatusDisplay.scaleY = heightScale;
             }
             this.giftStatusDisplay.x = 6 * this.giftStatusDisplay.scaleX;
             this.giftStatusDisplay.y = _local5 * this.giftStatusDisplay.scaleY;
             _local5 = _local5 + 32;
         }
         if (this.newsModalButton) {
-            if (_local2) {
-                this.newsModalButton.scaleX = _local7;
+            if (scaleUI) {
+                this.newsModalButton.scaleX = aspectRatio;
                 this.newsModalButton.scaleY = 1;
             } else {
-                this.newsModalButton.scaleX = _local6;
-                this.newsModalButton.scaleY = _local3;
+                this.newsModalButton.scaleX = widthScale;
+                this.newsModalButton.scaleY = heightScale;
             }
             this.newsModalButton.x = 6 * this.newsModalButton.scaleX;
             this.newsModalButton.y = _local5 * this.newsModalButton.scaleY;
             _local5 = _local5 + 32;
         }
         if (this.specialOfferButton) {
-            if (_local2) {
-                this.specialOfferButton.scaleX = _local7;
+            if (scaleUI) {
+                this.specialOfferButton.scaleX = aspectRatio;
                 this.specialOfferButton.scaleY = 1;
             } else {
-                this.specialOfferButton.scaleX = _local6;
-                this.specialOfferButton.scaleY = _local3;
+                this.specialOfferButton.scaleX = widthScale;
+                this.specialOfferButton.scaleY = heightScale;
             }
             this.specialOfferButton.x = 6 * this.specialOfferButton.scaleX;
             this.specialOfferButton.y = _local5 * this.specialOfferButton.scaleY;
             _local5 = _local5 + 32;
         }
         if (this.challengerLeaderBoard) {
-            if (_local2) {
-                this.challengerLeaderBoard.scaleX = _local7;
+            if (scaleUI) {
+                this.challengerLeaderBoard.scaleX = aspectRatio;
                 this.challengerLeaderBoard.scaleY = 1;
             } else {
-                this.challengerLeaderBoard.scaleX = _local6;
-                this.challengerLeaderBoard.scaleY = _local3;
+                this.challengerLeaderBoard.scaleX = widthScale;
+                this.challengerLeaderBoard.scaleY = heightScale;
             }
             if (this.challengerLeaderBoard) {
                 this.challengerLeaderBoard.x = this.hudView.x - this.challengerLeaderBoard.width - 6;
@@ -919,12 +919,12 @@ public class GameSprite extends AGameSprite {
             }
         }
         if (this.challengerInfoButton) {
-            if (_local2) {
-                this.challengerInfoButton.scaleX = _local7;
+            if (scaleUI) {
+                this.challengerInfoButton.scaleX = aspectRatio;
                 this.challengerInfoButton.scaleY = 1;
             } else {
-                this.challengerInfoButton.scaleX = _local6;
-                this.challengerInfoButton.scaleY = _local3;
+                this.challengerInfoButton.scaleX = widthScale;
+                this.challengerInfoButton.scaleY = heightScale;
             }
             if (this.challengerInfoButton) {
                 this.challengerInfoButton.x = this.hudView.x - this.challengerInfoButton.width - 6;
@@ -933,27 +933,27 @@ public class GameSprite extends AGameSprite {
         }
     }
 
-    private function onTimerCounterClick(_arg_1:MouseEvent):void {
+    private function onTimerCounterClick(event: MouseEvent):void {
         this.gsc_.playerText(Parameters.phaseName + " time left: " + toTimeCode(Parameters.phaseChangeAt - getTimer()));
     }
 
-    private function onFocusOut(_arg_1:Event):void {
+    private function onFocusOut(event: Event):void {
         if (Parameters.data.FocusFPS) {
             stage.frameRate = Parameters.data.bgFPS;
         }
     }
 
-    private function onFocusIn(_arg_1:Event):void {
+    private function onFocusIn(event: Event):void {
         if (Parameters.data.FocusFPS) {
             stage.frameRate = Parameters.data.fgFPS;
         }
     }
 
-    private function onMoneyChanged(_arg_1:Event):void {
+    private function onMoneyChanged(event: Event):void {
         gsc_.checkCredits();
     }
 
-    private function onEnterFrame(_arg_1:Event):void {
+    private function onEnterFrame(event: Event):void {
         var _local4:int = 0;
         var _local3:int = 0;
         var _local6:Number = NaN;

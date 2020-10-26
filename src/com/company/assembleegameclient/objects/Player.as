@@ -783,21 +783,12 @@ public class Player extends Character {
         super.removeFromMap();
     }
 
-    /*public function getMax():int {
-        var _local2:int = 0;
-        var _local1:* = undefined;
-        var _local3:Vector.<int> = new <int>[0, 3, 20, 21, 22, 26, 27, 28];
-        var _local4:int = 0;
-        _local2 = 0;
-        while (_local2 < _local3.length) {
-            _local1 = StatData.statToPlayerValues(_local3[_local2], this);
-            if (_local1[0] - _local1[1] >= _local1[2]) {
-                _local4++;
-            }
-            _local2++;
-        }
-        return _local4;
-    }*/
+    public function getDistFromSelf(param1: Number, param2: Number) : Number
+      {
+         var _loc3_:Number = param1 - this.x_;
+         var _loc4_:Number = param2 - this.y_;
+         return Math.sqrt(_loc4_ * _loc4_ + _loc3_ * _loc3_);
+      }
 
     public function getFameBonus():int {
         var _local1:int = 0;
@@ -834,6 +825,7 @@ public class Player extends Character {
         this.vitalityBoost_ = 0;
         this.wisdomBoost_ = 0;
         this.dexterityBoost_ = 0;
+        //TODO: add exaltations here
         while (_local2 < 4) {
             if (equipment_ && equipment_.length > _local2) {
                 _local1 = equipment_[_local2];
@@ -1017,24 +1009,28 @@ public class Player extends Character {
         map_.mapOverlay_.addStatusText(_local2);
     }
 
-    public function walkTo(_arg_1:Number, _arg_2:Number):Boolean {
-        this.modifyMove(_arg_1, _arg_2, newP);
+    public function walkTo(currentX: Number, currentY: Number):Boolean {
+        this.modifyMove(currentX, currentY, newP);
         return this.moveTo(newP.x, newP.y);
     }
 
-    public function walkTo_follow(_arg_1:Number, _arg_2:Number):Boolean {
-        var _local6:Number = NaN;
-        var _local3:Number = NaN;
-        var _local4:Number = NaN;
-        var _local5:Number = NaN;
-        this.modifyMove(_arg_1, _arg_2, newP);
-        if (Parameters.followingName || Parameters.VHS == 2 || Parameters.fameBot || Parameters.questFollow) {
-            if (!this.followLanded && isValidPosition(this.followPos.x, this.followPos.y)) {
-                _local6 = Math.abs(this.x_ - this.followPos.x);
-                _local3 = Math.abs(this.y_ - this.followPos.y);
-                _local4 = Math.abs(this.x_ - newP.x);
-                _local5 = Math.abs(this.y_ - newP.y);
-                if (_local4 >= _local6 && _local5 >= _local3) {
+    public function walkTo_follow(currentX: Number, currentY: Number):Boolean {
+        var playerDistX:Number = NaN;
+        var playerDistY:Number = NaN;
+        var xDistance:Number = NaN;
+        var distanceY:Number = NaN;
+
+        this.modifyMove(currentX, currentY, newP);
+        if (Parameters.followingName || Parameters.VHS == 2 || Parameters.fameBot || Parameters.questFollow) 
+        {
+            if (!this.followLanded && isValidPosition(this.followPos.x, this.followPos.y)) 
+            {
+                playerDistX = Math.abs(this.x_ - this.followPos.x);
+                playerDistY = Math.abs(this.y_ - this.followPos.y);
+                distanceX = Math.abs(this.x_ - newP.x);
+                distanceY = Math.abs(this.y_ - newP.y);
+                if (xDistance >= playerDistX && distanceY >= playerDistY) 
+                {
                     newP.x = followPos.x;
                     newP.y = followPos.y;
                     this.followLanded = true;
@@ -1044,105 +1040,121 @@ public class Player extends Character {
         return this.moveTo(newP.x, newP.y);
     }
 
-    public function modifyMove(_arg_1:Number, _arg_2:Number, _arg_3:Point):void {
+    public function modifyMove(currentX: Number, currentY: Number, newPoint: Point):void {
         var _local7:Boolean = false;
         if (this.isParalyzed || this.isPetrified) {
-            _arg_3.x = x_;
-            _arg_3.y = y_;
+            newPoint.x = x_;
+            newPoint.y = y_;
             return;
         }
-        var _local6:Number = _arg_1 - x_;
-        var _local5:Number = _arg_2 - y_;
+        var _local6:Number = currentX - x_;
+        var _local5:Number = currentY - y_;
         if (_local6 < 0.4 && _local6 > -0.4 && _local5 < 0.4 && _local5 > -0.4) {
-            this.modifyStep(_arg_1, _arg_2, _arg_3);
+            this.modifyStep(currentX, currentY, newPoint);
             return;
         }
         var _local4:Number = 0.4 / Math.max(Math.abs(_local6), Math.abs(_local5));
         var _local8:* = 0;
-        _arg_3.x = x_;
-        _arg_3.y = y_;
+        newPoint.x = x_;
+        newPoint.y = y_;
         while (!_local7) {
             if (_local8 + _local4 >= 1) {
                 _local4 = 1 - _local8;
                 _local7 = true;
             }
-            this.modifyStep(_arg_3.x + _local6 * _local4, _arg_3.y + _local5 * _local4, _arg_3);
+            this.modifyStep(newPoint.x + _local6 * _local4, newPoint.y + _local5 * _local4, newPoint);
             _local8 = Number(_local8 + _local4);
         }
     }
 
-    public function modifyStep(_arg_1:Number, _arg_2:Number, _arg_3:Point):void {
+    public function modifyStep(currentX: Number, currentY: Number, newPoint: Point):void {
         var _local4:Number = NaN;
         var _local9:Number = NaN;
-        var _local6:Boolean = x_ % 0.5 == 0 && _arg_1 != x_ || int(x_ / 0.5) != int(_arg_1 / 0.5);
-        var _local5:Boolean = y_ % 0.5 == 0 && _arg_2 != y_ || int(y_ / 0.5) != int(_arg_2 / 0.5);
-        if (!_local6 && !_local5 || this.isValidPosition(_arg_1, _arg_2)) {
-            _arg_3.x = _arg_1;
-            _arg_3.y = _arg_2;
+        var _local6:Boolean = x_ % 0.5 == 0 && currentX != x_ || int(x_ / 0.5) != int(currentX / 0.5);
+        var _local5:Boolean = y_ % 0.5 == 0 && currentY != y_ || int(y_ / 0.5) != int(currentY / 0.5);
+
+        if (!_local6 && !_local5 || this.isValidPosition(currentX, currentY))
+        {
+            newPoint.x = currentX;
+            newPoint.y = currentY;
             return;
         }
-        if (_local6) {
-            _local4 = _arg_1 > x_ ? int(_arg_1 * 2) / 2 : Number(int(x_ * 2) / 2);
+        if (_local6) 
+        {
+            _local4 = currentX > x_ ? int(currentX * 2) / 2 : Number(int(x_ * 2) / 2);
             if (int(_local4) > int(x_)) {
                 _local4 = _local4 - 0.01;
             }
         }
-        if (_local5) {
-            _local9 = _arg_2 > y_ ? int(_arg_2 * 2) / 2 : Number(int(y_ * 2) / 2);
+        if (_local5) 
+        {
+            _local9 = currentY > y_ ? int(currentY * 2) / 2 : Number(int(y_ * 2) / 2);
             if (int(_local9) > int(y_)) {
                 _local9 = _local9 - 0.01;
             }
         }
-        if (!_local6) {
-            _arg_3.x = _arg_1;
-            _arg_3.y = _local9;
+        if (!_local6) 
+        {
+            newPoint.x = currentX;
+            newPoint.y = _local9;
             if (square != null && square.props_.slideAmount_ != 0) {
                 this.resetMoveVector(false);
             }
             return;
         }
-        if (!_local5) {
-            _arg_3.x = _local4;
-            _arg_3.y = _arg_2;
+        if (!_local5) 
+        {
+            newPoint.x = _local4;
+            newPoint.y = currentY;
             if (square != null && square.props_.slideAmount_ != 0) {
                 this.resetMoveVector(true);
             }
             return;
         }
-        var _local8:Number = _arg_1 > x_ ? _arg_1 - _local4 : Number(_local4 - _arg_1);
-        var _local7:Number = _arg_2 > y_ ? _arg_2 - _local9 : Number(_local9 - _arg_2);
-        if (_local8 > _local7) {
-            if (this.isValidPosition(_arg_1, _local9)) {
-                _arg_3.x = _arg_1;
-                _arg_3.y = _local9;
+        var _local8:Number = currentX > x_ ? currentX - _local4 : Number(_local4 - currentX);
+        var _local7:Number = currentY > y_ ? currentY - _local9 : Number(_local9 - currentY);
+        if (_local8 > _local7) 
+        {
+            if (this.isValidPosition(currentX, _local9)) 
+            {
+                newPoint.x = currentX;
+                newPoint.y = _local9;
                 return;
             }
-            if (this.isValidPosition(_local4, _arg_2)) {
-                _arg_3.x = _local4;
-                _arg_3.y = _arg_2;
+            if (this.isValidPosition(_local4, currentY)) 
+            {
+                newPoint.x = _local4;
+                newPoint.y = currentY;
                 return;
             }
-        } else {
-            if (this.isValidPosition(_local4, _arg_2)) {
-                _arg_3.x = _local4;
-                _arg_3.y = _arg_2;
+        } 
+        else 
+        {
+            if (this.isValidPosition(_local4, currentY)) 
+            {
+                newPoint.x = _local4;
+                newPoint.y = currentY;
                 return;
             }
-            if (this.isValidPosition(_arg_1, _local9)) {
-                _arg_3.x = _arg_1;
-                _arg_3.y = _local9;
+            if (this.isValidPosition(currentX, _local9)) 
+            {
+                newPoint.x = currentX;
+                newPoint.y = _local9;
                 return;
             }
         }
-        _arg_3.x = _local4;
-        _arg_3.y = _local9;
+        newPoint.x = _local4;
+        newPoint.y = _local9;
     }
 
-    public function isValidPosition(_arg_1:Number, _arg_2:Number):Boolean {
-        if (Parameters.data.blockMove)
+    public function isValidPosition(_arg_1:Number, _arg_2:Number):Boolean 
+    {
+        if (Parameters.data.blockMove) {
             return true;
+        }
         var _local5:Square = map_.getSquare(_arg_1, _arg_2);
-        if (square != _local5 && (_local5 == null || !_local5.isWalkable())) {
+        if (square != _local5 && (_local5 == null || !_local5.isWalkable())) 
+        {
             return false;
         }
         var _local4:Number = _arg_1 - int(_arg_1);
@@ -1317,15 +1329,15 @@ public class Player extends Character {
         this.attemptAutoAbility(_arg_1, _local3, this.equipment_[1]);
     }
 
-    public function attemptAutoAbility(_arg_1:Number, _arg_2:int = -1, _arg_3:int = 0):void {
-        if (_arg_3 == 0) {
-            _arg_3 = this.equipment_[1];
+    public function attemptAutoAbility(_arg_1:Number, angle: int = -1, abilityId: int = 0):void {
+        if (abilityId == 0) {
+            abilityId = this.equipment_[1];
         }
-        if (_arg_2 == -1) {
+        if (angle == -1) {
         }
-        _arg_2 = map_.gs_.lastUpdate_;
-        if (_arg_3 != -1 && Parameters.data.AutoAbilityOn && !this.map_.gs_.isSafeMap && Parameters.abi && !Parameters.data.fameBlockAbility && this.mp_ >= this.autoMpPercentNumber) {
-            this.shootAutoAimAbilityAngle(_arg_3, _arg_2);
+        angle = map_.gs_.lastUpdate_;
+        if (abilityId != -1 && Parameters.data.AutoAbilityOn && !this.map_.gs_.isSafeMap && Parameters.abi && !Parameters.data.fameBlockAbility && this.mp_ >= this.autoMpPercentNumber) {
+            this.shootAutoAimAbilityAngle(abilityId, angle);
         }
     }
 

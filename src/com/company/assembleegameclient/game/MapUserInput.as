@@ -459,24 +459,32 @@ package com.company.assembleegameclient.game {
         private function onEnterFrame(_arg_1:Event):void {
             var angle:Number = NaN;
             var currentPlayer:Player = this.gs_.map.player_;
-            if (currentPlayer) {
+            if (currentPlayer) 
+            {
                 currentPlayer.mousePos_.x = this.gs_.map.mouseX;
                 currentPlayer.mousePos_.y = this.gs_.map.mouseY;
-                if (this.enablePlayerInput_) {
-                    if (this.mouseDown_) {
-                        if (!currentPlayer.isUnstable) {
-                            angle = Math.atan2(this.gs_.map.mouseY, this.gs_.map.mouseX);
-                            currentPlayer.attemptAttackAngle(angle);
-                            currentPlayer.attemptAutoAbility(angle);
-                        } else {
-                            angle = Math.random() * 6.28318530717959;
-                            currentPlayer.attemptAttackAngle(angle);
-                            currentPlayer.attemptAutoAbility(angle);
+                if (this.enablePlayerInput_) 
+                {
+                    if (this.mouseDown_) 
+                    {
+                        if (!currentPlayer.isUnstable) 
+                        {
+                            shotAngle = Math.atan2(this.gs_.map.mouseY, this.gs_.map.mouseX);
+                            currentPlayer.attemptAttackshotAngle(shotAngle);
+                            currentPlayer.attemptAutoAbility(shotAngle);
+                        } 
+                        else
+                        {
+                            shotAngle = Math.random() * 6.28318530717959;
+                            currentPlayer.attemptAttackshotAngle(shotAngle);
+                            currentPlayer.attemptAutoAbility(shotAngle);
                         }
-                    } else if (Parameters.data.AAOn || this.autofire_ || Parameters.data.AutoAbilityOn) {
+                    } 
+                    else if (Parameters.data.AAOn || this.autofire_ || Parameters.data.AutoAbilityOn) 
+                    {
                         if (!currentPlayer.isUnstable) {
-                            angle = Math.atan2(this.gs_.map.mouseY, this.gs_.map.mouseX);
-                            currentPlayer.attemptAutoAim(angle);
+                            shotAngle = Math.atan2(this.gs_.map.mouseY, this.gs_.map.mouseX);
+                            currentPlayer.attemptAutoAim(shotAngle);
                         } else {
                             currentPlayer.attemptAutoAim(Math.random() * 6.28318530717959);
                         }
@@ -511,30 +519,47 @@ package com.company.assembleegameclient.game {
                 Parameters.data.blockMove = !Parameters.data.blockMove;
                 Parameters.save();
                 this.gs_.map.player_.levelUpEffect(Parameters.data.blockMove ? "No Clip: ON" : "No Clip: OFF");
-            } else if (keyCode == Parameters.data.walkKey) {
+            } 
+            else if (keyCode == Parameters.data.walkKey) 
+            {
                 this.isWalking = true;
-            } else if (keyCode == Parameters.data.moveUp) {
+            } 
+            else if (keyCode == Parameters.data.moveUp) 
+            {
                 this.moveUp_ = true;
-            } else if (keyCode == Parameters.data.moveDown) {
+            } 
+            else if (keyCode == Parameters.data.moveDown) 
+            {
                 this.moveDown_ = true;
-            } else if (keyCode == Parameters.data.moveLeft) {
+            } 
+            else if (keyCode == Parameters.data.moveLeft) 
+            {
                 this.moveLeft_ = true;
-            } else if (keyCode == Parameters.data.moveRight) {
+            } 
+            else if (keyCode == Parameters.data.moveRight)
+            {
                 this.moveRight_ = true;
-            } else if (keyCode == Parameters.data.rotateLeft) {
+            } 
+            else if (keyCode == Parameters.data.rotateLeft) 
+            {
                 if (Parameters.data.allowRotation) {
                     this.rotateLeft_ = true;
                 }
-            } else if (keyCode == Parameters.data.rotateRight) {
+            } 
+            else if (keyCode == Parameters.data.rotateRight) 
+            {
                 if (Parameters.data.allowRotation) {
                     this.rotateRight_ = true;
                 }
-            } else if (keyCode == Parameters.data.resetToDefaultCameraAngle) {
+            }
+            else if (keyCode == Parameters.data.resetToDefaultCameraAngle) 
+            {
                 Parameters.data.cameraAngle = Parameters.data.defaultCameraAngle;
                 Parameters.save();
                 this.gs_.camera_.nonPPMatrix_ = new Matrix3D();
                 this.gs_.camera_.nonPPMatrix_.appendScale(50, 50, 50);
-            } else if (keyCode == Parameters.data.useSpecial) 
+            } 
+            else if (keyCode == Parameters.data.useSpecial) 
             {
                 if (currentPlayer) 
                 {
@@ -656,7 +681,7 @@ package com.company.assembleegameclient.game {
                         addIgnore(32693);
                         remIgnore(3368);
                         remIgnore(32694);
-                        _local14.textNotification("Bes", 16771743, 25 * 60, true);
+                        currentPlayer.textNotification("Bes", 16771743, 25 * 60, true);
                         Parameters.data.TombCycleBoss = 3366;
                         break;
                     case 3366:
@@ -666,7 +691,7 @@ package com.company.assembleegameclient.game {
                         addIgnore(32694);
                         remIgnore(3366);
                         remIgnore(32692);
-                        _local14.textNotification("Nut", 10481407, 25 * 60, true);
+                        currentPlayer.textNotification("Nut", 10481407, 25 * 60, true);
                         Parameters.data.TombCycleBoss = 3367;
                         break;
                     case 3367:
@@ -676,7 +701,7 @@ package com.company.assembleegameclient.game {
                         addIgnore(32692);
                         remIgnore(3367);
                         remIgnore(32693);
-                        _local14.textNotification("Geb", 11665311, 25 * 60, true);
+                        currentPlayer.textNotification("Geb", 11665311, 25 * 60, true);
                         Parameters.data.TombCycleBoss = 3368;
                 }
                 Parameters.save();
@@ -709,16 +734,16 @@ package com.company.assembleegameclient.game {
             else if (keyCode == Parameters.data.AutoAbilityHotkey) 
             {
                 Parameters.data.AutoAbilityOn = !Parameters.data.AutoAbilityOn;
-                _local14.textNotification(!!Parameters.data.AutoAbilityOn ? "AutoAbility enabled" : "AutoAbility disabled", 0xffffff, 2000, false);
+                currentPlayer.textNotification(!!Parameters.data.AutoAbilityOn ? "AutoAbility enabled" : "AutoAbility disabled", 0xffffff, 2000, false);
             } 
             else if (keyCode != Parameters.data.ignoreSpeedyKey) 
             {
                 if (keyCode == Parameters.data.AAHotkey) {
                     Parameters.data.AAOn = !Parameters.data.AAOn;
                     if (!mouseDown_ && !Parameters.data.AAOn) {
-                        _local14.isShooting = false;
+                        currentPlayer.isShooting = false;
                     }
-                    _local14.textNotification(!!Parameters.data.AAOn ? "AutoAim enabled" : "AutoAim disabled", 0xffffff, 2000, false);
+                    currentPlayer.textNotification(!!Parameters.data.AAOn ? "AutoAim enabled" : "AutoAim disabled", 0xffffff, 2000, false);
                 }
                 else if (keyCode == Parameters.data.AAModeHotkey) {
                     this.selectAimMode();
@@ -726,7 +751,7 @@ package com.company.assembleegameclient.game {
                 else if (keyCode == Parameters.data.AutoLootHotkey) 
                 {
                     Parameters.data.AutoLootOn = !Parameters.data.AutoLootOn;
-                    _local14.textNotification(!!Parameters.data.AutoLootOn ? "AutoLoot enabled" : "AutoLoot disabled", 0xffffff, 2000, false);
+                    currentPlayer.textNotification(!!Parameters.data.AutoLootOn ? "AutoLoot enabled" : "AutoLoot disabled", 0xffffff, 2000, false);
                 } 
                 else if (keyCode == Parameters.data.Cam45DegInc) 
                 {
@@ -740,12 +765,12 @@ package com.company.assembleegameclient.game {
                 } 
                 else if (keyCode == Parameters.data.resetClientHP) 
                 {
-                    _local14.clientHp = _local14.hp_;
+                    currentPlayer.clientHp = currentPlayer.hp_;
                 } 
                 else if (keyCode == Parameters.data.QuestTeleport) 
                 {
-                    if (_local14) {
-                        teleQuest(_local14);
+                    if (currentPlayer) {
+                        teleQuest(currentPlayer);
                     }
                 } 
                 else if (keyCode == Parameters.data.TextPause) 
@@ -762,13 +787,13 @@ package com.company.assembleegameclient.game {
                 } 
                 else if (keyCode == Parameters.data.addMoveRecPoint) 
                 {
-                    Parameters.VHSRecord.push(new Point(_local14.x_, _local14.y_));
+                    Parameters.VHSRecord.push(new Point(currentPlayer.x_, currentPlayer.y_));
                     Parameters.VHSRecordLength = Parameters.VHSRecord.length;
-                    _local14.textNotification("Saved " + _local14.x_ + "," + _local14.y_, 0xb00000, 800);
+                    currentPlayer.textNotification("Saved " + currentPlayer.x_ + "," + currentPlayer.y_, 0xb00000, 800);
                 } 
                 else if (keyCode == Parameters.data.SelfTPHotkey) 
                 {
-                    this.gs_.gsc_.teleport(_local14.objectId_);
+                    this.gs_.gsc_.teleport(currentPlayer.objectId_);
                 } 
                 else if (keyCode != Parameters.data.syncFollowHotkey) 
                 {
@@ -779,17 +804,25 @@ package com.company.assembleegameclient.game {
                             if (keyCode == Parameters.data.TogglePlayerFollow) 
                             {
                                 Parameters.followingName = !Parameters.followingName;
-                                _local14.textNotification(!!Parameters.followingName ? "Following: on" : "Following: off", 0xffff00);
+                                if (!!Parameters.followingName) {
+                                    currentPlayer.textNotification("Following player on", 0x0dff00);
+                                } else {
+                                    currentPlayer.textNotification("Following player off", 0xff0000);
+                                }
                             } 
                             else if (keyCode == Parameters.data.PassesCoverHotkey) 
                             {
                                 Parameters.data.PassesCover = !Parameters.data.PassesCover;
-                                _local14.textNotification(!!Parameters.data.PassesCover ? "Projectile Noclip on" : "Projectile Noclip off");
+                                if (!!Parameters.data.PassesCover) {
+                                    currentPlayer.textNotification("Projectile noclip on", 0x0dff00);
+                                } else {
+                                    currentPlayer.textNotification("Projectile noclip off", 0xff0000);
+                                }
                             } 
                             else if (keyCode == Parameters.data.LowCPUModeHotKey) 
                             {
                                 Parameters.lowCPUMode = !Parameters.lowCPUMode;
-                                _local14.textNotification(!!Parameters.lowCPUMode ? "Low CPU on" : "Low CPU off");
+                                currentPlayer.textNotification(!!Parameters.lowCPUMode ? "Low CPU on" : "Low CPU off");
                             } 
                             else if (keyCode == Parameters.data.ReconRealm) 
                             {
@@ -812,41 +845,41 @@ package com.company.assembleegameclient.game {
                             } 
                             else if (keyCode == Parameters.data.DrinkAllHotkey) 
                             {
-                                _local18 = _local14.getClosestBag(true);
-                                if (_local18) 
+                                bagObject = currentPlayer.getClosestBag(true);
+                                if (bagObject) 
                                 {
-                                    _local12 = getTimer();
-                                    _local8 = Number(_local14.x_);
-                                    _local10 = _local14.y_;
-                                    _local16 = 0;
-                                    while (_local16 < 8) 
+                                    currentTime = getTimer();
+                                    posX = Number(currentPlayer.x_);
+                                    posY = currentPlayer.y_;
+                                    counter = 0;
+                                    while (counter < 8) 
                                     {
-                                        if (_local18.equipment_[_local16] != -1)
+                                        if (bagObject.equipment_[counter] != -1)
                                         {
-                                            gs_.gsc_.useItem(_local12, _local18.objectId_, _local16, _local18.equipment_[_local16], _local8, _local10, 1);
+                                            gs_.gsc_.useItem(currentTime, bagObject.objectId_, counter, bagObject.equipment_[counter], posX, posY, 1);
                                         }
-                                        _local16++;
+                                        counter++;
                                     }
                                 }
                             } 
                             else if (keyCode == Parameters.data.tradeNearestPlayerKey) 
                             {
-                                _local8 = Infinity;
-                                for each (var _local5:GameObject in this.gs_.map.goDict_) 
+                                infinity = Infinity;
+                                for each (var obj:GameObject in this.gs_.map.goDict_) 
                                 {
-                                    if (_local5 is Player && (_local5 as Player).nameChosen_ && _local14 != _local5) 
+                                    if (obj is Player && (obj as Player).nameChosen_ && currentPlayer != obj) 
                                     {
-                                        _local10 = _local14.getDistSquared(_local14.x_, _local14.y_, _local5.x_, _local5.y_);
-                                        if (_local10 < _local8) 
+                                        distance = currentPlayer.getDistSquared(currentPlayer.x_, currentPlayer.y_, obj.x_, obj.y_);
+                                        if (distance < infinity) 
                                         {
-                                            _local2 = _local5;
-                                            _local8 = _local10;
+                                            nearestPlayer = obj;
+                                            infinity = distance;
                                         }
                                     }
                                 }
-                                if (_local2) 
+                                if (nearestPlayer) 
                                 {
-                                    this.gs_.gsc_.requestTrade(_local2.name_);
+                                    this.gs_.gsc_.requestTrade(nearestPlayer.name_);
                                 }
                             } 
                             else if (keyCode == Parameters.data.sayCustom1) 
@@ -881,8 +914,8 @@ package com.company.assembleegameclient.game {
                             {
                                 if (this.gs_.map.quest_.objectId_ >= 0) 
                                 {
-                                    _local21 = this.gs_.map.goDict_[this.gs_.map.quest_.objectId_];
-                                    Parameters.data.cameraAngle = Math.atan2(_local14.y_ - _local21.y_, _local14.x_ - _local21.x_) - 1.5707963267949;
+                                    questObject = this.gs_.map.goDict_[this.gs_.map.quest_.objectId_];
+                                    Parameters.data.cameraAngle = Math.atan2(currentPlayer.y_ - questObject.y_, currentPlayer.x_ - questObject.x_) - 1.5707963267949;
                                     Parameters.save();
                                 }
                             }

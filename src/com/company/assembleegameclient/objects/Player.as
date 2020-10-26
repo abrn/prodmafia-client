@@ -82,74 +82,6 @@ public class Player extends Character {
     public static var isMod:Boolean = false;
     private static var newP:Point = new Point();
 
-    public function getDistFromSelf(param1:Number, param2:Number) : Number {
-        var _local3:Number = param1 - this.x_;
-        var _local4:Number = param2 - this.y_;
-        return Math.sqrt(_local4 * _local4 + _local3 * _local3);
-    }
-
-    public static function fromPlayerXML(_arg_1:String, _arg_2:XML):Player {
-        var _local3:int = 0;
-        var _local6:* = null;
-        var _local7:Player = null;
-        var _local5:* = _arg_1;
-        var _local4:* = _arg_2;
-        _local3 = _local4.ObjectType;
-        try {
-            _local6 = ObjectLibrary.xmlLibrary_[_local3];
-            _local7 = new Player(_local6);
-            _local7.name_ = _local5;
-            _local7.level_ = _local4.Level;
-            _local7.exp_ = _local4.Exp;
-            _local7.equipment_ = ConversionUtil.toIntVector(_local4.Equipment);
-            _local7.calculateStatBoosts();
-            _local7.lockedSlot = new Vector.<int>(_local7.equipment_.length);
-            _local7.maxHP_ = _local7.maxHPBoost_ + int(_local4.MaxHitPoints);
-            _local7.hp_ = int(_local4.HitPoints);
-            _local7.maxMP_ = _local7.maxMPBoost_ + int(_local4.MaxMagicPoints);
-            _local7.mp_ = int(_local4.MagicPoints);
-            _local7.attack_ = _local7.attackBoost_ + int(_local4.Attack);
-            _local7.defense_ = _local7.defenseBoost_ + int(_local4.Defense);
-            _local7.speed_ = _local7.speedBoost_ + int(_local4.Speed);
-            _local7.dexterity_ = _local7.dexterityBoost_ + int(_local4.Dexterity);
-            _local7.vitality_ = _local7.vitalityBoost_ + int(_local4.HpRegen);
-            _local7.wisdom = _local7.wisdomBoost_ + int(_local4.MpRegen);
-            _local7.tex1Id_ = _local4.hasOwnProperty("Tex1") ? int(_local4.Tex1) : 0;
-            _local7.tex2Id_ = _local4.hasOwnProperty("Tex2") ? int(_local4.Tex2) : 0;
-            _local7.hasBackpack_ = _local4.HasBackpack == "1";
-        } catch (error:Error) {
-            throw new Error("Type: 0x" + _local3.toString(16) + " doesn\'t exist. " + error.message);
-        }
-        return _local7;
-    }
-
-    public function Player(_arg_1:XML) {
-        followPos = new Point(0, 0);
-        followVec = new Point(0, 0);
-        mousePos_ = new Point(0, 0);
-        creditsWereChanged = new Signal();
-        fameWasChanged = new Signal();
-        supporterFlagWasChanged = new Signal();
-        ip_ = new IntPoint();
-        var _local2:Injector = StaticInjectorContext.getInjector();
-        this.addTextLine = _local2.getInstance(AddTextLineSignal);
-        this.factory = _local2.getInstance(CharacterFactory);
-        this.supportCampaignModel = _local2.getInstance(SupporterCampaignModel);
-        super(_arg_1);
-        this.attackMax_ = int(_arg_1.Attack.@max);
-        this.defenseMax_ = int(_arg_1.Defense.@max);
-        this.speedMax_ = int(_arg_1.Speed.@max);
-        this.dexterityMax_ = int(_arg_1.Dexterity.@max);
-        this.vitalityMax_ = int(_arg_1.HpRegen.@max);
-        this.wisdomMax_ = int(_arg_1.MpRegen.@max);
-        this.maxHPMax_ = int(_arg_1.MaxHitPoints.@max);
-        this.maxMPMax_ = int(_arg_1.MaxMagicPoints.@max);
-        this.className = _arg_1.@id;
-        this.texturingCache_ = new Dictionary();
-        this.breathBarFillMatrix = new Matrix();
-        this.breathBarBackFillMatrix = new Matrix();
-    }
-
     private var prevWeaponId:int = -1;
     private var prevLifeMult:Number = -1;
     private var prevSpeedMult:Number = -1;
@@ -226,7 +158,7 @@ public class Player extends Character {
     public var followLanded:Boolean = false;
     public var hpLog:Number = 0;
     public var clientHp:int = 100;
-    public var hp2:int;
+    public var syncedChp:int;
     public var healBuffer:int = 0;
     public var healBufferTime:int = 0;
     public var autoNexusNumber:int = 0;
@@ -271,6 +203,76 @@ public class Player extends Character {
     private var previousDaze:Boolean = false;
     private var ip_:IntPoint;
     public var range:Number = -1;
+    public var icMS:int = -1;
+    private var prevTime:int = -1;
+
+    public function getDistFromSelf(param1:Number, param2:Number) : Number {
+        var _local3:Number = param1 - this.x_;
+        var _local4:Number = param2 - this.y_;
+        return Math.sqrt(_local4 * _local4 + _local3 * _local3);
+    }
+
+    public static function fromPlayerXML(_arg_1:String, _arg_2:XML):Player {
+        var _local3:int = 0;
+        var _local6:* = null;
+        var _local7:Player = null;
+        var _local5:* = _arg_1;
+        var _local4:* = _arg_2;
+        _local3 = _local4.ObjectType;
+        try {
+            _local6 = ObjectLibrary.xmlLibrary_[_local3];
+            _local7 = new Player(_local6);
+            _local7.name_ = _local5;
+            _local7.level_ = _local4.Level;
+            _local7.exp_ = _local4.Exp;
+            _local7.equipment_ = ConversionUtil.toIntVector(_local4.Equipment);
+            _local7.calculateStatBoosts();
+            _local7.lockedSlot = new Vector.<int>(_local7.equipment_.length);
+            _local7.maxHP_ = _local7.maxHPBoost_ + int(_local4.MaxHitPoints);
+            _local7.hp_ = int(_local4.HitPoints);
+            _local7.maxMP_ = _local7.maxMPBoost_ + int(_local4.MaxMagicPoints);
+            _local7.mp_ = int(_local4.MagicPoints);
+            _local7.attack_ = _local7.attackBoost_ + int(_local4.Attack);
+            _local7.defense_ = _local7.defenseBoost_ + int(_local4.Defense);
+            _local7.speed_ = _local7.speedBoost_ + int(_local4.Speed);
+            _local7.dexterity_ = _local7.dexterityBoost_ + int(_local4.Dexterity);
+            _local7.vitality_ = _local7.vitalityBoost_ + int(_local4.HpRegen);
+            _local7.wisdom = _local7.wisdomBoost_ + int(_local4.MpRegen);
+            _local7.tex1Id_ = _local4.hasOwnProperty("Tex1") ? int(_local4.Tex1) : 0;
+            _local7.tex2Id_ = _local4.hasOwnProperty("Tex2") ? int(_local4.Tex2) : 0;
+            _local7.hasBackpack_ = _local4.HasBackpack == "1";
+        } catch (error:Error) {
+            throw new Error("Type: 0x" + _local3.toString(16) + " doesn\'t exist. " + error.message);
+        }
+        return _local7;
+    }
+
+    public function Player(_arg_1:XML) {
+        followPos = new Point(0, 0);
+        followVec = new Point(0, 0);
+        mousePos_ = new Point(0, 0);
+        creditsWereChanged = new Signal();
+        fameWasChanged = new Signal();
+        supporterFlagWasChanged = new Signal();
+        ip_ = new IntPoint();
+        var _local2:Injector = StaticInjectorContext.getInjector();
+        this.addTextLine = _local2.getInstance(AddTextLineSignal);
+        this.factory = _local2.getInstance(CharacterFactory);
+        this.supportCampaignModel = _local2.getInstance(SupporterCampaignModel);
+        super(_arg_1);
+        this.attackMax_ = int(_arg_1.Attack.@max);
+        this.defenseMax_ = int(_arg_1.Defense.@max);
+        this.speedMax_ = int(_arg_1.Speed.@max);
+        this.dexterityMax_ = int(_arg_1.Dexterity.@max);
+        this.vitalityMax_ = int(_arg_1.HpRegen.@max);
+        this.wisdomMax_ = int(_arg_1.MpRegen.@max);
+        this.maxHPMax_ = int(_arg_1.MaxHitPoints.@max);
+        this.maxMPMax_ = int(_arg_1.MaxMagicPoints.@max);
+        this.className = _arg_1.@id;
+        this.texturingCache_ = new Dictionary();
+        this.breathBarFillMatrix = new Matrix();
+        this.breathBarBackFillMatrix = new Matrix();
+    }
 
     override public function moveTo(_arg_1:Number, _arg_2:Number):Boolean {
         var _local3:Boolean = super.moveTo(_arg_1, _arg_2);
@@ -324,8 +326,10 @@ public class Player extends Character {
             var lifeMultDelta:Boolean = this.prevLifeMult != this.projectileLifeMult;
             var speedMultDelta:Boolean = this.prevSpeedMult != this.projectileSpeedMult;
 
-            if (weaponId != -1) {
-                if (this.range == -1 || wepDelta || lifeMultDelta || speedMultDelta) {
+            if (weaponId != -1) 
+            {
+                if (this.range == -1 || wepDelta || lifeMultDelta || speedMultDelta) 
+                {
                     var weaponXML:XML = ObjectLibrary.xmlLibrary_[weaponId];
                     this.range = (weaponXML.Projectile.LifetimeMS * this.projectileLifeMult
                             * weaponXML.Projectile.Speed * this.projectileSpeedMult) / 10000;
@@ -339,41 +343,58 @@ public class Player extends Character {
                 }
             } else this.range = -1;
 
-            if(this.isPaused) {
+            if(this.isPaused) 
+            {
                 return true;
             }
             this.calcHealth(getTimer() - map_.gs_.lastUpdate_);
-            if(this.checkHealth(param1)) {
+            if(this.checkHealth(param1)) 
+            {
                 return false;
+            }
+            if(this.icMS != -1 && TimeUtil.getTrueTime() - this.icMS >= this.icTime() * Parameters.data.timeScale)
+            {
+               this.icMS = -1;
             }
             this.checkMana(param1);
             _local15 = false;
-            if(followPos.x != 0 && followPos.y != 0) {
-                if(Parameters.followingName && Parameters.followName != "" && Parameters.followPlayer) {
-                    if(this.followLanded) {
+            if(followPos.x != 0 && followPos.y != 0) 
+            {
+                if(Parameters.followingName && Parameters.followName != "" && Parameters.followPlayer) 
+                {
+                    if(this.followLanded) 
+                    {
                         this.followVec.x = 0;
                         this.followVec.y = 0;
                         this.followLanded = false;
-                    } else {
+                    } 
+                    else 
+                    {
                         _local15 = true;
-                        if(param1 - this.lastTpTime_ > Parameters.data.fameTpCdTime && getDistSquared(x_,y_,Parameters.followPlayer.tickPosition_.x,Parameters.followPlayer.tickPosition_.y) > Parameters.data.teleDistance) {
+                        if(param1 - this.lastTpTime_ > Parameters.data.fameTpCdTime && getDistSquared(x_,y_,Parameters.followPlayer.tickPosition_.x,Parameters.followPlayer.tickPosition_.y) > Parameters.data.teleDistance) 
+                        {
                             lastTpTime_ = param1;
                             teleToClosestPoint(followPos);
                         }
                         this.follow(this.followPos.x,this.followPos.y);
                     }
-                } else if(Parameters.fameBot) {
+                } 
+                else if(Parameters.fameBot) 
+                {
                     if(this.followLanded) {
                         this.followVec.x = 0;
                         this.followVec.y = 0;
                         this.followLanded = false;
-                    } else {
+                    } 
+                    else 
+                    {
                         _local15 = true;
                         this.follow(this.followPos.x,this.followPos.y);
                     }
                 }
             }
-            if(Parameters.questFollow) {
+            if(Parameters.questFollow) 
+            {
                 if(this.followLanded) {
                     this.followVec.x = 0;
                     this.followVec.y = 0;
@@ -1795,7 +1816,7 @@ public class Player extends Character {
     }
 
     public function priestHeal(_arg_1:int):void {
-        if (this.hp_ <= this.autoHealNumber || this.clientHp <= this.autoHealNumber || this.hp2 <= this.autoHealNumber) {
+        if (this.hp_ <= this.autoHealNumber || this.clientHp <= this.autoHealNumber || this.syncedChp <= this.autoHealNumber) {
             this.useAltWeapon(this.x_, this.y_, 1, _arg_1, true);
         }
     }
@@ -2059,9 +2080,13 @@ public class Player extends Character {
 
     public function subtractDamage(dmg:int, time:int = -1) : Boolean {
         if (time == -1)
-            time = getTimer();
+            time = TimeUtil.getModdedTime();
+        if (dmg >= combatTrigger())
+        {
+            this.icMS = TimeUtil.getTrueTime();
+        }
         this.clientHp = this.clientHp - dmg;
-        this.hp2 = this.hp2 - dmg;
+        this.syncedChp = this.syncedChp - dmg;
         return this.checkHealth(time);
     }
 
@@ -2074,14 +2099,14 @@ public class Player extends Character {
             if (Parameters.data.AutoNexus == 0 || Parameters.suicideMode) {
                 return false;
             }
-            if (this.clientHp <= this.autoNexusNumber || this.hp_ <= this.autoNexusNumber || this.hp2 <= this.autoNexusNumber) {
+            if (this.clientHp <= this.autoNexusNumber || this.hp_ <= this.autoNexusNumber || this.syncedChp <= this.autoNexusNumber) {
                 this.map_.gs_.gsc_.disconnect();
                 this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
                         "You were saved at " + this.clientHp + " health"));
                 this.map_.gs_.dispatchEvent(Parameters.reconNexus);
                 return true;
             }
-            if (!Parameters.data.fameBlockThirsty && !this.isSick && this.autoHpPotNumber != 0 && (this.hp_ <= this.autoHpPotNumber || this.clientHp <= this.autoHpPotNumber || this.hp2 <= this.autoHpPotNumber) && time - this.lastHpPotTime > Parameters.data.autohpPotDelay) {
+            if (!Parameters.data.fameBlockThirsty && !this.isSick && this.autoHpPotNumber != 0 && (this.hp_ <= this.autoHpPotNumber || this.clientHp <= this.autoHpPotNumber || this.syncedChp <= this.autoHpPotNumber) && time - this.lastHpPotTime > Parameters.data.autohpPotDelay) {
                 _local4 = false;
                 _local5 = !!this.hasBackpack_ ? 20 : 12;
                 _local3 = 4;
@@ -2842,8 +2867,9 @@ public class Player extends Character {
 
     private function calcHealth(_arg_1:int):void {
         var _local4:Number = _arg_1 * 0.001;
-        var _local5:Number = 1 + 0.12 * this.vitality_;
+        var _local5:Number = 1 + 0.12 * this.vitality_ * (this.icMS != -1?1:2);
         var _local3:Boolean = this.map_.isTrench && this.breath_ == 0;
+        
         if (!this.isSick && !this.isBleeding_()) {
             this.hpLog = this.hpLog + _local5 * _local4;
             if (this.isHealing_()) {

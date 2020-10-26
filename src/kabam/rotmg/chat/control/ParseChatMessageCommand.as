@@ -5,14 +5,20 @@ import com.company.assembleegameclient.objects.GameObject;
 import com.company.assembleegameclient.objects.ObjectLibrary;
 import com.company.assembleegameclient.objects.Player;
 import com.company.assembleegameclient.parameters.Parameters;
+import com.company.assembleegameclient.util.TimeUtil;
 
 import flash.events.Event;
+import flash.system.System;
 import flash.utils.Dictionary;
-import flash.utils.getTimer;
+import flash.utils.clearInterval;
+import flash.utils.setInterval;
+
+import io.decagames.rotmg.social.model.FriendRequestVO;
+import io.decagames.rotmg.social.signals.FriendActionSignal;
 
 import kabam.rotmg.account.core.Account;
-import kabam.rotmg.appengine.api.AppEngineClient;
-
+import kabam.rotmg.account.core.services.GetConCharListTask;
+import kabam.rotmg.account.core.services.GetConServersTask;
 import kabam.rotmg.chat.model.ChatMessage;
 import kabam.rotmg.core.StaticInjectorContext;
 import kabam.rotmg.game.model.GameInitData;
@@ -124,7 +130,11 @@ public class ParseChatMessageCommand {
                 return;
             case "/ip":
                 var server:Server = this.hudModel.gameSprite.gsc_.server_;
-                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, server.name + ": " + server.address));
+                var index:int = server.name.indexOf("NexusPortal.");
+                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, (index == -1?server.name:server.name.substring(index + "NexusPortal.".length)) + ": " + server.address)));
+                System.setClipboard(server.address);
+                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, "Copied IP to clipboard!"));
+                return;
             case "/goto":
                 if (Parameters.data.shownGotoWarning) {
                     if (split.length == 2) {
@@ -438,6 +448,28 @@ public class ParseChatMessageCommand {
             case "/tutmode":
                 Parameters.tutorialMode = !Parameters.tutorialMode;
                 this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, "Only connecting to the tutorial: " + Parameters.logInvSwap));
+                break;
+            case "/timescale":
+            case "/ts":
+                switch(int(split.length) - 1)
+                {
+                    case 0:
+                        this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, "Your current timescale is: " + Parameters.data.timeScale + "x"));
+                        break;
+                    case 1:
+                        timeScale = parseFloat(split[1]);
+                        if(!isNaN(timeScale))
+                        {
+                            Parameters.data.timeScale = timeScale;
+                            Parameters.save();
+                            this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, "Time scale set to: " + timeScale + "x"));
+                        }
+                        else
+                        {
+                            this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME, "Provide a multiplier number e.g: /ts 1.2"));
+                        }
+                }
+                return;
                 break;
             default:
                 this.hudModel.gameSprite.gsc_.playerText(this.data);

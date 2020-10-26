@@ -692,6 +692,10 @@ public class Parameters {
         setDefault("FocusFPS", false);
         setDefault("bgFPS", 10);
         setDefault("fgFPS", 60);
+        setDefault("timeScale",1)
+        setDefault("timeScaleArr",new Vector.<Number>(0))
+        setDefault("timeScaleArrIndex",0)
+        setDefaultKey("timeScaleKey",0)
         setDefault("hideLockList", false);
         setDefault("hidePets2", 1);
         setDefault("hideOtherDamage", false);

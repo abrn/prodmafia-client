@@ -187,7 +187,6 @@ public class GameSprite extends AGameSprite {
     private var enemyCounter:TextFieldDisplayConcrete;
     private var enemyCounterStringBuilder:StaticStringBuilder;
     private var lastUpdateInteractiveTime:int = 0;
-    private var findKeys:TextFieldDisplayConcrete;
     private var lastCalcTime:int = -2147483648;
     private var questModel:QuestModel;
     private var seasonalEventModel:SeasonalEventModel;
@@ -346,36 +345,6 @@ public class GameSprite extends AGameSprite {
             addChild(this.stats);
             stage.dispatchEvent(new Event("resize"));
         }
-    }
-
-    public function keysFind():void {
-        var _local4:int = 0;
-        var _local7:int = 0;
-        var _local3:* = null;
-        var _local6:* = null;
-        var _local1:String = "";
-        this.findKeys.visible = true;
-        this.findKeys.setText("Key List:\n" + Parameters.keyHolders);
-        for each(var _local2:GameObject in this.map.goDict_) {
-            if (_local2 is Player) {
-                _local4 = 0;
-                while (_local4 < 10) {
-                    _local7 = _local2.equipment_[_local4];
-                    _local3 = ObjectLibrary.xmlLibrary_[_local7];
-                    if (_local3 && "Consumable" in _local3) {
-                        for each(var _local5:XML in _local3.Activate) {
-                            _local6 = _local5.toString();
-                            if (_local6 == "Create" || _local6 == "UnlockPortal" || _local6 == "CreatePortal") {
-                                _local1 = _local1 + (_local2.name_ + " has " + _local3.@id + "\n");
-                            }
-                        }
-                    }
-                    _local4++;
-                }
-
-            }
-        }
-        Parameters.keyHolders = _local1;
     }
 
     public function updateStats(_arg_1:int):void {
@@ -560,29 +529,6 @@ public class GameSprite extends AGameSprite {
             this.enemyCounter.y = 160;
             addChild(this.enemyCounter);
             stage.dispatchEvent(new Event("resize"));
-        }
-    }
-
-    private function updateKeyList():void {
-        if (this.findKeys == null) {
-            this.listKeys();
-        }
-        this.keysFind();
-        if (!Parameters.data.keyList && this.findKeys != null) {
-            this.findKeys.visible = false;
-        }
-    }
-
-    private function listKeys():void {
-        if (this.findKeys == null) {
-            this.findKeys = new TextFieldDisplayConcrete().setSize(Parameters.data.uiTextSize).setColor(0xffffff);
-            this.findKeys.mouseChildren = false;
-            this.findKeys.mouseEnabled = false;
-            this.findKeys.setBold(true);
-            this.findKeys.filters = [EMPTY_FILTER];
-            this.findKeys.x = 3;
-            this.findKeys.y = 130;
-            addChild(this.findKeys);
         }
     }
 
@@ -823,16 +769,6 @@ public class GameSprite extends AGameSprite {
                 this.enemyCounter.scaleY = _local3;
             }
         }
-        if (this.findKeys) {
-            if (_local2) {
-                this.findKeys.scaleX = _local7;
-                this.findKeys.scaleY = 1;
-                this.findKeys.y = 130;
-            } else {
-                this.findKeys.scaleX = _local6;
-                this.findKeys.scaleY = _local3;
-            }
-        }
         if (this.stats) {
             if (_local2) {
                 this.stats.scaleX = _local7;
@@ -1064,14 +1000,6 @@ public class GameSprite extends AGameSprite {
             if (this.stats) {
                 this.updateStats(time);
             }
-        }
-        if (Parameters.data.keyList) {
-            this.updateKeyList();
-            if (this.findKeys) {
-                this.findKeys.visible = true;
-            }
-        } else if (this.findKeys) {
-            this.findKeys.visible = false;
         }
         if (this.enemyCounter && Parameters.data.showEnemyCounter) {
             this.enemyCounter.visible = true;

@@ -384,7 +384,6 @@ public class Options extends Sprite {
         this.addOptionAndPosition(new KeyMapper("PassesCoverHotkey", "Projectile Noclip", "Toggle allowing projectiles to pass through solid objects like trees and walls"));
         this.addOptionAndPosition(new KeyMapper("anchorTeleport", "Teleport to Anchor", "Teleports you to the player you have anchored (set via /anchor <name> or the player menu)"));
         this.addOptionAndPosition(new KeyMapper("QuestTeleport", "Teleport to Quest", "Teleports to the player closest to your quest"));
-        this.addOptionAndPosition(new KeyMapper("FindKeys", "List Keys", "Outputs all players who have keys"));
         this.addOptionAndPosition(new ChoiceOption("ignoreIce", makeOnOffLabels(), [true, false], "Ignore Ice and Push", "Disables the slidy ice tiles and sprite world pushing tiles", null));
         this.addOptionAndPosition(new KeyMapper("tradeNearestPlayerKey", "Trade Nearest Player", "Sends a trade request to the nearest player"));
         this.addOptionAndPosition(new ChoiceOption("passThroughInvuln", makeOnOffLabels(), [true, false], "Pass Through Invuln", "Makes your projectiles not hit things that are invulnerable (unless your projectile would inflict a status effect), THIS INCLUDES TUTORIAL TURRETS, TURN IT OFF WHEN ACCURACY FARMING", null));

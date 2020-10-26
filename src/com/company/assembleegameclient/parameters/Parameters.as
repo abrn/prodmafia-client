@@ -687,7 +687,6 @@ public class Parameters {
         setDefaultKey("SelfTPHotkey", 0);
         setDefaultKey("syncLeadHotkey", 118);
         setDefaultKey("syncFollowHotkey", 119);
-        setDefaultKey("FindKeys", 75);
         setDefault("vaultOnly", false);
         setDefault("AutoResponder", false);
         setDefault("FocusFPS", false);

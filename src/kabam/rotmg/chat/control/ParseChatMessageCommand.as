@@ -205,16 +205,29 @@ public class ParseChatMessageCommand {
                         break;
                     }
                 return;
+            case "/an":
+            case "/autonexus":
+                if (split.length == 2) {
+                    Parameters.data_.AutoNexus = Number(_loc11_[1]);
+                    if(this.hudModel.gameSprite.map.player_)
+                    {
+                        this.hudModel.gameSprite.map.player_.calcHealthPercent();
+                    }
+                    if(Parameters.data_.AutoNexus == 0)
+                    {
+                        this.hudModel.gameSprite.map.player_.textNotification("Autonexus 0% (OFF)");
+                    }
+                } else {
+                    this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
+                                "Incorrect arguments: /an 0.25 = 25% autonexus"));
+                }
+                return;
             case "/ao":
             case "/ta":
             case "/togglealpha":
-                if (split.length == 1) {
-                    Parameters.data.alphaOnOthers = !Parameters.data.alphaOnOthers;
-                    Parameters.save();
-                    this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
-                            "Player Transparency: " + (Parameters.data.alphaOnOthers ? "ON" : "OFF")));
-                } else this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
-                        "Invalid syntax! This command does not use any arguments."));
+                Parameters.data.alphaOnOthers = !Parameters.data.alphaOnOthers;
+                Parameters.save();
+                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, "Player Transparency: " + (Parameters.data.alphaOnOthers ? "ON" : "OFF")));
                 return;
             case "/alpha":
                 switch (split.length) {
@@ -343,11 +356,11 @@ public class ParseChatMessageCommand {
                             this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
                                     "Reconnect Delay set to: " + reconDelay + " ms"));
                         } else this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
-                                "Incorrect length! Make sure you are providing an integer number. (no fractions)"));
+                                "Incorrect length! Make sure you are providing a whole number (no fractions)"));
                         break;
                     case 1:
                         this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
-                                "Your current Reconnect Delay is: " + Parameters.data.reconnectDelay));
+                                "Your current reconnect delay is: " + Parameters.data.reconnectDelay));
                         break;
                     default:
                         this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
@@ -363,13 +376,13 @@ public class ParseChatMessageCommand {
                             Parameters.data.renderDistance = renderDist;
                             Parameters.save();
                             this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
-                                    "Render Distance set to: " + renderDist + " tiles"));
+                                    "Render distance set to: " + renderDist + " tiles"));
                         } else this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
-                                "Incorrect length! Make sure you are providing an integer number. (no fractions)"));
+                                "Incorrect length! Make sure you are providing a whole number (no fractions)"));
                         break;
                     case 1:
                         this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
-                                "Your current Render Distance is: " + Parameters.data.renderDistance));
+                                "Your current render distance is: " + Parameters.data.renderDistance));
                         break;
                     default:
                         this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
@@ -377,6 +390,55 @@ public class ParseChatMessageCommand {
                         break;
                 }
                 return;
+            case "/scui":
+            case "/scaleui":
+                Parameters.data_.uiscale = !Parameters.data_.uiscale;
+                Parameters.save();
+                Parameters.root.dispatchEvent(new Event("resize"));
+                break;
+            case "/cstat":
+            case "/clientstat":
+                Parameters.data_.showClientStat = !Parameters.data_.showClientStat;
+                Parameters.save();
+                break;
+            case "/irecon":
+                Parameters.ignoreRecon = !Parameters.ignoreRecon;
+                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, "Ignoring reconnects: " + Parameters.ignoreRecon));
+                break;
+            case "/useportal":
+                Parameters.usingPortal = !Parameters.usingPortal;
+                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, "Spamming a useportal: " + Parameters.usingPortal));
+                break;
+            case "/portalrate":
+                Parameters.portalSpamRate = int(split[1]);
+                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, "Portal spam rate: " + Parameters.portalSpamRate));
+                break;
+            case "/mobinfo":
+                Parameters.data_.showMobInfo = !Parameters.data_.showMobInfo;
+                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, "Show mob info: " + Parameters.data_.showMobInfo));
+                if(!Parameters.data_.showMobInfo && this.hudModel.gameSprite.map.mapOverlay_)
+                {
+                    this.hudModel.gameSprite.map.mapOverlay_.removeChildren(0);
+                }
+                break;
+            case "/logswap":
+                Parameters.logInvSwap = !Parameters.logInvSwap;
+                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, "Logging inv swaps: " + Parameters.logInvSwap));
+                break;
+            case "/name":
+                if (split.length == 2) 
+                {
+                    this.hudModel.gameSprite.hudView.characterDetails.setName(split[1]);
+                } 
+                else 
+                {
+                    this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME, "Enter a username: /name newname");
+                }
+                break;
+            case "/tutmode":
+                Parameters.tutorialMode = !Parameters.tutorialMode;
+                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, "Only connecting to the tutorial: " + Parameters.logInvSwap));
+                break;
             default:
                 this.hudModel.gameSprite.gsc_.playerText(this.data);
                 return;

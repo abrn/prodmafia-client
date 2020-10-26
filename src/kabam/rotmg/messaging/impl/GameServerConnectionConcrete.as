@@ -1308,28 +1308,26 @@ public class GameServerConnectionConcrete extends GameServerConnection {
         this.encryptConnection();
         var _local1:Account = StaticInjectorContext.getInjector().getInstance(Account);
         this.addTextLine.dispatch(ChatMessage.make(Parameters.CLIENT_CHAT_NAME, TextKey.CHAT_CONNECTED));
-        var _local2:Hello = this.messages.require(HELLO) as Hello;
-        _local2.buildVersion_ = (Parameters.data.customVersion == "" ?
-                Parameters.CLIENT_VERSION : Parameters.data.customVersion);
+        var helloPacket:Hello = this.messages.require(HELLO) as Hello;
+        helloPacket.buildVersion_ = (Parameters.data.customVersion == "" ?
+        Parameters.CLIENT_VERSION : Parameters.data.customVersion);
         var gameId:int = gameId_;
-        //if (Parameters.data.vaultOnly && gameId == -2)
-            //gameId = -8;
-        _local2.gameId_ = gameId;
-        _local2.guid_ = this.rsaEncrypt(_local1.getUserId());
-        _local2.password_ = this.rsaEncrypt(_local1.getPassword());
-        _local2.secret_ = this.rsaEncrypt(_local1.getSecret());
-        _local2.keyTime_ = keyTime_;
-        _local2.key_.length = 0;
-        this.key_ && _local2.key_.writeBytes(this.key_);
-        _local2.mapJSON_ = mapJSON_ == null ? "" : this.mapJSON_;
-        _local2.entrytag_ = _local1.getEntryTag();
-        _local2.gameNet = "rotmg";
-        _local2.gameNetUserId = _local1.gameNetworkUserId();
-        _local2.playPlatform = "rotmg";
-        _local2.platformToken = _local1.getPlatformToken();
-        _local2.userToken = _local1.getToken();
-        _local2.previousConnectionGuid = connectionGuid;
-        serverConnection.sendMessage(_local2);
+        helloPacket.gameId_ = gameId;
+        helloPacket.guid_ = this.rsaEncrypt(_local1.getUserId());
+        helloPacket.password_ = this.rsaEncrypt(_local1.getPassword());
+        helloPacket.secret_ = this.rsaEncrypt(_local1.getSecret());
+        helloPacket.keyTime_ = keyTime_;
+        helloPacket.key_.length = 0;
+        this.key_ && helloPacket.key_.writeBytes(this.key_);
+        helloPacket.mapJSON_ = mapJSON_ == null ? "" : this.mapJSON_;
+        helloPacket.entrytag_ = _local1.getEntryTag();
+        helloPacket.gameNet = "rotmg";
+        helloPacket.gameNetUserId = _local1.gameNetworkUserId();
+        helloPacket.playPlatform = "rotmg";
+        helloPacket.platformToken = _local1.getPlatformToken();
+        helloPacket.userToken = _local1.getToken();
+        helloPacket.previousConnectionGuid = connectionGuid;
+        serverConnection.sendMessage(helloPacket);
     }
 
     private function onCreateSuccess(_arg_1:CreateSuccess):void {
@@ -1710,9 +1708,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                 Parameters.watchInv = false;
             }
         }
-        if (Parameters.fameBot) {
-            Parameters.famePointOffset = Parameters.data.famePointOffset * Math.random() - Parameters.data.famePointOffset * 0.5;
-        }
     }
 
     private function canShowEffect(_arg_1:GameObject):Boolean {
@@ -1732,27 +1727,18 @@ public class GameServerConnectionConcrete extends GameServerConnection {
         var _local6:AbstractMap = gs_.map;
         var _local5:GameObject = _local6.goDict_[param1.targetObjectId_];
         if(_local5) {
-            if(_local5.objectType_ == 799 && param1.color_ == 0xff0000) {
-                _local3 = (_local5 as Player).calcSealHeal();
-                if(_local3 != 0) {
-                    player.addSealHealth(_local3);
-                }
-            } else if(_local5.objectType_ == 797 && _local5.equipment_ && _local5.equipment_[1] == 32699 && param1.effectType_ == 5 && param1.color_ == 16033044) {
-                player.addSealHealth(250);
-            } else if(param1.effectType_ == 12 && param1.color_ == 0xff0088) {
+            if(param1.effectType_ == 12 && param1.color_ == 0xff0088) {
                 Parameters.mystics.push(_local5.name_ + " " + getTimer());
             }
             if(_local5.props_.isPlayer_ && _local5.objectId_ != this.playerId_ && Parameters.data.alphaOnOthers) {
                 return;
             }
         }
-        if(Parameters.lowCPUMode) {
+        if(Parameters.lowCPUMode && !(param1.effectType_ == 23 || param1.effectType_ == 22 || param1.effectType_ == 26 || param1.effectType_ == 24)) {
             return;
         }
-        if(Parameters.data.liteParticle) {
-            if(!(param1.effectType_ == 4 || param1.effectType_ == 12 || param1.effectType_ == 16 || param1.effectType_ == 15)) {
-                return;
-            }
+        if(Parameters.data.liteParticle && !(param1.effectType_ == 4 || param1.effectType_ == 12 || param1.effectType_ == 16 || param1.effectType_ == 15 || param1.effectType_ == 23 || param1.effectType_ == 22 || param1.effectType_ == 26 || param1.effectType_ == 24)) {
+            return;
         }
         if(Parameters.data.noParticlesMaster && (param1.effectType_ == 1 || param1.effectType_ == 2 || param1.effectType_ == 3 || param1.effectType_ == 6 || param1.effectType_ == 7 || param1.effectType_ == 9 || param1.effectType_ == 12 || param1.effectType_ == 13 || param1.effectType_ == 20)) {
             return;
@@ -1783,23 +1769,21 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                 _local6.addObj(_local2, _local4.x, _local4.y);
                 break;
             case 5:
-            case 20:
                 _local5 = _local6.goDict_[param1.targetObjectId_];
                 if (_local5 == null || !this.canShowEffect(_local5)) {
                     return;
                 }
                 _local2 = new NovaEffect(_local5, param1.pos1_.x_, param1.color_);
                 _local6.addObj(_local2, _local5.x_, _local5.y_);
-                break;
-            case 6:
+            case 20:
                 _local5 = _local6.goDict_[param1.targetObjectId_];
                 if (_local5 == null || !this.canShowEffect(_local5)) {
                     return;
                 }
-                _local2 = new PoisonEffect(_local5, param1.color_);
-                _local6.addObj(_local2, _local5.x_, _local5.y_);
+                _local2 = new PoisonEffect(_local5, param1.pos1_, param1.pos2_, param1.color_);
+                _local6.addObj(_local2, param1.pos1_.x_, param1.pos1_.y_);
                 break;
-            case 7:
+            case 6:
                 _local5 = _local6.goDict_[param1.targetObjectId_];
                 if (_local5 == null || !this.canShowEffect(_local5)) {
                     return;
@@ -1807,7 +1791,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                 _local2 = new LineEffect(_local5, param1.pos1_, param1.color_);
                 _local6.addObj(_local2, param1.pos1_.x_, param1.pos1_.y_);
                 break;
-            case 8:
+            case 7:
                 _local5 = _local6.goDict_[param1.targetObjectId_];
                 if (_local5 == null || !this.canShowEffect(_local5)) {
                     return;
@@ -1815,7 +1799,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                 _local2 = new BurstEffect(_local5, param1.pos1_, param1.pos2_, param1.color_);
                 _local6.addObj(_local2, param1.pos1_.x_, param1.pos1_.y_);
                 break;
-            case 9:
+            case 8:
                 _local5 = _local6.goDict_[param1.targetObjectId_];
                 if (_local5 == null || !this.canShowEffect(_local5)) {
                     return;
@@ -1823,7 +1807,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                 _local2 = new FlowEffect(param1.pos1_, _local5, param1.color_);
                 _local6.addObj(_local2, param1.pos1_.x_, param1.pos1_.y_);
                 break;
-            case 10:
+            case 9:
                 _local5 = _local6.goDict_[param1.targetObjectId_];
                 if (_local5 == null || !this.canShowEffect(_local5)) {
                     return;
@@ -1831,7 +1815,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                 _local2 = new RingEffect(_local5, param1.pos1_.x_, param1.color_);
                 _local6.addObj(_local2, _local5.x_, _local5.y_);
                 break;
-            case 11:
+            case 10:
                 _local5 = _local6.goDict_[param1.targetObjectId_];
                 if (_local5 == null || !this.canShowEffect(_local5)) {
                     return;
@@ -1839,7 +1823,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                 _local2 = new LightningEffect(_local5, param1.pos1_, param1.color_, param1.pos2_.x_);
                 _local6.addObj(_local2, _local5.x_, _local5.y_);
                 break;
-            case 12:
+            case 11:
                 _local5 = _local6.goDict_[param1.targetObjectId_];
                 if (_local5 == null || !this.canShowEffect(_local5)) {
                     return;
@@ -2358,10 +2342,14 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                 case StatData.EXALTED_HP:
                   (param1 as Player).exaltationDamageMultiplier = _local12 / 10;
                   continue;
-                case 104:
+                case StatData.IC_REDUCTION:
+                  _loc16_ = param1 as Player;
+                  trace("Exaltation IC Reduction: " + _loc5_ + " on Player \'" + _loc16_.name_ + "\'\n" + "Attack: " + _loc16_.exaltedAttack + "\n" + "Defense: " + _loc16_.exaltedDefense + "\n" + "Dexterity: " + _loc16_.exaltedDexterity + "\n" + "Speed: " + _loc16_.exaltedSpeed + "\n" + "Vitality: " + _loc16_.exaltedVitality + "\n" + "Wisdom: " + _loc16_.exaltedWisdom + "\n" + "Health: " + _loc16_.exaltedHealth + "\n" + "Mana: " + _loc16_.exaltedMana);
+                  continue;
+                case StatData.OPENED_AT:
                   (param1 as Portal).openedAtTimestamp = _local12;
                   continue;
-                case 115:
+                case UNKNOWN:
                     continue;
                 default:
                     trace("Unhandled stat type:",_local5_,"statVal:",_local12,"strStatVal:",_local10.strStatValue_,"name:",param1.name_);
@@ -2960,6 +2948,12 @@ public class GameServerConnectionConcrete extends GameServerConnection {
         this.retryTimer_.start();
     }
 
+    private function onVaultUpdate(_arg_1:VaultUpdate) : void
+      {
+         var _loc2_:VaultUpdateSignal = this.injector.getInstance(VaultUpdateSignal);
+         _loc2_.dispatch(_arg_1.vaultContents,_arg_1.giftContents,_arg_1.potionContents);
+      }
+
     private function onError(_arg_1:String):void {
         this.addTextLine.dispatch(ChatMessage.make("*Error*", _arg_1));
     }
@@ -2970,9 +2964,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
         this.serverFull_ = false;
         if ("is dead" in LineBuilder.getLocalizedStringFromJSON(_arg_1.errorDescription_) || "is dead" in _arg_1.errorDescription_) {
             Parameters.Cache_CHARLIST_valid = false;
-        }
-        if (Parameters.fameBot || _arg_1.errorDescription_.indexOf("server.realm_full") != -1) {
-            return;
         }
         switch (int(_arg_1.errorId_) - 4) {
             case 0:
@@ -3000,7 +2991,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                 this.handleServerFull(_arg_1);
         }
         if (_arg_1.errorDescription_.indexOf("Client Token Error") != -1) {
-            this.addTextLine.dispatch(ChatMessage.make("", "Your hacked client is outdated! Please wait for a new version to be released then redownload the client."));
+            this.addTextLine.dispatch(ChatMessage.make("", "The client is outdated, please wait for a new version to be released then redownload the client."));
         }
     }
 
@@ -3009,8 +3000,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
         this.retryConnection_ = true;
         this.delayBeforeReconnect = 5;
         this.serverFull_ = true;
-        var _local2:HideMapLoadingSignal = StaticInjectorContext.getInjector().getInstance(HideMapLoadingSignal);
-        _local2.dispatch();
     }
 
     private function handleEmailVerificationNeeded(_arg_1:Failure):void {
@@ -3049,7 +3038,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
     }
 
     private function handleIncorrectVersionFailure(param1:Failure) : void {
-        this.addTextLine.dispatch(ChatMessage.make("","Your hacked client is outdated! Please wait for a new version to be released then redownload the client."));
+        this.addTextLine.dispatch(ChatMessage.make("","The client is outdated, please wait for a new version to be released then redownload the client."));
         var _local2:Dialog = new Dialog("ClientUpdate.title","","ClientUpdate.leftButton",null,"/clientUpdate");
         _local2.setTextParams("ClientUpdate.description",{
             "client":Parameters.CLIENT_VERSION,
@@ -3066,13 +3055,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
             _local2 = _arg_1.errorDescription_;
         }
         this.addTextLine.dispatch(ChatMessage.make("*Error*", _local2));
-        if (Parameters.fameBot) {
-            if (_local2.indexOf("Lost connection") != -1) {
-                if (Parameters.reconRealm) {
-                    this.gs_.dispatchEvent(Parameters.reconRealm);
-                }
-            }
-        }
     }
 
     private function loaderStatus(evt:HTTPStatusEvent):void {

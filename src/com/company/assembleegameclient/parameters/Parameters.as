@@ -17,7 +17,7 @@ import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 
 public class Parameters {
-    public static const CLIENT_VERSION:String = "1.2.0.1.0";
+    public static const CLIENT_VERSION:String = "1.2.0.2.0";
     public static const PORT:int = 2050;
     public static const UNITY_LAUNCHER_VERSION:String = "2019.3.14f1";
     public static const UNITY_GAME_VERSION:String = "2019.4.9f1";
@@ -117,9 +117,9 @@ public class Parameters {
     public static var fameBotPortalId:int = 0;
     public static var fameBotPortal:Portal;
     public static var fameBotPortalPoint:Point;
-    public static var famePointOffset:Number = 0;
-    public static var fameSlideX:Number = 0;
-    public static var fameSlideY:Number = 0;
+    public static var famePointOffset: Number = 0;
+    public static var fameSlideX: Number = 0;
+    public static var fameSlideY: Number = 0;
     public static var fameWaitStartTime:int = 0;
     public static var fameWaitNTTime:int = 0;
     public static var fameWalkSleep_toFountainOrHall:int = 0;
@@ -264,7 +264,7 @@ public class Parameters {
         timerPhaseTimes["DIE! DIE! DIE!!!"] = 23000;
         timerPhaseNames["{\"key\":\"server.oryx_closed_realm\"}"] = "Realm Closed";
         timerPhaseNames["{\"key\":\"server.oryx_minions_failed\"}"] = "Oryx Shake";
-        timerPhaseNames["DIE! DIE! DIE!!!"] = "Vulnerable";
+        timerPhaseNames["DIE! DIE! DIE!!!"] = "Vulnerable in";
     }
 
     public static function setAutolootDesireables():void {
@@ -866,9 +866,9 @@ public class Parameters {
         setDefault("autoLootInVault", false);
         setDefault("seenUnityPopup", false);
         setDefault("showWhiteBagEffect", true);
+        setDefault("customFPS",60);
         setDefault("fameDistDelta", 0.5);
         setDefault("fameCheckMS", 150);
-        setDefault("customFPS", 60);
         setDefault("perfStats", false);
         setDefault("showOrangeBagEffect",false);
         setDefault("mouseCameraMultiplier",0);

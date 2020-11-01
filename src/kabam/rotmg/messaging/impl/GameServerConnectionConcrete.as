@@ -128,8 +128,6 @@ import kabam.rotmg.game.model.GameModel;
 import kabam.rotmg.game.signals.AddSpeechBalloonSignal;
 import kabam.rotmg.game.signals.AddTextLineSignal;
 import kabam.rotmg.game.signals.GiftStatusUpdateSignal;
-import kabam.rotmg.maploading.signals.ChangeMapSignal;
-import kabam.rotmg.maploading.signals.HideMapLoadingSignal;
 import kabam.rotmg.messaging.impl.data.GroundTileData;
 import kabam.rotmg.messaging.impl.data.ObjectData;
 import kabam.rotmg.messaging.impl.data.ObjectStatusData;
@@ -253,75 +251,10 @@ import robotlegs.bender.framework.api.ILogger;
 public class GameServerConnectionConcrete extends GameServerConnection {
 
     private static const TO_MILLISECONDS:int = 1000;
-
     private static const MAX_RECONNECT_ATTEMPTS:int = 5;
-
     public static var connectionGuid:String = "";
-
     public static var lastConnectionFailureMessage:String = "";
-
     public static var lastConnectionFailureID:String = "";
-
-    private static function isStatPotion(_arg_1:int):Boolean {
-        return _arg_1 == 2591 || _arg_1 == 5465 || _arg_1 == 9064 || (_arg_1 == 2592 || _arg_1 == 5466 || _arg_1 == 9065) || (_arg_1 == 2593 || _arg_1 == 5467 || _arg_1 == 9066) || (_arg_1 == 2612 || _arg_1 == 5468 || _arg_1 == 9067) || (_arg_1 == 2613 || _arg_1 == 5469 || _arg_1 == 9068) || (_arg_1 == 2636 || _arg_1 == 5470 || _arg_1 == 9069) || (_arg_1 == 2793 || _arg_1 == 5471 || _arg_1 == 9070) || (_arg_1 == 2794 || _arg_1 == 5472 || _arg_1 == 9071) || (_arg_1 == 9724 || _arg_1 == 9725 || _arg_1 == 9726 || _arg_1 == 9727 || _arg_1 == 9728 || _arg_1 == 9729 || _arg_1 == 9730 || _arg_1 == 9731);
-    }
-
-    public function GameServerConnectionConcrete(_arg_1:AGameSprite, _arg_2:Server, _arg_3:int, _arg_4:Boolean, _arg_5:int, _arg_6:int, _arg_7:ByteArray, _arg_8:String, _arg_9:Boolean) {
-        loader = new URLLoader();
-        super();
-        this.injector = StaticInjectorContext.getInjector();
-        this.giftChestUpdateSignal = this.injector.getInstance(GiftStatusUpdateSignal);
-        this.addTextLine = this.injector.getInstance(AddTextLineSignal);
-        this.addSpeechBalloon = this.injector.getInstance(AddSpeechBalloonSignal);
-        this.updateGroundTileSignal = this.injector.getInstance(UpdateGroundTileSignal);
-        this.updateGameObjectTileSignal = this.injector.getInstance(UpdateGameObjectTileSignal);
-        this.petFeedResult = this.injector.getInstance(PetFeedResultSignal);
-        this.updateBackpackTab = StaticInjectorContext.getInjector().getInstance(UpdateBackpackTabSignal);
-        this.updateActivePet = this.injector.getInstance(UpdateActivePet);
-        this.petsModel = this.injector.getInstance(PetsModel);
-        this.socialModel = this.injector.getInstance(SocialModel);
-        this.closeDialogs = this.injector.getInstance(CloseDialogsSignal);
-        changeMapSignal = this.injector.getInstance(ChangeMapSignal);
-        this.openDialog = this.injector.getInstance(OpenDialogSignal);
-        this.showPopupSignal = this.injector.getInstance(ShowPopupSignal);
-        this.arenaDeath = this.injector.getInstance(ArenaDeathSignal);
-        this.imminentWave = this.injector.getInstance(ImminentArenaWaveSignal);
-        this.questFetchComplete = this.injector.getInstance(QuestFetchCompleteSignal);
-        this.questRedeemComplete = this.injector.getInstance(QuestRedeemCompleteSignal);
-        this.keyInfoResponse = this.injector.getInstance(KeyInfoResponseSignal);
-        this.claimDailyRewardResponse = this.injector.getInstance(ClaimDailyRewardResponseSignal);
-        this.newClassUnlockSignal = this.injector.getInstance(NewClassUnlockSignal);
-        this.showHideKeyUISignal = this.injector.getInstance(ShowHideKeyUISignal);
-        this.realmHeroesSignal = this.injector.getInstance(RealmHeroesSignal);
-        this.realmQuestLevelSignal = this.injector.getInstance(RealmQuestLevelSignal);
-        this.statsTracker = this.injector.getInstance(CharactersMetricsTracker);
-        this.logger = this.injector.getInstance(ILogger);
-        this.handleDeath = this.injector.getInstance(HandleDeathSignal);
-        this.zombify = this.injector.getInstance(ZombifySignal);
-        this.setGameFocus = this.injector.getInstance(SetGameFocusSignal);
-        this.classesModel = this.injector.getInstance(ClassesModel);
-        this.seasonalEventModel = this.injector.getInstance(SeasonalEventModel);
-        serverConnection = this.injector.getInstance(SocketServer);
-        this.messages = this.injector.getInstance(MessageProvider);
-        this.model = this.injector.getInstance(GameModel);
-        this.hudModel = this.injector.getInstance(HUDModel);
-        this.serverModel = this.injector.getInstance(ServerModel);
-        this.currentArenaRun = this.injector.getInstance(CurrentArenaRunModel);
-        gs_ = _arg_1;
-        server_ = _arg_2;
-        gameId_ = _arg_3;
-        createCharacter_ = _arg_4;
-        charId_ = _arg_5;
-        keyTime_ = _arg_6;
-        key_ = _arg_7;
-        mapJSON_ = _arg_8;
-        isFromArena_ = _arg_9;
-        this.socialModel.loadInvitations();
-        this.socialModel.setCurrentServer(server_);
-        this.getPetUpdater();
-        instance = this;
-        this.loader.addEventListener("httpStatus", loaderStatus);
-    }
     private var serverFull_:Boolean = false;
     public var petUpdater:PetUpdater;
     private var loader:URLLoader;
@@ -374,6 +307,66 @@ public class GameServerConnectionConcrete extends GameServerConnection {
     private var realmQuestLevelSignal:RealmQuestLevelSignal;
     private var hudModel:HUDModel;
 
+    private static function isStatPotion(_arg_1:int):Boolean {
+        return _arg_1 == 2591 || _arg_1 == 5465 || _arg_1 == 9064 || (_arg_1 == 2592 || _arg_1 == 5466 || _arg_1 == 9065) || (_arg_1 == 2593 || _arg_1 == 5467 || _arg_1 == 9066) || (_arg_1 == 2612 || _arg_1 == 5468 || _arg_1 == 9067) || (_arg_1 == 2613 || _arg_1 == 5469 || _arg_1 == 9068) || (_arg_1 == 2636 || _arg_1 == 5470 || _arg_1 == 9069) || (_arg_1 == 2793 || _arg_1 == 5471 || _arg_1 == 9070) || (_arg_1 == 2794 || _arg_1 == 5472 || _arg_1 == 9071) || (_arg_1 == 9724 || _arg_1 == 9725 || _arg_1 == 9726 || _arg_1 == 9727 || _arg_1 == 9728 || _arg_1 == 9729 || _arg_1 == 9730 || _arg_1 == 9731);
+    }
+
+    public function GameServerConnectionConcrete(_arg_1:AGameSprite, _arg_2:Server, _arg_3:int, _arg_4:Boolean, _arg_5:int, _arg_6:int, _arg_7:ByteArray, _arg_8:String, _arg_9:Boolean) {
+        loader = new URLLoader();
+        super();
+        this.injector = StaticInjectorContext.getInjector();
+        this.giftChestUpdateSignal = this.injector.getInstance(GiftStatusUpdateSignal);
+        this.addTextLine = this.injector.getInstance(AddTextLineSignal);
+        this.addSpeechBalloon = this.injector.getInstance(AddSpeechBalloonSignal);
+        this.updateGroundTileSignal = this.injector.getInstance(UpdateGroundTileSignal);
+        this.updateGameObjectTileSignal = this.injector.getInstance(UpdateGameObjectTileSignal);
+        this.petFeedResult = this.injector.getInstance(PetFeedResultSignal);
+        this.updateBackpackTab = StaticInjectorContext.getInjector().getInstance(UpdateBackpackTabSignal);
+        this.updateActivePet = this.injector.getInstance(UpdateActivePet);
+        this.petsModel = this.injector.getInstance(PetsModel);
+        this.socialModel = this.injector.getInstance(SocialModel);
+        this.closeDialogs = this.injector.getInstance(CloseDialogsSignal);
+        this.openDialog = this.injector.getInstance(OpenDialogSignal);
+        this.showPopupSignal = this.injector.getInstance(ShowPopupSignal);
+        this.arenaDeath = this.injector.getInstance(ArenaDeathSignal);
+        this.imminentWave = this.injector.getInstance(ImminentArenaWaveSignal);
+        this.questFetchComplete = this.injector.getInstance(QuestFetchCompleteSignal);
+        this.questRedeemComplete = this.injector.getInstance(QuestRedeemCompleteSignal);
+        this.keyInfoResponse = this.injector.getInstance(KeyInfoResponseSignal);
+        this.claimDailyRewardResponse = this.injector.getInstance(ClaimDailyRewardResponseSignal);
+        this.newClassUnlockSignal = this.injector.getInstance(NewClassUnlockSignal);
+        this.showHideKeyUISignal = this.injector.getInstance(ShowHideKeyUISignal);
+        this.realmHeroesSignal = this.injector.getInstance(RealmHeroesSignal);
+        this.realmQuestLevelSignal = this.injector.getInstance(RealmQuestLevelSignal);
+        this.statsTracker = this.injector.getInstance(CharactersMetricsTracker);
+        this.logger = this.injector.getInstance(ILogger);
+        this.handleDeath = this.injector.getInstance(HandleDeathSignal);
+        this.zombify = this.injector.getInstance(ZombifySignal);
+        this.setGameFocus = this.injector.getInstance(SetGameFocusSignal);
+        this.classesModel = this.injector.getInstance(ClassesModel);
+        this.seasonalEventModel = this.injector.getInstance(SeasonalEventModel);
+        serverConnection = this.injector.getInstance(SocketServer);
+        this.messages = this.injector.getInstance(MessageProvider);
+        this.model = this.injector.getInstance(GameModel);
+        this.hudModel = this.injector.getInstance(HUDModel);
+        this.serverModel = this.injector.getInstance(ServerModel);
+        this.currentArenaRun = this.injector.getInstance(CurrentArenaRunModel);
+        gs_ = _arg_1;
+        server_ = _arg_2;
+        gameId_ = _arg_3;
+        createCharacter_ = _arg_4;
+        charId_ = _arg_5;
+        keyTime_ = _arg_6;
+        key_ = _arg_7;
+        mapJSON_ = _arg_8;
+        isFromArena_ = _arg_9;
+        this.socialModel.loadInvitations();
+        this.socialModel.setCurrentServer(server_);
+        this.getPetUpdater();
+        instance = this;
+        this.loader.addEventListener("httpStatus", loaderStatus);
+    }
+
     override public function disconnect():void {
         Parameters.savingMap_ = false;
         this.removeServerConnectionListeners();
@@ -384,18 +377,25 @@ public class GameServerConnectionConcrete extends GameServerConnection {
     override public function connect():void {
         this.addServerConnectionListeners();
         this.mapMessages();
-        var _local1:ChatMessage = new ChatMessage();
-        _local1.name = "*Client*";
-        _local1.text = "chat.connectingTo";
-        var _local2:String = server_.name;
-        if (_local2 == "{\"text\":\"server.vault\"}") {
-            _local2 = "server.vault";
+
+        var chatNotif: ChatMessage = new ChatMessage();
+        chatNotif.name = "ProdMafia";
+        chatNotif.text = "chat.connectingTo";
+
+        var mapName: String = server_.name;
+        if (mapName == "{\"text\":\"server.vault\"}") {
+            mapName = "Vault";
         }
-        _local2 = LineBuilder.getLocalizedStringFromKey(_local2);
-        _local1.tokens = {"serverName": _local2};
-        this.addTextLine.dispatch(_local1);
+        mapName = LineBuilder.getLocalizedStringFromKey(mapName);
+        chatNotif.tokens = {"serverName": mapName};
+
+        this.addTextLine.dispatch(chatNotif);
         serverConnection.connect(server_.address, server_.port);
         Parameters.paramIPJoinedOnce = false;
+    }
+
+    override public function isConnected():Boolean {
+        return serverConnection.isConnected();
     }
 
     override public function peekNextDamage(_arg_1:uint, _arg_2:uint):uint {
@@ -418,140 +418,153 @@ public class GameServerConnectionConcrete extends GameServerConnection {
         }
     }
 
-    override public function playerShoot(_arg_1:int, _arg_2:Projectile):void {
-        var _local3:PlayerShoot = this.messages.require(30) as PlayerShoot;
-        _local3.time_ = _arg_1;
-        _local3.bulletId_ = _arg_2.bulletId_;
-        _local3.containerType_ = _arg_2.containerType_;
-        _local3.startingPos_.x_ = _arg_2.x_;
-        _local3.startingPos_.y_ = _arg_2.y_;
-        _local3.angle_ = _arg_2.angle_;
-        _local3.lifeMult_ = _arg_2.lifeMul_;
-        _local3.speedMult_ = _arg_2.speedMul_;
-        serverConnection.sendMessage(_local3);
+    override public function playerShoot(time: int, proj: Projectile):void {
+        var playerShootPacket: PlayerShoot = this.messages.require(30) as PlayerShoot;
+        playerShootPacket.time_ = time;
+        playerShootPacket.bulletId_ = proj.bulletId_;
+        playerShootPacket.containerType_ = proj.containerType_;
+        playerShootPacket.startingPos_.x_ = proj.x_;
+        playerShootPacket.startingPos_.y_ = proj.y_;
+        playerShootPacket.angle_ = proj.angle_;
+        playerShootPacket.lifeMult_ = proj.lifeMul_;
+        playerShootPacket.speedMult_ = proj.speedMul_;
+
+        serverConnection.sendMessage(playerShootPacket);
     }
 
-    override public function playerHit(_arg_1:int, _arg_2:int):void {
-        var _local3:PlayerHit = this.messages.require(90) as PlayerHit;
-        _local3.bulletId_ = _arg_1;
-        _local3.objectId_ = _arg_2;
-        serverConnection.sendMessage(_local3);
+    override public function playerHit(bulletId: int, objectId: int):void {
+        var playerHitPacket: PlayerHit = this.messages.require(90) as PlayerHit;
+        playerHitPacket.bulletId_ = bulletId;
+        playerHitPacket.objectId_ = objectId;
+
+        serverConnection.sendMessage(playerHitPacket);
     }
 
-    override public function enemyHit(_arg_1:int, _arg_2:int, _arg_3:int, _arg_4:Boolean):void {
-        var _local5:EnemyHit = this.messages.require(25) as EnemyHit;
-        _local5.time_ = _arg_1;
-        _local5.bulletId_ = _arg_2;
-        _local5.targetId_ = _arg_3;
-        _local5.kill_ = _arg_4;
-        serverConnection.sendMessage(_local5);
+    override public function enemyHit(time: int, bulletId: int, targetId: int, killed: Boolean):void {
+        var enemyHitPacket: EnemyHit = this.messages.require(25) as EnemyHit;
+        enemyHitPacket.time_ = time;
+        enemyHitPacket.bulletId_ = bulletId;
+        enemyHitPacket.targetId_ = targetId;
+        enemyHitPacket.kill_ = killed;
+
+        serverConnection.sendMessage(enemyHitPacket);
     }
 
-    override public function otherHit(_arg_1:int, _arg_2:int, _arg_3:int, _arg_4:int):void {
-        var _local5:OtherHit = this.messages.require(20) as OtherHit;
-        _local5.time_ = _arg_1;
-        _local5.bulletId_ = _arg_2;
-        _local5.objectId_ = _arg_3;
-        _local5.targetId_ = _arg_4;
-        serverConnection.sendMessage(_local5);
+    override public function otherHit(time: int, bulletId: int, objectId: int, targetId: int):void {
+        var otherHitPacket: OtherHit = this.messages.require(20) as OtherHit;
+        otherHitPacket.time_ = time;
+        otherHitPacket.bulletId_ = bulletId;
+        otherHitPacket.objectId_ = objectId;
+        otherHitPacket.targetId_ = targetId;
+
+        serverConnection.sendMessage(otherHitPacket);
     }
 
-    override public function squareHit(_arg_1:int, _arg_2:int, _arg_3:int):void {
-        var _local4:SquareHit = this.messages.require(40) as SquareHit;
-        _local4.time_ = _arg_1;
-        _local4.bulletId_ = _arg_2;
-        _local4.objectId_ = _arg_3;
-        serverConnection.sendMessage(_local4);
+    override public function squareHit(time: int, bulletId: int, objectId: int):void {
+        var hitPacket: SquareHit = this.messages.require(40) as SquareHit;
+        hitPacket.time_ = time;
+        hitPacket.bulletId_ = bulletId;
+        hitPacket.objectId_ = objectId;
+
+        serverConnection.sendMessage(hitPacket);
     }
 
-    override public function groundDamage(_arg_1:int, _arg_2:Number, _arg_3:Number):void {
-        var _local4:GroundDamage = this.messages.require(103) as GroundDamage;
-        _local4.time_ = _arg_1;
-        _local4.position_.x_ = _arg_2;
-        _local4.position_.y_ = _arg_3;
-        serverConnection.sendMessage(_local4);
+    override public function groundDamage(time: int, posX: Number, posY: Number):void {
+        var aoePacket: GroundDamage = this.messages.require(103) as GroundDamage;
+        aoePacket.time_ = time;
+        aoePacket.position_.x_ = posX;
+        aoePacket.position_.y_ = posY;
+
+        serverConnection.sendMessage(aoePacket);
     }
 
-    override public function playerText(_arg_1:String):void {
-        var _local2:PlayerText = this.messages.require(10) as PlayerText;
-        _local2.text_ = _arg_1;
-        serverConnection.sendMessage(_local2);
+    override public function playerText(messageText: String):void {
+        var textPacket: PlayerText = this.messages.require(10) as PlayerText;
+        textPacket.text_ = messageText;
+
+        serverConnection.sendMessage(textPacket);
     }
 
-    override public function invSwap(_arg_1:Player, _arg_2:GameObject, _arg_3:int, _arg_4:int, _arg_5:GameObject, _arg_6:int, _arg_7:int):Boolean {
+    override public function invSwap(currentPlayer: Player, objFrom: GameObject, slotFrom: int, objFromType: int, objTo: GameObject, slotTo: int, objToType: int): Boolean {
         if (!this.gs_) {
             return false;
         }
         if (this.gs_.lastUpdate_ - this.lastInvSwapTime < 500) {
             return false;
         }
-        var _local8:InvSwap = this.messages.require(19) as InvSwap;
-        _local8.time_ = this.gs_.lastUpdate_;
-        _local8.position_.x_ = _arg_1.x_;
-        _local8.position_.y_ = _arg_1.y_;
-        _local8.slotObject1_.objectId_ = _arg_2.objectId_;
-        _local8.slotObject1_.slotId_ = _arg_3;
-        _local8.slotObject1_.objectType_ = _arg_4;
-        _local8.slotObject2_.objectId_ = _arg_5.objectId_;
-        _local8.slotObject2_.slotId_ = _arg_6;
-        _local8.slotObject2_.objectType_ = _arg_7;
-        serverConnection.sendMessage(_local8);
-        this.lastInvSwapTime = _local8.time_;
-        var _local9:int = _arg_2.equipment_[_arg_3];
-        _arg_2.equipment_[_arg_3] = _arg_5.equipment_[_arg_6];
-        _arg_5.equipment_[_arg_6] = _local9;
+
+        var swapPacket: InvSwap = this.messages.require(19) as InvSwap;
+        swapPacket.time_ = this.gs_.lastUpdate_;
+        swapPacket.position_.x_ = currentPlayer.x_;
+        swapPacket.position_.y_ = currentPlayer.y_;
+        swapPacket.slotObject1_.objectId_ = objFrom.objectId_;
+        swapPacket.slotObject1_.slotId_ = slotFrom;
+        swapPacket.slotObject1_.objectType_ = objFromType;
+        swapPacket.slotObject2_.objectId_ = objTo.objectId_;
+        swapPacket.slotObject2_.slotId_ = slotTo;
+        swapPacket.slotObject2_.objectType_ = objToType;
+        serverConnection.sendMessage(swapPacket);
+
+        this.lastInvSwapTime = swapPacket.time_;
+        var _local9:int = objFrom.equipment_[slotFrom];
+        objFrom.equipment_[slotFrom] = objTo.equipment_[slotTo];
+        objTo.equipment_[slotTo] = _local9;
         SoundEffectLibrary.play("inventory_move_item");
         return true;
     }
 
-    override public function invSwapRaw(param1:Number, param2:Number, param3:int, param4:int, param5:int, param6:int, param7:int, param8:int) : Boolean {
+    override public function invSwapRaw(posX: Number, posY: Number, objFromId: int, slotFrom: int, objFromType: int, objToId: int, slotTo: int, objToType: int) : Boolean {
         if(!gs_) {
             return false;
         }
         if(this.gs_.lastUpdate_ - this.lastInvSwapTime < 500) {
             return false;
         }
-        var _local9:InvSwap = this.messages.require(19) as InvSwap;
-        _local9.time_ = gs_.lastUpdate_;
-        _local9.position_.x_ = param1;
-        _local9.position_.y_ = param2;
-        _local9.slotObject1_.objectId_ = param3;
-        _local9.slotObject1_.slotId_ = param4;
-        _local9.slotObject1_.objectType_ = param5;
-        _local9.slotObject2_.objectId_ = param6;
-        _local9.slotObject2_.slotId_ = param7;
-        _local9.slotObject2_.objectType_ = param8;
-        serverConnection.sendMessage(_local9);
-        this.lastInvSwapTime = _local9.time_;
+
+        var swapPacket: InvSwap = this.messages.require(19) as InvSwap;
+        swapPacket.time_ = gs_.lastUpdate_;
+        swapPacket.position_.x_ = posX;
+        swapPacket.position_.y_ = posY;
+        swapPacket.slotObject1_.objectId_ = objFromId;
+        swapPacket.slotObject1_.slotId_ = slotFrom;
+        swapPacket.slotObject1_.objectType_ = objFromType;
+        swapPacket.slotObject2_.objectId_ = objToId;
+        swapPacket.slotObject2_.slotId_ = slotTo;
+        swapPacket.slotObject2_.objectType_ = objToType;
+        serverConnection.sendMessage(swapPacket);
+
+        this.lastInvSwapTime = swapPacket.time_;
         SoundEffectLibrary.play("inventory_move_item");
         return true;
     }
 
-    override public function invSwapPotion(_arg_1:Player, _arg_2:GameObject, _arg_3:int, _arg_4:int, _arg_5:GameObject, _arg_6:int, _arg_7:int):Boolean {
+    override public function invSwapPotion(currentPlayer: Player, _arg_2:GameObject, _arg_3:int, _arg_4:int, _arg_5:GameObject, _arg_6:int, _arg_7:int):Boolean {
         if (!gs_) {
             return false;
         }
         if (this.gs_.lastUpdate_ - this.lastInvSwapTime < 500) {
             return false;
         }
-        var _local8:InvSwap = this.messages.require(19) as InvSwap;
-        _local8.time_ = gs_.lastUpdate_;
-        _local8.position_.x_ = _arg_1.x_;
-        _local8.position_.y_ = _arg_1.y_;
-        _local8.slotObject1_.objectId_ = _arg_2.objectId_;
-        _local8.slotObject1_.slotId_ = _arg_3;
-        _local8.slotObject1_.objectType_ = _arg_4;
-        _local8.slotObject2_.objectId_ = _arg_5.objectId_;
-        _local8.slotObject2_.slotId_ = _arg_6;
-        _local8.slotObject2_.objectType_ = _arg_7;
+        var swapPacket: InvSwap = this.messages.require(19) as InvSwap;
+        swapPacket.time_ = gs_.lastUpdate_;
+        swapPacket.position_.x_ = currentPlayer.x_;
+        swapPacket.position_.y_ = currentPlayer.y_;
+        swapPacket.slotObject1_.objectId_ = _arg_2.objectId_;
+        swapPacket.slotObject1_.slotId_ = _arg_3;
+        swapPacket.slotObject1_.objectType_ = _arg_4;
+        swapPacket.slotObject2_.objectId_ = _arg_5.objectId_;
+        swapPacket.slotObject2_.slotId_ = _arg_6;
+        swapPacket.slotObject2_.objectType_ = _arg_7;
+
         _arg_2.equipment_[_arg_3] = -1;
         if (_arg_4 == 2594) {
-        _arg_1.healthPotionCount_++;
+            currentPlayer.healthPotionCount_++;
         } else if (_arg_4 == 2595) {
-        _arg_1.magicPotionCount_++;
+            currentPlayer.magicPotionCount_++;
         }
-        serverConnection.sendMessage(_local8);
-        this.lastInvSwapTime = _local8.time_;
+
+        serverConnection.sendMessage(swapPacket);
+        this.lastInvSwapTime = swapPacket.time_;
         SoundEffectLibrary.play("inventory_move_item");
         return true;
     }
@@ -649,7 +662,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
 
     override public function teleport(_arg_1:int):void {
         if (Parameters.data.fameBlockTP) {
-            this.player.textNotification("Ignored teleport, Boots on the Ground enabled", 14835456);
+            this.player.textNotification("Ignored teleport - Boots on the Ground block enabled", 14835456);
             return;
         }
         var _local2:Teleport = this.messages.require(74) as Teleport;
@@ -665,17 +678,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
         var _local3:UsePortal = this.messages.require(47) as UsePortal;
         _local3.objectId_ = _arg_1;
         serverConnection.sendMessage(_local3);
-        if (Parameters.fameBot) {
-            _local2 = this.gs_.map.goDict_[_arg_1] as Portal;
-            if (_local2 && _local2.getName().indexOf("NexusPortal") != -1) {
-                Parameters.fameBotPortalId = _arg_1;
-                Parameters.fameBotPortal = _local2;
-                Parameters.fameBotPortalPoint = new Point(RandomUtil.plusMinus(0.5) + _local2.x_, RandomUtil.plusMinus(0.5) + _local2.y_);
-                this.player.textNotification("Fame Train Realm now set!");
-                Parameters.fameBot = true;
-                Parameters.fameBotWatchingPortal = false;
-            }
-        }
     }
 
     override public function buy(_arg_1:int, _arg_2:int):void {
@@ -853,15 +855,12 @@ public class GameServerConnectionConcrete extends GameServerConnection {
         this.serverConnection.sendMessage(_local7);
     }
 
-    override public function isConnected():Boolean {
-        return serverConnection.isConnected();
-    }
+    override public function reskin(currentPlayer: Player, skinId: int):void {
+        var reskinPacket: Reskin = this.messages.require(51) as Reskin;
+        reskinPacket.skinID = skinId;
+        reskinPacket.player = currentPlayer;
 
-    override public function reskin(_arg_1:Player, _arg_2:int):void {
-        var _local3:Reskin = this.messages.require(51) as Reskin;
-        _local3.skinID = _arg_2;
-        _local3.player = _arg_1;
-        serverConnection.sendMessage(_local3);
+        serverConnection.sendMessage(reskinPacket);
     }
 
     override public function resetDailyQuests():void {
@@ -980,12 +979,15 @@ public class GameServerConnectionConcrete extends GameServerConnection {
     }
 
     private function onNewCharacterInformation(param1:NewCharacterInformation) : void {
+        // empty for now til reversed
     }
 
     private function onUnlockInformation(param1:UnlockInformation) : void {
+        // empty for now til reversed
     }
 
     private function onQueuePosition(param1:QueueInformation) : void {
+        // empty for now til reversed
     }
 
     public function aoeAck(_arg_1:int, _arg_2:Number, _arg_3:Number):void {
@@ -1002,31 +1004,30 @@ public class GameServerConnectionConcrete extends GameServerConnection {
         serverConnection.sendMessage(_local2);
     }
 
-    public function swapEquip(_arg_1:GameObject, _arg_2:int, _arg_3:XML):Boolean {
-        var _local4:int = 0;
-        var _local6:* = undefined;
-        var _local7:int = 0;
-        var _local5:int = 0;
-        if (_arg_3 && !_arg_1.isPaused && "SlotType" in _arg_3) {
-            _local4 = _arg_3.SlotType;
-            _local6 = _arg_1.slotTypes_.slice(0, 4);
-            _local7 = 0;
-            var _local9:int = 0;
-            var _local8:* = _local6;
-            for each(_local5 in _local6) {
+    public function swapEquip(currentPlayer: GameObject, _arg_2:int, itemData:XML):Boolean {
+        var _local4: int = 0;
+        var equipSlots: * = undefined;
+        var slotCounter: int = 0;
+        var _local5: int = 0;
+
+        if (itemData && !currentPlayer.isPaused && "SlotType" in itemData) {
+            _local4 = itemData.SlotType;
+            equipSlots = currentPlayer.slotTypes_.slice(0, 4);
+            slotCounter = 0;
+            for each(_local5 in equipSlots) {
                 if (_local5 == _local4) {
-                    this.swapItems(_arg_1, _local7, _arg_2);
+                    this.swapItems(currentPlayer, slotCounter, _arg_2);
                     return true;
                 }
-                _local7++;
+                slotCounter++;
             }
         }
         return false;
     }
 
-    public function swapItems(_arg_1:GameObject, _arg_2:int, _arg_3:int):void {
-        var _local4:Vector.<int> = _arg_1.equipment_;
-        this.invSwap(_arg_1 as Player, _arg_1, _arg_2, _local4[_arg_2], _arg_1, _arg_3, _local4[_arg_3]);
+    public function swapItems(currentPlayer: GameObject, _arg_2:int, _arg_3:int):void {
+        var currentInventory:Vector.<int> = currentPlayer.equipment_;
+        this.invSwap(currentPlayer as Player, currentPlayer, _arg_2, currentInventory[_arg_2], currentPlayer, _arg_3, currentInventory[_arg_3]);
     }
 
     public function move(param1:int, param2:uint, param3:Player) : void {
@@ -2150,11 +2151,6 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                     break;
                 case StatData.ACTIVE_STAT:
                     (param1 as Portal).active_ = _local12 != 0;
-                    if (Parameters.fameBot && Parameters.fameBotPortalId == param1.objectId_ && this.player.getDistSquared(this.player.x_, this.player.y_, param1.x_, param1.y_) <= 1) {
-                        if (_local12 != 0) {
-                            usePortal(param1.objectId_);
-                        }
-                    }
                     break;
                 case StatData.ACCOUNT_ID_STAT:
                     _local14.accountId_ = param2[_local9].strStatValue_;
@@ -2473,7 +2469,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
     private function onReconnect(packet :Reconnect):void {
         
         if (Parameters.ignoreRecon) {
-            (!Parameters.usingPortal) {
+            if (!Parameters.usingPortal) {
                 this.addTextLine.dispatch(ChatMessage.make(packet.key_.length.toString(), packet.toString()));
             }
             return;
@@ -2487,7 +2483,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
         var key:ByteArray = packet.key_;
         isFromArena_ = packet.isFromArena_;
         
-        var reconPacket:ReconnectEvent = new ReconnectEvent(CurrentServer, _local2, newChar, charId, keyTime, key, isFromArena_);
+        var reconPacket:ReconnectEvent = new ReconnectEvent(CurrentServer, gameId, newChar, charId, keyTime, key, isFromArena_);
         reconPacket.createCharacter_ = false;
         Parameters.reconList[packet.gameId_] = reconPacket;
         
@@ -2929,7 +2925,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
                     this.delayBeforeReconnect++;
                     this.retry(_local4);
                     if(!this.serverFull_) {
-                        this.addTextLine.dispatch(ChatMessage.make("*Error*","Connection failed!  Retrying..."));
+                        this.addTextLine.dispatch(ChatMessage.make("*Error*", "Connection failed!  Retrying..."));
                     }                } else {
                     gs_.closed.dispatch();
                 }
@@ -2996,7 +2992,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
     }
 
     private function handleServerFull(param1:Failure) : void {
-        this.addTextLine.dispatch(ChatMessage.make("",param1.errorDescription_));
+        this.addTextLine.dispatch(ChatMessage.make("", param1.errorDescription_));
         this.retryConnection_ = true;
         this.delayBeforeReconnect = 5;
         this.serverFull_ = true;
@@ -3038,7 +3034,7 @@ public class GameServerConnectionConcrete extends GameServerConnection {
     }
 
     private function handleIncorrectVersionFailure(param1:Failure) : void {
-        this.addTextLine.dispatch(ChatMessage.make("","The client is outdated, please wait for a new version to be released then redownload the client."));
+        this.addTextLine.dispatch(ChatMessage.make("", "The client is outdated, please wait for a new version to be released then redownload the client."));
         var _local2:Dialog = new Dialog("ClientUpdate.title","","ClientUpdate.leftButton",null,"/clientUpdate");
         _local2.setTextParams("ClientUpdate.description",{
             "client":Parameters.CLIENT_VERSION,

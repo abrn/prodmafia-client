@@ -2,9 +2,9 @@ package kabam.rotmg.chat.control {
 import com.company.assembleegameclient.objects.GameObject;
 import com.company.assembleegameclient.objects.TextureDataConcrete;
 import com.company.assembleegameclient.parameters.Parameters;
+import com.company.assembleegameclient.util.TimeUtil;
 
 import flash.utils.Dictionary;
-import flash.utils.getTimer;
 
 import io.decagames.rotmg.seasonalEvent.data.SeasonalEventModel;
 import io.decagames.rotmg.social.model.SocialModel;
@@ -33,12 +33,38 @@ public class TextHandler {
 
 
     private const NORMAL_SPEECH_COLORS:TextColors = new TextColors(14802908, 0xffffff, 0x545454);
-
     private const ENEMY_SPEECH_COLORS:TextColors = new TextColors(5644060, 16549442, 13484223);
-
     private const TELL_SPEECH_COLORS:TextColors = new TextColors(2493110, 0xf0ff, 13880567);
-
     private const GUILD_SPEECH_COLORS:TextColors = new TextColors(4098560, 10944349, 13891532);
+
+    [Inject]
+    public var account:Account;
+    [Inject]
+    public var model:GameModel;
+    [Inject]
+    public var addTextLine:AddTextLineSignal;
+    [Inject]
+    public var addSpeechBalloon:AddSpeechBalloonSignal;
+    [Inject]
+    public var stringMap:StringMap;
+    [Inject]
+    public var tellModel:TellModel;
+    [Inject]
+    public var spamFilter:SpamFilter;
+    [Inject]
+    public var openDialogSignal:OpenDialogSignal;
+    [Inject]
+    public var hudModel:HUDModel;
+    [Inject]
+    public var socialModel:SocialModel;
+    [Inject]
+    public var setup:ApplicationSetup;
+    [Inject]
+    public var realmServerNameSignal:RealmServerNameSignal;
+    [Inject]
+    public var seasonalEventModel:SeasonalEventModel;
+
+    private var similar:Dictionary;
 
     public function TextHandler() {
         var _local5:int = 0;
@@ -82,33 +108,7 @@ public class TextHandler {
             similar["ģ"] = _local4;
         }
     }
-    [Inject]
-    public var account:Account;
-    [Inject]
-    public var model:GameModel;
-    [Inject]
-    public var addTextLine:AddTextLineSignal;
-    [Inject]
-    public var addSpeechBalloon:AddSpeechBalloonSignal;
-    [Inject]
-    public var stringMap:StringMap;
-    [Inject]
-    public var tellModel:TellModel;
-    [Inject]
-    public var spamFilter:SpamFilter;
-    [Inject]
-    public var openDialogSignal:OpenDialogSignal;
-    [Inject]
-    public var hudModel:HUDModel;
-    [Inject]
-    public var socialModel:SocialModel;
-    [Inject]
-    public var setup:ApplicationSetup;
-    [Inject]
-    public var realmServerNameSignal:RealmServerNameSignal;
-    [Inject]
-    public var seasonalEventModel:SeasonalEventModel;
-    private var similar:Dictionary;
+
 
     public function execute(_arg_1:Text):void {
         var _local7:int = 0;
@@ -226,7 +226,7 @@ public class TextHandler {
             _local7 = Parameters.timerPhaseTimes[_arg_1.text_];
             if (_local7 > 0) {
                 Parameters.timerActive = true;
-                Parameters.phaseChangeAt = getTimer() + _local7;
+                Parameters.phaseChangeAt = TimeUtil.getTrueTime() + _local7;
                 Parameters.phaseName = Parameters.timerPhaseNames[_arg_1.text_];
             }
         }

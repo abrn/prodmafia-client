@@ -72,7 +72,7 @@ public class ParseChatMessageCommand {
                             "helpCommand"));
                 else
                     this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
-                        "Invalid syntax! This command does not use any arguments."));
+                            "Invalid syntax! This command does not use any arguments."));
                 return;
             case "/c":
             case "/class":
@@ -131,7 +131,7 @@ public class ParseChatMessageCommand {
             case "/ip":
                 var server:Server = this.hudModel.gameSprite.gsc_.server_;
                 var index:int = server.name.indexOf("NexusPortal.");
-                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, (index == -1?server.name:server.name.substring(index + "NexusPortal.".length)) + ": " + server.address)));
+                this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, (index == -1 ? server.name : server.name.substring(index + "NexusPortal.".length)) + ": " + server.address)));
                 System.setClipboard(server.address);
                 this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME, "Copied IP to clipboard!"));
                 return;
@@ -142,7 +142,7 @@ public class ParseChatMessageCommand {
                         Parameters.enteringRealm = true;
                         this.jumpToIP(split[1]);
                     } else this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
-                                "Incorrect arguments! Syntax: /goto <ip>"));
+                            "Incorrect arguments! Syntax: /goto <ip>"));
                 } else {
                     this.addTextLine.dispatch(ChatMessage.make(Parameters.ERROR_CHAT_NAME,
                             "WARNING! /goto can be used to steal your account information, " +
@@ -166,7 +166,7 @@ public class ParseChatMessageCommand {
             case "/l":
                 var player:Player = this.hudModel.gameSprite.map.player_;
                 this.addTextLine.dispatch(ChatMessage.make(Parameters.HELP_CHAT_NAME,
-                            "Your location is x=" + player.x_.toFixed(2) + ", y=" + player.y_.toFixed(2)));
+                        "Your location is x=" + player.x_.toFixed(2) + ", y=" + player.y_.toFixed(2)));
                 }
                 return;
             case "/mapscale":

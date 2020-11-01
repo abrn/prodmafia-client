@@ -4,9 +4,14 @@ import com.company.assembleegameclient.util.AssetLoader;
 import com.company.assembleegameclient.util.StageProxy;
 
 import flash.display.LoaderInfo;
-import flash.display.Sprite;
 import flash.display.Stage;
+import flash.display.Sprite;
+import flash.events.ErrorEvent;
 import flash.events.Event;
+import flash.events.KeyboardEvent;
+import flash.events.UncaughtErrorEvent;
+import flash.filesystem.File;
+import flash.filesystem.FileStream;
 
 import io.decagames.rotmg.dailyQuests.config.DailyQuestsConfig;
 import io.decagames.rotmg.nexusShop.config.NexusShopConfig;
@@ -38,6 +43,7 @@ import kabam.rotmg.game.GameConfig;
 import kabam.rotmg.language.LanguageConfig;
 import kabam.rotmg.legends.LegendsConfig;
 import kabam.rotmg.maploading.MapLoadingConfig;
+import kabam.rotmg.messaging.impl.incoming.File;
 import kabam.rotmg.minimap.MiniMapConfig;
 import kabam.rotmg.mysterybox.MysteryBoxConfig;
 import kabam.rotmg.news.NewsConfig;
@@ -79,7 +85,7 @@ public class WebMain extends Sprite {
     }
     protected var context:IContext;
 
-    private function setup():void {
+    private function setup(): void {
         stage.scaleMode = "exactFit";
         this.createContext();
         new AssetLoader().load();
@@ -92,12 +98,42 @@ public class WebMain extends Sprite {
         Parameters.root = root;
     }
 
-    private function addFocusListeners():void {
+    public static function uncaughtErrorHandler(param1: UncaughtErrorEvent): void {
+        var errorText:*;
+        if (param1.error is Error) {
+            errorText = (param1.error as Error).getStackTrace();
+        } else if (param1.error is ErrorEvent) {
+            errorText = (param1.error as ErrorEvent).text;
+        } else {
+            errorText = param1.text;
+        }
+        param1.preventDefault();
+        var _loc4_:File = File.documentsDirectory.resolvePath("prod-errors.log");
+        var _loc5_:FileStream = new FileStream();
+        _loc5_.open(_loc4_,"append");
+        var _loc2_:Date = new Date();
+        _loc5_.writeUTFBytes("\n[" + (_loc2_.monthUTC + 1) + "/" + _loc2_.dateUTC + "/" + _loc2_.fullYearUTC + " " + trailZero(_loc2_.hoursUTC) + ":" + trailZero(_loc2_.minutesUTC) + ":" + trailZero(_loc2_.secondsUTC) + "] " + errorText);
+        _loc5_.close();
+        var _loc6_:AddTextLineSignal = StaticInjectorContext.getInjector().getInstance(AddTextLineSignal);
+        _loc6_.dispatch(ChatMessage.make("*Error*","Uncaught Error! A full stack trace can be viewed in your Documents folder."));
+    }
+
+    private static function trailZero(param1: int) : String
+    {
+        var returnVar:String = param1.toString();
+        if(returnVar.length == 1)
+        {
+            returnVar = "0" + returnVar;
+        }
+        return returnVar;
+    }
+
+    private function addFocusListeners(): void {
         stage.addEventListener("activate", this.onActivate, false, 0, true);
         stage.addEventListener("deactivate", this.onDeactivate, false, 0, true);
     }
 
-    private function createContext():void {
+    private function createContext(): void {
         this.context = new StaticInjectorContext();
         this.context.injector.map(LoaderInfo).toValue(root.stage.root.loaderInfo);
         var _local1:StageProxy = new StageProxy(this);
@@ -115,7 +151,7 @@ public class WebMain extends Sprite {
         this.context.logLevel = LogLevel.DEBUG;
     }
 
-    public function onStageResize(param1:Event):void {
+    public function onStageResize(param1: Event): void {
         this.scaleX = stage.stageWidth / 800;
         this.scaleY = stage.stageHeight / 600;
         this.x = (800 - stage.stageWidth) / 2;
@@ -124,20 +160,24 @@ public class WebMain extends Sprite {
         sHeight = stage.stageHeight;
     }
 
-    private function onAddedToStage(_arg_1:Event):void {
+    private function onAddedToStage(_arg_1: Event): void {
         stage.addEventListener("resize", this.onStageResize, false, 0, true);
         removeEventListener("addedToStage", this.onAddedToStage);
         this.setup();
     }
 
-    private function onActivate(param1:Event):void {
+    private function onActivate(param1: Event):void {
         focus = true;
     }
 
-    private function onDeactivate(param1:Event):void {
+    private function onDeactivate(param1: Event):void {
         focus = false;
     }
 
-    
-}
+    private function onKeyDown(param1: KeyboardEvent): void {
+        if (param1.keyCode == 27) {
+            param1.preventDefault();
+        }
+    }
+    }
 }

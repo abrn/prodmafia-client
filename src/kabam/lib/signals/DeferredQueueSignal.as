@@ -4,15 +4,15 @@ import org.osflash.signals.Signal;
 
 public class DeferredQueueSignal extends Signal {
 
-
     public function DeferredQueueSignal(...rest) {
         data = [];
         super(rest);
     }
+
     private var data:Array;
     private var log:Boolean = true;
 
-    override public function dispatch(...rest):void {
+    override public function dispatch(...rest:Array):void {
         if (this.log) {
             this.data.push(rest);
         }
@@ -40,10 +40,6 @@ public class DeferredQueueSignal extends Signal {
             this.data.shift();
         }
         return _local2;
-    }
-
-    public function getNumData():int {
-        return this.data.length;
     }
 }
 }

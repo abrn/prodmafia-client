@@ -12,10 +12,10 @@ import robotlegs.bender.framework.api.IConfig;
 
 public class NetConfig implements IConfig {
 
-
     public function NetConfig() {
         super();
     }
+
     [Inject]
     public var injector:Injector;
     private var messageCenter:MessageCenter;

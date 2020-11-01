@@ -5,10 +5,10 @@ import kabam.lib.ui.api.Layout;
 
 public class VerticalLayout implements Layout {
 
-
     public function VerticalLayout() {
         super();
     }
+
     private var padding:int = 0;
 
     public function getPadding():int {

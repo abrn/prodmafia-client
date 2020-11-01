@@ -14,16 +14,11 @@ import org.osflash.signals.Signal;
 public class LayoutList extends Sprite implements List {
 
     private static const NULL_LAYOUT:Layout = new NullLayout();
-
     private static const ZERO_SIZE:Size = new Size(0, 0);
 
-
     public const itemsChanged:Signal = new Signal();
-
     private const list:Vector.<DisplayObject> = new Vector.<DisplayObject>(0);
-
     private const container:Sprite = new Sprite();
-
     private const containerMask:Shape = new Shape();
 
     public function LayoutList() {
@@ -33,6 +28,7 @@ public class LayoutList extends Sprite implements List {
         addChild(this.container);
         addChild(this.containerMask);
     }
+
     private var layout:Layout;
     private var size:Size;
     private var offset:int = 0;
@@ -41,7 +37,7 @@ public class LayoutList extends Sprite implements List {
         return this.layout;
     }
 
-    public function setLayout(layout:Layout):void {
+    public function setLayout(layout: Layout):void {
         this.layout = layout || NULL_LAYOUT;
         layout.layout(this.list, -this.offset);
     }
@@ -50,7 +46,7 @@ public class LayoutList extends Sprite implements List {
         return this.size;
     }
 
-    public function setSize(size:Size):void {
+    public function setSize(size: Size):void {
         this.size = size || ZERO_SIZE;
         this.applySizeToMask();
     }
@@ -60,17 +56,17 @@ public class LayoutList extends Sprite implements List {
         return new Size(rect.width, rect.height);
     }
 
-    public function addItem(item:DisplayObject):void {
+    public function addItem(item: DisplayObject):void {
         this.addToListAndContainer(item);
         this.updateLayout();
         this.itemsChanged.dispatch();
     }
 
-    public function getItemAt(index:int):DisplayObject {
+    public function getItemAt(index: int):DisplayObject {
         return this.list[index];
     }
 
-    public function setItems(items:Vector.<DisplayObject>):void {
+    public function setItems(items: Vector.<DisplayObject>):void {
         this.clearList();
         this.addItemsToListAndContainer(items);
         this.offset = 0;
@@ -82,7 +78,7 @@ public class LayoutList extends Sprite implements List {
         return this.list.length;
     }
 
-    public function setOffset(value:int):void {
+    public function setOffset(value: int):void {
         this.offset = value;
         this.updateLayout();
     }
@@ -112,14 +108,14 @@ public class LayoutList extends Sprite implements List {
         this.list.length = 0;
     }
 
-    private function addItemsToListAndContainer(items:Vector.<DisplayObject>):void {
+    private function addItemsToListAndContainer(items: Vector.<DisplayObject>):void {
         var item:DisplayObject = null;
         for each(item in items) {
             this.addToListAndContainer(item);
         }
     }
 
-    private function addToListAndContainer(item:DisplayObject):void {
+    private function addToListAndContainer(item: DisplayObject):void {
         this.list.push(item);
         this.container.addChild(item);
     }

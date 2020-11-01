@@ -3,7 +3,6 @@ import com.adobe.serialization.json.JSON;
 
 public class SoftwareJsonParser implements JsonParser {
 
-
     public function SoftwareJsonParser() {
         super();
     }

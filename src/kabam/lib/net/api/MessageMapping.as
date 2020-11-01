@@ -3,7 +3,6 @@ import kabam.lib.net.impl.MessagePool;
 
 public interface MessageMapping {
 
-
     function setID(_arg_1:int):MessageMapping;
 
     function toMessage(_arg_1:Class):MessageMapping;

@@ -9,7 +9,7 @@
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="AIR SDK" />
+          <sdk name="AIR SDK 33.1" />
         </dependencies>
         <compiler-options>
           <map>

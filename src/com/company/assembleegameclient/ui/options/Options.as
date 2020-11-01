@@ -38,23 +38,14 @@ import kabam.rotmg.ui.signals.ToggleShowTierTagSignal;
 public class Options extends Sprite {
 
     public static const Y_POSITION:int = 550;
-
     public static const SCROLL_HEIGHT:int = 420;
-
     public static const SCROLL_Y_OFFSET:int = 102;
-
     public static const CHAT_COMMAND:String = "chatCommand";
-
     public static const CHAT:String = "chat";
-
     public static const TELL:String = "tell";
-
     public static const GUILD_CHAT:String = "guildChat";
-
     public static const SCROLL_CHAT_UP:String = "scrollChatUp";
-
     public static const SCROLL_CHAT_DOWN:String = "scrollChatDown";
-
     private static var registeredCursors:Vector.<String> = new Vector.<String>(0);
 
     public static function refreshCursor():void {
@@ -952,6 +943,9 @@ public class Options extends Sprite {
         this.addOptionAndPosition(new ChoiceOption("playSFX", makeOnOffLabels(), [true, false], "Options.PlaySoundEffects", "Options.PlaySoundEffectsDesc", this.onPlaySoundEffectsChange));
         this.addOptionAndPosition(new SliderOption("SFXVolume", this.onSoundEffectsVolumeChange), -120, 34);
         this.addOptionAndPosition(new ChoiceOption("playPewPew", makeOnOffLabels(), [true, false], "Options.PlayWeaponSounds", "Options.PlayWeaponSoundsDesc", null));
+        this.addOptionAndPosition(new NullOption());
+        this.addOptionAndPosition(new ChoiceOption("customSounds", makeOnOffLabels(), [true, false], "Custom Sounds", "Play sound effects when you receive private messages or drop white bags", this.onCustomSFXVolumeChange));
+        this.addOptionAndPosition(new SliderOption("customVolume", this.onCustomSFXVolumeChange),-120,15);
     }
 
     private function addMiscOptions():void {
@@ -993,8 +987,12 @@ public class Options extends Sprite {
         Music.setMusicVolume(_arg_1);
     }
 
-    private function onSoundEffectsVolumeChange(_arg_1:Number):void {
-        SFX.setSFXVolume(_arg_1);
+    private function onSoundEffectsVolumeChange(volume: Number): void {
+        SFX.setSFXVolume(volume);
+    }
+
+    private function onCustomSFXVolumeChange(volume: Number) : void {
+        SFX.setCustomSFXVolume(volume);
     }
 
     private function onLegalPrivacyClick():void {

@@ -844,8 +844,8 @@ public class Parameters {
         setDefault("mapHack", false);
         setDefault("fixTabHotkeys", true);
         setDefault("noRotate", false);
-        setDefault("customSounds", false);
-        setDefault("customVolume", 1);
+        setDefault("customSounds",false);
+        setDefault("customVolume",1);
         setDefault("aimAtQuest", 0);
         setDefault("followIntoPortals", false);
         setDefault("spamPrismNumber", 0);
@@ -886,6 +886,7 @@ public class Parameters {
         setDefault("fakeLag", 0);
         setDefault("renderDistance", 16);
         setDefault("showRange", false);
+        setDefault("multiLeader", "");
     }
 
     private static function setDefaultKey(_arg_1:String, _arg_2:uint):void {

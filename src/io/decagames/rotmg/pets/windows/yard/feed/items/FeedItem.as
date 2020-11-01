@@ -74,12 +74,6 @@ public class FeedItem extends UIGridElement {
         _local6 = _local6.clone();
         var _local2:XML = ObjectLibrary.xmlLibrary_[this._item.getItemId()];
         this._feedPower = _local2.feedPower;
-        if (ObjectLibrary.usePatchedData) {
-            _local4 = ObjectLibrary.xmlPatchLibrary_[this._item.getItemId()];
-            if (_local4.hasOwnProperty("feedPower")) {
-                this._feedPower = _local4.feedPower;
-            }
-        }
         var _local1:BitmapTextFactory = StaticInjectorContext.getInjector().getInstance(BitmapTextFactory);
         if (_local2 && _local2.hasOwnProperty("Quantity") && _local1) {
             _local3 = _local1.make(new StaticStringBuilder(_local2.Quantity), 12, 0xffffff, false, new Matrix(), true);

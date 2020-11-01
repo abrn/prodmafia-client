@@ -61,8 +61,9 @@ public class ObjectLibrary {
         "CaveWall": GameObject,
         "Character": Character,
         "CharacterChanger": CharacterChanger,
-        "ClosedGiftChest": ClosedGiftChest,
-        "ClosedVaultChest": ClosedVaultChest,
+        "VaultContainer":VaultContainer,
+        "VaultGiftContainer":VaultGiftContainer,
+        "PremiumVaultContainer":PremiumVaultContainer,
         "ConnectedWall": GameObject,
         "Container": Container,
         "DoubleWall": DoubleWall,
@@ -92,8 +93,6 @@ public class ObjectLibrary {
         "YardUpgrader": YardUpgrader,
         "WallOfFame":WallOfFame
     };
-
-    public static var usePatchedData:Boolean = false;
 
     public static var textureDataFactory:TextureDataFactory = new TextureDataFactory();
 

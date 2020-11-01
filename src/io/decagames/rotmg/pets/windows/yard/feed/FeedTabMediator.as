@@ -169,12 +169,6 @@ public class FeedTabMediator extends Mediator {
     private function hasFeedPower(_arg_1:int):Boolean {
         var _local3:* = null;
         var _local2:XML = ObjectLibrary.xmlLibrary_[_arg_1];
-        if (ObjectLibrary.usePatchedData) {
-            _local3 = ObjectLibrary.xmlPatchLibrary_[_arg_1];
-            if (_local3 && _local3.hasOwnProperty("feedPower")) {
-                return true;
-            }
-        }
         return _local2.hasOwnProperty("feedPower");
     }
 

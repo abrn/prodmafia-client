@@ -274,16 +274,11 @@ public class EquipmentToolTip extends ToolTip {
         }
     }
 
-    private function makeItemPowerText():void {
+        private function makeItemPowerText():void {
         var _local1:int = 0;
         var _local2:int = 0;
         if (this.objectXML.hasOwnProperty("feedPower")) {
             _local1 = this.objectXML.feedPower;
-            if (ObjectLibrary.usePatchedData && this.objectPatchXML) {
-                if (this.objectPatchXML.hasOwnProperty("feedPower")) {
-                    _local1 = this.objectPatchXML.feedPower;
-                }
-            }
             _local2 = this.playerCanUse || this.player == null ? 0xffffff : 16549442;
             this.powerText = new TextFieldDisplayConcrete().setSize(12).setColor(_local2).setBold(true).setTextWidth(230 - this.icon.width - 4 - 30).setWordWrap(true);
             this.powerText.setStringBuilder(new StaticStringBuilder().setString("Feed Power: " + _local1));
@@ -1300,8 +1295,6 @@ public class EquipmentToolTip extends ToolTip {
         this.descText = new TextFieldDisplayConcrete().setSize(14).setColor(0xb3b3b3).setTextWidth(230).setWordWrap(true);
         if (this.descriptionOverride) {
             this.descText.setStringBuilder(new StaticStringBuilder(this.descriptionOverride));
-        } else if (ObjectLibrary.usePatchedData && this.objectPatchXML && this.objectPatchXML.hasOwnProperty("Description")) {
-            this.descText.setStringBuilder(new LineBuilder().setParams(this.objectPatchXML.Description));
         } else {
             this.descText.setStringBuilder(new LineBuilder().setParams(this.objectXML.Description));
         }

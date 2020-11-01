@@ -6,7 +6,6 @@ import com.company.assembleegameclient.map.MapMediator;
 import com.company.assembleegameclient.map.QueueStatusTextSignal;
 import com.company.assembleegameclient.map.mapoverlay.MapOverlay;
 import com.company.assembleegameclient.ui.TradeSlot;
-import com.company.assembleegameclient.ui.TradeSlotMediator;
 import com.company.assembleegameclient.ui.panels.InteractPanel;
 import com.company.assembleegameclient.ui.panels.PartyPanel;
 import com.company.assembleegameclient.ui.panels.PortalPanel;
@@ -123,7 +122,6 @@ public class GameConfig implements IConfig {
         this.mediatorMap.map(InventoryGrid).toMediator(InventoryGridMediator);
         this.mediatorMap.map(EquippedGrid).toMediator(EquippedGridMediator);
         this.mediatorMap.map(ItemTileSprite).toMediator(ItemTileSpriteMediator);
-        this.mediatorMap.map(TradeSlot).toMediator(TradeSlotMediator);
         this.mediatorMap.map(MapOverlay).toMediator(MapOverlayMediator);
         this.mediatorMap.map(Map).toMediator(MapMediator);
         this.mediatorMap.map(StatView).toMediator(StatMediator);

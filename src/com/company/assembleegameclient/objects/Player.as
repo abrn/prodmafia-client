@@ -21,6 +21,7 @@ import com.company.util.IntPoint;
 import com.company.util.MoreColorUtil;
 import com.company.util.MoreStringUtil;
 import com.company.util.PointUtil;
+import com.company.util.TimeUtil;
 
 import flash.display.BitmapData;
 import flash.display.GraphicsBitmapFill;
@@ -1170,7 +1171,7 @@ public class Player extends Character {
 
     public function isValidPosition(_arg_1:Number, _arg_2:Number):Boolean 
     {
-        if (Parameters.data.blockMove) {
+        if (Parameters.data.noClip) {
             return true;
         }
         var _local5:Square = map_.getSquare(_arg_1, _arg_2);
@@ -2866,26 +2867,31 @@ public class Player extends Character {
     }
 
     private function calcHealth(_arg_1:int):void {
-        var _local4:Number = _arg_1 * 0.001;
+        var multiplier:Number = _arg_1 * 0.001;
         var _local5:Number = 1 + 0.12 * this.vitality_ * (this.icMS != -1?1:2);
-        var _local3:Boolean = this.map_.isTrench && this.breath_ == 0;
-        
-        if (!this.isSick && !this.isBleeding_()) {
-            this.hpLog = this.hpLog + _local5 * _local4;
-            if (this.isHealing_()) {
-                this.hpLog = this.hpLog + 20 * _local4;
+        var drowning:Boolean = this.map_.isTrench && this.breath_ == 0;
+
+        if (!this.isSick && !this.isBleeding_()) 
+        {
+            this.hpLog = this.hpLog + _local5 * multiplier;
+            if (this.isHealing_()) 
+            {
+                this.hpLog = this.hpLog + 20 * multiplier;
             }
-        } else if (this.isBleeding_()) {
-            this.hpLog = this.hpLog - 20 * _local4;
+        } else if (this.isBleeding_()) 
+        {
+            this.hpLog = this.hpLog - 20 * multiplier;
         }
-        if (_local3) {
-            this.hpLog = this.hpLog - Parameters.drownDamagePerSec * _local4;
+        if (drowning) 
+        {
+            this.hpLog = this.hpLog - Parameters.drownDamagePerSec * multiplier;
         }
-        var _local2:int = this.hpLog;
-        var _local6:Number = this.hpLog - _local2;
-        this.hpLog = _local6;
-        this.clientHp = this.clientHp + _local2;
-        if (this.clientHp > this.maxHP_) {
+        var oldHP:int = this.hpLog;
+        var newHP:Number = this.hpLog - oldHP;
+        this.hpLog = newHP;
+        this.clientHp = this.clientHp + oldHP;
+        if (this.clientHp > this.maxHP_) 
+        {
             this.clientHp = this.maxHP_;
         }
     }

@@ -515,10 +515,10 @@ package com.company.assembleegameclient.game {
                 return;
             }
             var currentPlayer:Player = this.gs_.map.player_;
-            if (keyCode == Parameters.data.noclipKey) {
-                Parameters.data.blockMove = !Parameters.data.blockMove;
+            if (keyCode == Parameters.data.noClipKey) {
+                Parameters.data.noClip = !Parameters.data.noClip;
                 Parameters.save();
-                this.gs_.map.player_.levelUpEffect(Parameters.data.blockMove ? "No Clip: ON" : "No Clip: OFF");
+                this.gs_.map.player_.levelUpEffect(Parameters.data.noClip ? "Noclip: ON" : "Noclip: OFF");
             } 
             else if (keyCode == Parameters.data.walkKey) 
             {

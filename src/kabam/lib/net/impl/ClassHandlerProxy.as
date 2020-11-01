@@ -5,10 +5,10 @@ import org.swiftsuspenders.Injector;
 
 public class ClassHandlerProxy implements MessageHandlerProxy {
 
-
     public function ClassHandlerProxy() {
         super();
     }
+
     private var injector:Injector;
     private var handlerType:Class;
     private var handler:Object;

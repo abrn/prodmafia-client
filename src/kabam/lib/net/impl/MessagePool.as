@@ -1,12 +1,12 @@
 package kabam.lib.net.impl {
+
 public class MessagePool {
 
-
-    public function MessagePool(_arg_1:int, _arg_2:Class, _arg_3:Function) {
+    public function MessagePool(packetId: int, packetType: Class, callback: Function) {
         super();
-        this.type = _arg_2;
-        this.id = _arg_1;
-        this.callback = _arg_3;
+        this.type = packetType;
+        this.id = packetId;
+        this.callback = callback;
     }
     public var type:Class;
     public var callback:Function;
@@ -14,10 +14,11 @@ public class MessagePool {
     private var tail:Message;
     private var count:int = 0;
 
-    public function populate(_arg1:int):MessagePool {
+    public function populate(amount: int):MessagePool {
         var _local2:Message;
-        this.count = (this.count + _arg1);
-        while (_arg1--) {
+        this.count = (this.count + amount);
+
+        while (amount--) {
             _local2 = new this.type(this.id, this.callback);
             _local2.pool = this;
             ((this.tail) && ((this.tail.next = _local2)));
@@ -49,10 +50,10 @@ public class MessagePool {
         this.tail = null;
     }
 
-    internal function append(_arg1:Message):void {
-        ((this.tail) && ((this.tail.next = _arg1)));
-        _arg1.prev = this.tail;
-        this.tail = _arg1;
+    internal function append(packet: Message):void {
+        ((this.tail) && ((this.tail.next = packet)));
+        packet.prev = this.tail;
+        this.tail = packet;
     }
 }
 }

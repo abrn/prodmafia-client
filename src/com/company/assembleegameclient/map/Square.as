@@ -88,7 +88,7 @@ public class Square {
                 && this != this.map.player_.square && this.props_.maxDamage_ == 0)
                 return;
 
-        if (Parameters.data.blockMove && !this.isWalkable())
+        if (Parameters.data.noClip && !this.isWalkable())
                 return;
 
         if (this.texture_ == null) {

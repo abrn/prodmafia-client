@@ -415,7 +415,7 @@ public class GameSprite extends AGameSprite {
     public function connect():void {
         if (!this.isGameStarted) {
             this.isGameStarted = true;
-            Parameters.data.blockMove = false;
+            Parameters.data.noClip = false;
             Renderer.inGame = true;
             this.newsModalButton = null;
             this.questBar = null;

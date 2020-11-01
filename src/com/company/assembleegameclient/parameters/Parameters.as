@@ -881,8 +881,8 @@ public class Parameters {
         setDefaultKey("walkKey", KeyCodes.SHIFT);
         setDefault("projFace", true);
         setDefault("disableSorting", false);
-        setDefault("blockMove", false);
-        setDefaultKey("noclipKey", KeyCodes.UNSET);
+        setDefault("noClip", false);
+        setDefaultKey("noClipKey", KeyCodes.UNSET);
         setDefault("fakeLag", 0);
         setDefault("renderDistance", 16);
         setDefault("showRange", false);

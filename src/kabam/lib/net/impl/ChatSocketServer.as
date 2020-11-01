@@ -17,23 +17,11 @@ import org.osflash.signals.Signal;
 public class ChatSocketServer {
 
     public static const MESSAGE_LENGTH_SIZE_IN_BYTES:int = 4;
-
-
     public const chatConnected:Signal = new Signal();
-
     public const chatClosed:Signal = new Signal();
-
     public const chatError:Signal = new Signal(String);
-
     private const unsentPlaceholder:Message = new Message(0);
-
     private const data:ByteArray = new ByteArray();
-
-    public function ChatSocketServer() {
-        head = unsentPlaceholder;
-        tail = unsentPlaceholder;
-        super();
-    }
     [Inject]
     public var messages:MessageProvider;
     [Inject]
@@ -48,26 +36,31 @@ public class ChatSocketServer {
     private var incomingCipher:ICipher;
     private var server:String;
     private var port:int;
-
     private var _isConnecting:Boolean;
 
-    public function set isConnecting(_arg_1:Boolean):void {
-        this._isConnecting = _arg_1;
+    public function ChatSocketServer() {
+        head = unsentPlaceholder;
+        tail = unsentPlaceholder;
+        super();
     }
 
-    public function setOutgoingCipher(_arg_1:ICipher):ChatSocketServer {
-        this.outgoingCipher = _arg_1;
+    public function set isConnecting(toggle: Boolean):void {
+        this._isConnecting = toggle;
+    }
+
+    public function setOutgoingCipher(cipher: ICipher):ChatSocketServer {
+        this.outgoingCipher = cipher;
         return this;
     }
 
-    public function setIncomingCipher(_arg_1:ICipher):ChatSocketServer {
-        this.incomingCipher = _arg_1;
+    public function setIncomingCipher(cipher: ICipher):ChatSocketServer {
+        this.incomingCipher = cipher;
         return this;
     }
 
-    public function connect(_arg_1:String, _arg_2:int):void {
-        this.server = _arg_1;
-        this.port = _arg_2;
+    public function connect(server: String, port: int):void {
+        this.server = server;
+        this.port = port;
         if (!this.chatSocket.hasEventListener("connect")) {
             this.addListeners();
         }
@@ -75,7 +68,7 @@ public class ChatSocketServer {
         if (this.chatSocketServerModel.connectDelayMS) {
             this.connectWithDelay();
         } else {
-            this.chatSocket.connect(_arg_1, _arg_2);
+            this.chatSocket.connect(server, port);
         }
     }
 
@@ -99,9 +92,9 @@ public class ChatSocketServer {
         this.chatClosed.dispatch();
     }
 
-    public function sendMessage(_arg_1:Message):void {
-        this.tail.next = _arg_1;
-        this.tail = _arg_1;
+    public function sendMessage(packet: Message):void {
+        this.tail.next = packet;
+        this.tail = packet;
     }
 
     public function isChatConnected():Boolean {
@@ -131,28 +124,28 @@ public class ChatSocketServer {
     }
 
     private function sendPendingMessages():void {
-        var _local1:Message = this.head.next;
-        var _local2:* = _local1;
-        while (_local2) {
+        var packet: Message = this.head.next;
+        var packetRef: * = packet;
+        while (packetRef) {
             this.data.clear();
-            _local2.writeToOutput(this.data);
+            packetRef.writeToOutput(this.data);
             this.data.position = 0;
             if (this.outgoingCipher != null) {
                 this.outgoingCipher.encrypt(this.data);
                 this.data.position = 0;
             }
             this.chatSocket.writeInt(this.data.bytesAvailable + 5);
-            this.chatSocket.writeByte(_local2.id);
+            this.chatSocket.writeByte(packet.id);
             this.chatSocket.writeBytes(this.data);
-            _local2.consume();
-            _local2 = _local2.next;
+            packetRef.consume();
+            packetRef = packetRef.next;
         }
         this.chatSocket.flush();
         this.unsentPlaceholder.next = null;
         this.unsentPlaceholder.prev = null;
-        var _local3:* = this.unsentPlaceholder;
-        this.tail = _local3;
-        this.head = _local3;
+        var nullPacket: * = this.unsentPlaceholder;
+        this.tail = nullPacket;
+        this.head = nullPacket;
     }
 
     private function logErrorAndClose(_arg_1:String, _arg_2:Array = null):void {
@@ -170,78 +163,84 @@ public class ChatSocketServer {
         return _arg_1;
     }
 
-    private function onTimerComplete(_arg_1:TimerEvent):void {
+    private function onTimerComplete(event: TimerEvent):void {
         this.delayTimer.removeEventListener("timerComplete", this.onTimerComplete);
         this.chatSocket.connect(this.server, this.port);
     }
 
-    private function onConnect(_arg_1:Event):void {
+    private function onConnect(event: Event):void {
         this.sendPendingMessages();
         this.chatConnected.dispatch();
     }
 
-    private function onClose(_arg_1:Event):void {
+    private function onClose(event: Event):void {
         if (!this._isConnecting) {
             this.chatClosed.dispatch();
         }
     }
 
-    private function onIOError(_arg_1:IOErrorEvent):void {
-        var _local2:String = this.parseString("Socket-Server IO Error: {0}", [_arg_1.text]);
-        this.chatError.dispatch(_local2);
+    private function onIOError(error: IOErrorEvent):void {
+        var errorMsg: String = this.parseString("[Chat] Socket-Server IO Error: {0}", [error.text]);
+        this.chatError.dispatch(errorMsg);
         this.chatClosed.dispatch();
     }
 
-    private function onSecurityError(_arg_1:SecurityErrorEvent):void {
-        var _local2:String = this.parseString("Socket-Server Security: {0}. Please open port 2050 in your firewall and/or router settings and try again", [_arg_1.text]);
-        this.chatError.dispatch(_local2);
+    private function onSecurityError(error: SecurityErrorEvent):void {
+        var errorMsg: String = this.parseString("[Chat] Socket-Server Security: {0}. Please open port 2050 in your firewall and/or router settings and try again", [error.text]);
+        this.chatError.dispatch(errorMsg);
         this.chatClosed.dispatch();
     }
 
-    private function onSocketData(_arg_1:ProgressEvent = null):void {
-        var _local5:* = 0;
-        var _local4:* = null;
-        var _local2:* = null;
-        var _local3:* = _arg_1;
-        for (; !(this.chatSocket == null || !this.chatSocket.connected); _local4.consume()) {
+    private function onSocketData(event: ProgressEvent = null):void {
+        var firstByte: * = 0;
+        var packet: * = null;
+        var byteArray:* = null;
+
+        for (; !(this.chatSocket == null || !this.chatSocket.connected); packet.consume()) {
             if (this.messageLen == -1) {
                 if (this.chatSocket.bytesAvailable >= 4) {
                     try {
                         this.messageLen = this.chatSocket.readInt();
-                    } catch (e:Error) {
-                        var _local6:String = parseString("Socket-Server Data Error: {0}: {1}", [e.name, e.message]);
-                        chatError.dispatch(null);
+                    } catch (e: Error) {
+                        var errorMsg: String = parseString("[Chat] Socket-Server Data Error: {0}: {1}", [e.name, e.message]);
+                        chatError.dispatch(errorMsg);
                         messageLen = -1;
                         return;
                     }
                 }
                 break;
             }
+
             if (this.chatSocket.bytesAvailable >= this.messageLen - 4) {
-                _local5 = uint(this.chatSocket.readUnsignedByte());
-                _local4 = this.messages.require(_local5);
-                _local2 = new ByteArray();
+                firstByte = uint(this.chatSocket.readUnsignedByte());
+                packet = this.messages.require(firstByte);
+                byteArray = new ByteArray();
+
                 if (this.messageLen - 5 > 0) {
-                    this.chatSocket.readBytes(_local2, 0, this.messageLen - 5);
+                    this.chatSocket.readBytes(byteArray, 0, this.messageLen - 5);
                 }
-                _local2.position = 0;
+                byteArray.position = 0;
+
                 if (this.incomingCipher != null) {
-                    this.incomingCipher.decrypt(_local2);
-                    _local2.position = 0;
+                    this.incomingCipher.decrypt(byteArray);
+                    byteArray.position = 0;
                 }
                 this.messageLen = -1;
-                if (_local4 == null) {
-                    this.logErrorAndClose("Socket-Server Protocol Error: Unknown message");
+
+                if (packet == null) {
+                    this.logErrorAndClose("[Chat] Socket-Server Protocol Error: Unknown message");
                     return;
                 }
+
                 try {
-                    _local4.parseFromInput(_local2);
+                    packet.parseFromInput(byteArray);
+                    packet.consume();
                     continue;
-                } catch (error:Error) {
-                    logErrorAndClose("Socket-Server Protocol Error: {0}", [error.toString()]);
+                } catch (error: Error) {
+                    logErrorAndClose("[Chat] Socket-Server Protocol Error: {0}", [error.toString()]);
                     return;
                 }
-                _local4.consume();
+                packet.consume();
                 continue;
             }
             break;

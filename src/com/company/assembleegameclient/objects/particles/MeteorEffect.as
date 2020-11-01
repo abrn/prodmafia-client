@@ -2,7 +2,6 @@
 package com.company.assembleegameclient.objects.particles {
 import com.company.assembleegameclient.objects.GameObject;
 import com.company.assembleegameclient.util.TextureRedrawer;
-import com.company.assembleegameclient.util.TextureRedrawer;
 import com.company.util.AssetLibrary;
 import com.company.util.ImageSet;
 

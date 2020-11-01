@@ -1,5 +1,8 @@
 package com.company.assembleegameclient.util 
 {
+    import flash.utils.getTimer;
+    import com.company.assembleegameclient.parameters.Parameters;
+
     public class TimeUtil 
     {
         public static const DAY_IN_MS:int = 86400000;
@@ -32,16 +35,16 @@ package com.company.assembleegameclient.util
             return moddedTime;
         }
 
-        public static function secondsToDays(_arg_1:Number) : Number {
-            return _arg_1 / 86400;
+        public static function secondsToDays(seconds: Number) : Number {
+            return seconds / 86400;
         }
 
-        public static function secondsToHours(_arg_1:Number) : Number {
-            return _arg_1 / 3600;
+        public static function secondsToHours(seconds: Number) : Number {
+            return seconds / 3600;
         }
 
-        public static function secondsToMins(_arg_1:Number) : Number {
-            return _arg_1 / 60;
+        public static function secondsToMins(seconds: Number) : Number {
+            return seconds / 60;
         }
 
         public static function parseUTCDate(_arg_1:String) : Date {

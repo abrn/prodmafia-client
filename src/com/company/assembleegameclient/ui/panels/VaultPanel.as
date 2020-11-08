@@ -12,6 +12,10 @@ package com.company.assembleegameclient.ui.panels {
     import kabam.rotmg.util.components.LegacyBuyButton;
     
     public class VaultPanel extends Panel {
+    
+        private var owner: VaultContainer;
+        private var nameText: StaticTextDisplay;
+        private var upgradeButton: LegacyBuyButton;
         
         private static function countValidItems(vaultContents: Vector.<int>): int {
             var validCounter: int = 0;
@@ -41,9 +45,6 @@ package com.company.assembleegameclient.ui.panels {
             this.upgradeButton.x = 25;
             addChild(this.upgradeButton);
         }
-        private var owner: VaultContainer;
-        private var nameText: StaticTextDisplay;
-        private var upgradeButton: LegacyBuyButton;
         
         override public function draw(): void {
         }

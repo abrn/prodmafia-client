@@ -12,6 +12,11 @@ public class HUDModel {
     public var gameSprite:GameSprite;
 
     private var _keysView:KeysView;
+    
+    // contents of the players vault chests
+    public var vaultContents:Vector.<int>;
+    public var giftContents:Vector.<int>;
+    public var potContents:Vector.<int>;
 
     public function get keysView():KeysView {
         return this._keysView;

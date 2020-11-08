@@ -48,14 +48,22 @@ public class Parameters {
             "/p7lGuL99UoSGmQEynkBvZct+/M40L0E0rZ4BVgzLOJmIbXMp0J4PnPcb6VLZ" +
             "vxazGcmSfjauC7F3yWYqUbZd/HCBtawwIDAQAB" +
             "\n-----END PUBLIC KEY-----";
+    
     public static const skinTypes16:Vector.<int> = new <int>[1027,1028,1029,1030,10973,19494,19531,6346,30056,5505,7766,7769];
     public static const itemTypes16:Vector.<int> = new <int>[5473,5474,5475,5476,10939,19494,19531,6347,5506];
     public static const DefaultAAIgnore:Vector.<int> = new <int>[2312,2313,2370,2392,2393,2400,2401,3413,3418,3419,3420,3421,3427,3454,3638,3645,29594,29597,29710,29711,29742,29743,29746,29748,29781,30001];
     public static const DefaultAAException:Vector.<int> = new <int>[2309, 2310, 2311, 3448, 3449, 3472, 3334, 5952, 2354, 2369, 3368, 3366, 3367, 3391, 3389, 3390, 5920, 2314, 3412, 3639, 3634, 2327, 2335, 2336, 1755, 24582, 0x5f1f, 24363, 24135, 24133, 24134, 24132, 24136, 3356, 3357, 3358, 3359, 56 * 60, 3361, 3362, 3363, 3364, 2352, 2330, 28780, 28781, 28795, 28942, 28957, 28988, 28938, 29291, 29018, 29517, 24338, 493 * 60, 29712];
     public static const DefaultPriorityList:Vector.<int> = new Vector.<int>(0);
-    public static const spamFilter:Vector.<String> = new <String>["reaimbags,net", "r0tmg.0rg", "oryxsh0p.net", "wh!tebag,net", "wh!tebag.net", "realmshop.info", "realmshop.lnfo", "rotmgmarket.c", "rpgstash,com", "rpgstash.com", "realmitems", "reaimitems", "reaimltems", "realmltems", "realmpower,net", "reaimpower.net", "realmpower.net", "reaimpower,net", "rea!mkings.xyz", "buyrotmg.c", "lifepot. org", "rotmgmax.me", "rotmgmax,me", "rotmgmax me", "oryx.ln", "rpgstash com", "rwtmg", "rotmg.io", "jasonprimate", "rotmgmax", "realmpower", "reaimpower"];
+    
+    public static const spamFilter:Vector.<String> = new <String>[
+        "reaimbags,net", "r0tmg.0rg", "oryxsh0p.net", "wh!tebag,net", "wh!tebag.net", "realmshop.info", "realmshop.lnfo", "rotmgmarket.c",
+        "rpgstash,com", "rpgstash.com", "realmitems", "reaimitems", "reaimltems", "realmltems", "realmpower,net", "reaimpower.net", "realmpower.net",
+        "reaimpower,net", "rea!mkings.xyz", "buyrotmg.c", "lifepot. org", "rotmgmax.me", "rotmgmax,me", "rotmgmax me", "oryx.ln", "rpgstash com",
+        "rwtmg", "rotmg.io", "jasonprimate", "rotmgmax", "realmpower", "reaimpower"];
+    
     public static const defaultExclusions:Vector.<int> = new Vector.<int>(0);
     public static const defaultInclusions:Vector.<int> = new <int>[10 * 60, 601, 602, 603, 2295, 2296, 2297, 2298, 2524, 2525, 2526, 2527, 8608, 8609, 8610, 8611, 8615, 8617, 8616, 8618, 8962, 9017, 9015, 9016, 9055, 9054, 9052, 9053, 9059, 9058, 9056, 9057, 9063, 9062, 151 * 60, 9061, 32697, 32698, 32699, 545 * 60, 3004, 3005, 3006, 3007, 3088, 3100, 3096, 3091, 3113, 3114, 3112, 3111, 3032, 3033, 3034, 3035, 3177, 3266];
+    
     public static const hpPotions:Vector.<int> = new <int>[1799,2594,2623,2632,2633,2689,2836,2837,2838,2839,2795,2868,2870,2872,2874,2876];
     public static const mpPotions:Vector.<int> = new <int>[2595,2634,2797,2798,2840,2841,2842,2843,2796,2869,2871,2873,2875,2877,3098];
     public static const lmPotions:Vector.<int> = new <int>[2793,9070,5471,9730,2794,9071,5472,9731];
@@ -68,6 +76,7 @@ public class Parameters {
     public static var iDrankVaultUnlocker:Boolean = false;
     public static var sendLogin_:Boolean = true;
     public static var player:Player = null;
+    
     public static var reconRealm:ReconnectEvent = null;
     public static var reconDung:ReconnectEvent = null;
     public static var reconNexus:ReconnectEvent = null;
@@ -75,10 +84,12 @@ public class Parameters {
     public static var dungTime:uint = 0;
     public static var ignoreRecon:Boolean;
     public static var lockRecon:Boolean = false;
+    
     public static var followName:String = "";
     public static var followPlayer:GameObject;
     public static var followingName:Boolean = false;
     public static var questFollow:Boolean = false;
+    
     public static var lowCPUMode:Boolean = false;
     public static var preload:Boolean = false;
     public static var forceCharId:int = -1;
@@ -106,12 +117,10 @@ public class Parameters {
     public static var bazaarJoining:Boolean;
     public static var bazaarLR:String;
     public static var bazaarDist:Number;
-    public static var invpm:Boolean;
     public static var manualTutorial:Boolean;
     public static var epmAVG:int = -1;
     public static var eLLength:int = 25;
     public static var fameBot:Boolean = false;
-    public static var fameBotWatchingPortal:Boolean = false;
     public static var suicideMode:Boolean = false;
     public static var suicideAT:int = -1;
     public static var fameBotPortalId:int = 0;
@@ -260,11 +269,17 @@ public class Parameters {
 
     public static function setTimerPhases():void {
         timerPhaseTimes["{\"key\":\"server.oryx_closed_realm\"}"] = 2 * 60 * 1000;
-        timerPhaseTimes["{\"key\":\"server.oryx_minions_failed\"}"] = 200 * 60;
-        timerPhaseTimes["DIE! DIE! DIE!!!"] = 23000;
         timerPhaseNames["{\"key\":\"server.oryx_closed_realm\"}"] = "Realm Closed";
+        timerPhaseTimes["{\"key\":\"server.oryx_minions_failed\"}"] = 200 * 60;
         timerPhaseNames["{\"key\":\"server.oryx_minions_failed\"}"] = "Oryx Shake";
+        timerPhaseTimes["DIE! DIE! DIE!!!"] = 23000;
         timerPhaseNames["DIE! DIE! DIE!!!"] = "Vulnerable in";
+        timerPhaseTimes["NO! This cannot be..."] = 4000;
+        timerPhaseNames["NO! This cannot be"] = "Oryx 3 counter";
+        timerPhaseTimes["Despicable mortals! A single realm freed is meaningless! Millions more remain in my grasp!"] = 15000;
+        timerPhaseTimes["Despicable mortals! A single realm freed is meaningless! Millions more remain in my grasp!"] = "Oryx 3 vulnerable in"
+        timerPhaseTimes["FALL BEFORE MY CELESTIAL STRENGTH!"] = 30000;
+        timerPhaseTimes["Despicable mortals! A single realm freed is meaningless! Millions more remain in my grasp!"] = "Celestial phase"
     }
 
     public static function setAutolootDesireables():void {

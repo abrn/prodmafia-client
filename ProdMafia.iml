@@ -2,18 +2,18 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="ProdMafia">
     <configurations>
-      <configuration name="ProdMafia" pure-as="true" main-class="WebMain" output-file="ProdMafia.swf" output-folder="$MODULE_DIR$/bin">
-        <dependencies target-player="32.0">
+      <configuration name="ProdMafia" target-platform="Desktop" pure-as="true" output-type="RuntimeLoadedModule" main-class="WebMain" output-file="ProdMafia.swf" output-folder="$MODULE_DIR$/bin">
+        <dependencies>
           <entries>
             <entry library-id="4973b155-12ea-41d4-b45c-2ca93b15522d">
               <dependency linkage="Merged" />
             </entry>
           </entries>
-          <sdk name="AIR SDK 33.1" />
+          <sdk name="AIR SDK" />
         </dependencies>
         <compiler-options>
           <map>
-            <entry key="compiler.debug.swf" value="false" />
+            <entry key="compiler.debug.swf" value="true" />
           </map>
         </compiler-options>
         <packaging-air-desktop />

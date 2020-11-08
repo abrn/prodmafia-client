@@ -21,3 +21,6 @@ bin-release/
 *.png
 *.psd
 src/kabam/rotmg/account/core/services/test.as
+.idea/discord.xml
+.idea/dictionaries/admin.xml
+.idea/inspectionProfiles/Project_Default.xml

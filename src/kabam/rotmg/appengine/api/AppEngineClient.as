@@ -4,11 +4,11 @@ package kabam.rotmg.appengine.api {
     public interface AppEngineClient {
         function get complete(): OnceSignal;
         
-        function setDataFormat(_arg_1: String): void;
+        function setDataFormat(format: String): void;
         
-        function setSendEncrypted(_arg_1: Boolean): void;
+        function setSendEncrypted(encrypt: Boolean): void;
         
-        function setMaxRetries(_arg_1: int): void;
+        function setMaxRetries(retries: int): void;
         
         function sendRequest(url: String, params: Object, unknown: Boolean = false): void;
         

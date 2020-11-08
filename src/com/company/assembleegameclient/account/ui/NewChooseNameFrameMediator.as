@@ -52,10 +52,10 @@ public class NewChooseNameFrameMediator extends Mediator {
     }
 
     private function sendNameToServer():void {
-        var _local1:Object = {"name": this.name};
+        var data: Object = {"name": this.name};
         MoreObjectUtil.addToObject(_local1, this.account.getCredentials());
         this.client.complete.addOnce(this.onComplete);
-        this.client.sendRequest("/account/setName", _local1);
+        this.client.sendRequest("/account/setName", data);
         this.view.disable();
     }
 

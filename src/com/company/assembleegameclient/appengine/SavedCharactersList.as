@@ -104,7 +104,6 @@ package com.company.assembleegameclient.appengine {
 
         public function getCharById(charId:int):SavedCharacter {
             var character:* = null;
-            var default:int = 0;
             var charList:* = this.savedChars_;
             for each (character in this.savedChars_) {
                 if (character.charId() == charId) {
@@ -124,45 +123,46 @@ package com.company.assembleegameclient.appengine {
         }
 
         public function bestOverallLevel():int {
-            var returnVar:int = 0;
-            var character:* = null;
-            var default:int = 0;
-            var charStats:* = this.charStats_;
-            for each (character in this.charStats_) {
-                if (character.bestLevel() > _local1) {
-                    returnVar = character.bestLevel();
+            var bestLevel:int = 0;
+            var currentCharacter:* = null;
+
+            for each(currentCharacter in this.charStats_)
+            {
+                if(currentCharacter.bestLevel() > bestLevel)
+                {
+                    bestLevel = currentCharacter.bestLevel();
                 }
             }
-            return returnVar;
+            return bestLevel;
         }
 
-        public function bestFame(_arg_1:int):int {
-            var _local2:CharacterStats = this.charStats_[_arg_1];
-            return _local2 == null ? 0 : _local2.bestFame();
+        public function bestFame(charId: int):int {
+            var currentCharacter:CharacterStats = this.charStats_[charId];
+            return currentCharacter == null ? 0 : currentCharacter.bestFame();
         }
 
         public function bestOverallFame():int {
-            var _local1:int = 0;
-            var _local2:* = null;
-            var _local4:int = 0;
-            var _local3:* = this.charStats_;
-            for each (_local2 in this.charStats_) {
-                if (_local2.bestFame() > _local1) {
-                    _local1 = _local2.bestFame();
+            var bestFame:int = 0;
+            var currentCharacter:* = null;
+
+            for each(currentCharacter in this.charStats_)
+            {
+                if(currentCharacter.bestFame() > bestFame)
+                {
+                    bestFame = currentCharacter.bestFame();
                 }
             }
-            return _local1;
+            return bestFame;
         }
 
-        public function levelRequirementsMet(_arg_1:int):Boolean {
-            var _local3:int = 0;
-            var _local4:* = null;
-            var _local2:XML = ObjectLibrary.xmlLibrary_[_arg_1];
-            var _local6:int = 0;
-            var _local5:* = _local2.UnlockLevel;
-            for each (_local4 in _local2.UnlockLevel) {
-                _local3 = ObjectLibrary.idToType_[_local4.toString()];
-                if (this.bestLevel(_local3) < int(_local4.@level)) {
+        public function levelRequirementsMet(charId:int):Boolean {
+            var lastCharacter:int = 0;
+            var currentCharacter:* = null;
+            var charObject:XML = ObjectLibrary.xmlLibrary_[charId];
+
+            for each (currentCharacter in charObject.UnlockLevel) {
+                lastCharacter = ObjectLibrary.idToType_[currentCharacter.toString()];
+                if (this.bestLevel(lastCharacter) < int(currentCharacter.@level)) {
                     return false;
                 }
             }
@@ -215,33 +215,34 @@ package com.company.assembleegameclient.appengine {
             return _local8;
         }
 
-        private function parseUserData(_arg_1:XML):void {
-            this.accountId_ = _arg_1.AccountId;
-            this.name_ = _arg_1.Name;
-            this.nameChosen_ = "NameChosen" in _arg_1;
-            this.converted_ = "Converted" in _arg_1;
-            this.isAdmin_ = "Admin" in _arg_1;
+        private function parseUserData(xmlData:XML):void {
+            this.accountId_ = xmlData.AccountId;
+            this.name_ = xmlData.Name;
+            this.nameChosen_ = "NameChosen" in xmlData;
+            this.converted_ = "Converted" in xmlData;
+            this.isAdmin_ = "Admin" in xmlData;
             Player.isAdmin = this.isAdmin_;
-            Player.isMod = "Mod" in _arg_1;
-            this.canMapEdit_ = "MapEditor" in _arg_1;
-            this.totalFame_ = _arg_1.Stats.TotalFame;
-            this.bestCharFame_ = _arg_1.Stats.BestCharFame;
-            this.fame_ = _arg_1.Stats.Fame;
-            this.credits_ = _arg_1.Credits;
-            this.tokens_ = _arg_1.FortuneToken;
-            this.nextCharSlotPrice_ = _arg_1.NextCharSlotPrice;
-            this.isAgeVerified = this.accountId_ != "" && _arg_1.IsAgeVerified == 1;
+            Player.isMod = "Mod" in xmlData;
+            this.canMapEdit_ = "MapEditor" in xmlData;
+            this.totalFame_ = xmlData.Stats.TotalFame;
+            this.bestCharFame_ = xmlData.Stats.BestCharFame;
+            this.fame_ = xmlData.Stats.Fame;
+            this.credits_ = xmlData.Credits;
+            this.tokens_ = xmlData.FortuneToken;
+            this.nextCharSlotPrice_ = xmlData.NextCharSlotPrice;
+            this.isAgeVerified = this.accountId_ != "" && xmlData.IsAgeVerified == 1;
             this.hasPlayerDied = true;
         }
 
-        private function parseBeginnersPackageData(_arg_1:XML):void {
-            var _local3:int = 0;
-            var _local2:BeginnersPackageModel = this.getBeginnerModel();
-            if (_arg_1.hasOwnProperty("BeginnerPackageStatus")) {
-                _local3 = _arg_1.BeginnerPackageStatus;
-                _local2.status = _local3;
+        private function parseBeginnersPackageData(xmlData:XML):void {
+            var status:int = 0;
+            var model:BeginnersPackageModel = this.getBeginnerModel();
+
+            if (xmlData.hasOwnProperty("BeginnerPackageStatus")) {
+                status = xmlData.BeginnerPackageStatus;
+                model.status = status;
             } else {
-                _local2.status = 0;
+                model.status = 0;
             }
         }
 
@@ -250,23 +251,22 @@ package com.company.assembleegameclient.appengine {
             return _local1.getInstance(BeginnersPackageModel);
         }
 
-        private function parseGuildData(_arg_1:XML):void {
-            var _local2:* = null;
-            if ("Guild" in _arg_1) {
-                _local2 = XML(_arg_1.Guild);
-                this.guildName_ = _local2.Name;
-                this.guildRank_ = _local2.Rank;
+        private function parseGuildData(xmlData:XML):void {
+            var guildData:* = null;
+            if ("Guild" in xmlData) {
+                guildData = XML(xmlData.Guild);
+                this.guildName_ = guildData.Name;
+                this.guildRank_ = guildData.Rank;
             }
         }
 
         private function parseCharacterData():void {
-            var _local1:* = null;
+            var currentChar:* = null;
             this.nextCharId_ = int(this.charsXML_.@nextCharId);
             this.maxNumChars_ = int(this.charsXML_.@maxNumChars);
-            var _local3:int = 0;
-            var _local2:* = this.charsXML_.Char;
-            for each (_local1 in this.charsXML_.Char) {
-                this.savedChars_.push(new SavedCharacter(_local1, this.name_));
+
+            for each (currentChar in this.charsXML_.Char) {
+                this.savedChars_.push(new SavedCharacter(currentChar, this.name_));
                 this.numChars_++;
             }
             this.savedChars_.sort(SavedCharacter.compare);

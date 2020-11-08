@@ -59,8 +59,6 @@ import kabam.rotmg.game.view.GiftStatusDisplay;
 import kabam.rotmg.game.view.NewsModalButton;
 import kabam.rotmg.game.view.RealmQuestsDisplay;
 import kabam.rotmg.game.view.ShopDisplay;
-import kabam.rotmg.maploading.signals.HideMapLoadingSignal;
-import kabam.rotmg.maploading.signals.MapLoadedSignal;
 import kabam.rotmg.messaging.impl.GameServerConnectionConcrete;
 import kabam.rotmg.messaging.impl.incoming.MapInfo;
 import kabam.rotmg.news.model.NewsModel;
@@ -104,10 +102,6 @@ public class GameSprite extends AGameSprite {
 
     public const vaultFountain:Point = new Point(56, 67.1);
 
-    public static function dispatchMapLoaded(_arg_1:MapInfo):void {
-        var _local2:MapLoadedSignal = StaticInjectorContext.getInjector().getInstance(MapLoadedSignal);
-    }
-
     public static function toTimeCode_HOWDIDIBREAKTHIS(_arg_1:Number):String {
         var _local4:int = _arg_1 * 0.001;
         var _local2:int = Math.floor(_local4 % 60);
@@ -122,10 +116,6 @@ public class GameSprite extends AGameSprite {
         var _local4:String = String(_local5);
         var _local3:String = _local4 + ":" + _local6;
         return _local3;
-    }
-
-    private static function hidePreloader():void {
-        var _local1:HideMapLoadingSignal = StaticInjectorContext.getInjector().getInstance(HideMapLoadingSignal);
     }
 
     public function GameSprite(_arg_1:Server, _arg_2:int, _arg_3:Boolean, _arg_4:int, _arg_5:int, _arg_6:ByteArray, _arg_7:PlayerModel, _arg_8:String, _arg_9:Boolean) {
@@ -200,7 +190,6 @@ public class GameSprite extends AGameSprite {
     override public function applyMapInfo(_arg_1:MapInfo):void {
         map.setProps(_arg_1.width_, _arg_1.height_, _arg_1.name_, _arg_1.background_, _arg_1.allowPlayerTeleport_, _arg_1.showDisplays_);
         Parameters.savingMap_ = false;
-        dispatchMapLoaded(_arg_1);
     }
 
     override public function initialize():void {

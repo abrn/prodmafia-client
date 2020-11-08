@@ -712,7 +712,6 @@ public class Parameters {
         setDefault("alphaMan", 0.4);
         setDefault("lootPreview", true);
         setDefault("showQuestBar", false);
-        setDefaultKey("tradeNearestPlayerKey", 0);
         setDefaultKey("LowCPUModeHotKey", 0);
         setDefaultKey("Cam45DegInc", 0);
         setDefaultKey("Cam45DegDec", 0);

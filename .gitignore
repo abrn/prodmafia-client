@@ -20,3 +20,4 @@ bin-release/
 *.bin
 *.png
 *.psd
+src/kabam/rotmg/account/core/services/test.as

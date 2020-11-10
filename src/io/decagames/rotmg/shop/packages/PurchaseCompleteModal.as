@@ -12,14 +12,14 @@ package io.decagames.rotmg.shop.packages {
             var _local3: String = "";
             var _local4: * = _arg_1;
             switch (_local4) {
-                case "PURCHASE_TYPE_SLOTS_ONLY":
-                    _local3 = "Your purchase has been validated!";
-                    break;
-                case "PURCHASE_TYPE_CONTENTS_ONLY":
-                    _local3 = "Your items have been sent to the Gift Chest!";
-                    break;
-                case "PURCHASE_TYPE_MIXED":
-                    _local3 = "Your purchase has been validated! You will find your items in the Gift Chest.";
+            case "PURCHASE_TYPE_SLOTS_ONLY":
+                _local3 = "Your purchase has been validated!";
+                break;
+            case "PURCHASE_TYPE_CONTENTS_ONLY":
+                _local3 = "Your items have been sent to the Gift Chest!";
+                break;
+            case "PURCHASE_TYPE_MIXED":
+                _local3 = "Your purchase has been validated! You will find your items in the Gift Chest.";
             }
             super(5 * 60, "Package Purchased", _local3, _local2);
         }

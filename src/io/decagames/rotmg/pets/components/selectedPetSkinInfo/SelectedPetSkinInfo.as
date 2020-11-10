@@ -56,15 +56,15 @@ package io.decagames.rotmg.pets.components.selectedPetSkinInfo {
                 removeChild(this._actionLabel);
             }
             switch (int(this._actionButtonType) - 2) {
-                case 0:
-                    this._fameActionButton = new ShopBuyButton(200, 1);
-                    this._goldActionButton = new ShopBuyButton(20);
-                    this._actionLabel.text = "Change Skin";
-                    break;
-                case 1:
-                    this._actionLabel.text = "Change Family";
-                    this._goldActionButton = new ShopBuyButton(100);
-                    this._fameActionButton = new ShopBuyButton(1000, 1);
+            case 0:
+                this._fameActionButton = new ShopBuyButton(200, 1);
+                this._goldActionButton = new ShopBuyButton(20);
+                this._actionLabel.text = "Change Skin";
+                break;
+            case 1:
+                this._actionLabel.text = "Change Family";
+                this._goldActionButton = new ShopBuyButton(100);
+                this._fameActionButton = new ShopBuyButton(1000, 1);
             }
             if (this._actionButtonType != 1) {
                 this._actionLabel.x = Math.round(slotWidth / 2 - this._actionLabel.textWidth / 2);

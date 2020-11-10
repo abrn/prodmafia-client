@@ -42,26 +42,26 @@ package io.decagames.rotmg.social.widgets {
             var _local3: * = null;
             var _local1: * = null;
             switch (int(_state) - 1) {
-                case 0:
-                    _local2 = this._vo.getServerName();
-                    _local3 = !!Parameters.data.preferredServer ? Parameters.data.preferredServer : Parameters.data.bestServer;
-                    if (_local3 != _local2) {
-                        _local1 = "Your friend is playing on server: " + _local2 + ". " + "Clicking this will take you to this server.";
-                        this.teleportButton = addButton("lofiInterface2", 3, 230, 12, "Friend.TeleportTitle", _local1);
-                    }
-                    this.messageButton = addButton("lofiInterfaceBig", 21, 255, 12, "PlayerMenu.PM");
-                    this.removeButton = addButton("lofiInterfaceBig", 12, 280, 12, "Friend.RemoveRight");
-                    return;
-                case 1:
-                    hoverTooltipDelegate.setDisplayObject(_characterContainer);
-                    setToolTipTitle("Last Seen:");
-                    setToolTipText(TimeUtil.humanReadableTime(this._vo.lastLogin) + " ago!");
-                    this.removeButton = addButton("lofiInterfaceBig", 12, 280, 12, "Friend.RemoveRight", "Friend.RemoveRightDesc");
-                    return;
-                case 2:
-                    this.acceptButton = addButton("lofiInterfaceBig", 11, 230, 12, "Guild.accept");
-                    this.rejectButton = addButton("lofiInterfaceBig", 12, 255, 12, "Guild.rejection");
-                    this.blockButton = addButton("lofiInterfaceBig", 8, 280, 12, "Friend.BlockRight", "Friend.BlockRightDesc");
+            case 0:
+                _local2 = this._vo.getServerName();
+                _local3 = !!Parameters.data.preferredServer ? Parameters.data.preferredServer : Parameters.data.bestServer;
+                if (_local3 != _local2) {
+                    _local1 = "Your friend is playing on server: " + _local2 + ". " + "Clicking this will take you to this server.";
+                    this.teleportButton = addButton("lofiInterface2", 3, 230, 12, "Friend.TeleportTitle", _local1);
+                }
+                this.messageButton = addButton("lofiInterfaceBig", 21, 255, 12, "PlayerMenu.PM");
+                this.removeButton = addButton("lofiInterfaceBig", 12, 280, 12, "Friend.RemoveRight");
+                return;
+            case 1:
+                hoverTooltipDelegate.setDisplayObject(_characterContainer);
+                setToolTipTitle("Last Seen:");
+                setToolTipText(TimeUtil.humanReadableTime(this._vo.lastLogin) + " ago!");
+                this.removeButton = addButton("lofiInterfaceBig", 12, 280, 12, "Friend.RemoveRight", "Friend.RemoveRightDesc");
+                return;
+            case 2:
+                this.acceptButton = addButton("lofiInterfaceBig", 11, 230, 12, "Guild.accept");
+                this.rejectButton = addButton("lofiInterfaceBig", 12, 255, 12, "Guild.rejection");
+                this.blockButton = addButton("lofiInterfaceBig", 8, 280, 12, "Friend.BlockRight", "Friend.BlockRightDesc");
             }
         }
         

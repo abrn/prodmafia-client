@@ -130,13 +130,13 @@ package io.decagames.rotmg.pets.components.selectedPetSkinInfo {
         private function onActionButtonClickHandler(_arg_1: BaseButton): void {
             var _local2: ShopBuyButton = ShopBuyButton(_arg_1);
             switch (int(this.view.actionButtonType) - 2) {
-                case 0:
-                case 1:
-                    if (_local2.currency == 0 && this.currentGold < _local2.price || _local2.currency == 1 && this.currentFame < _local2.price) {
-                        this.showPopupSignal.dispatch(new NotEnoughResources(5 * 60, _local2.currency));
-                        return;
-                    }
-                    break;
+            case 0:
+            case 1:
+                if (_local2.currency == 0 && this.currentGold < _local2.price || _local2.currency == 1 && this.currentFame < _local2.price) {
+                    this.showPopupSignal.dispatch(new NotEnoughResources(5 * 60, _local2.currency));
+                    return;
+                }
+                break;
             }
             this.hudModel.gameSprite.gsc_.changePetSkin(this.currentPet.getID(), this.selectedSkin.skinType, _local2.currency);
             this.onSkinSelected(null);

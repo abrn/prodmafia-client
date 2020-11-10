@@ -43,35 +43,35 @@ package io.decagames.rotmg.utils.colors {
             var _local7: * = 256;
             var _local13: * = _local10;
             switch (_local13) {
-                case 0:
-                    _local2 = _local11;
-                    _local12 = _local5;
-                    _local7 = _local6;
-                    break;
-                case 1:
-                    _local2 = _local3;
-                    _local12 = _local11;
-                    _local7 = _local6;
-                    break;
-                case 2:
-                    _local2 = _local6;
-                    _local12 = _local11;
-                    _local7 = _local5;
-                    break;
-                case 3:
-                    _local2 = _local6;
-                    _local12 = _local3;
-                    _local7 = _local11;
-                    break;
-                case 4:
-                    _local2 = _local5;
-                    _local12 = _local6;
-                    _local7 = _local11;
-                    break;
-                case 5:
-                    _local2 = _local11;
-                    _local12 = _local6;
-                    _local7 = _local3;
+            case 0:
+                _local2 = _local11;
+                _local12 = _local5;
+                _local7 = _local6;
+                break;
+            case 1:
+                _local2 = _local3;
+                _local12 = _local11;
+                _local7 = _local6;
+                break;
+            case 2:
+                _local2 = _local6;
+                _local12 = _local11;
+                _local7 = _local5;
+                break;
+            case 3:
+                _local2 = _local6;
+                _local12 = _local3;
+                _local7 = _local11;
+                break;
+            case 4:
+                _local2 = _local5;
+                _local12 = _local6;
+                _local7 = _local11;
+                break;
+            case 5:
+                _local2 = _local11;
+                _local12 = _local6;
+                _local7 = _local3;
             }
             return [Math.floor(_local2 * 255), Math.floor(_local12 * 255), Math.floor(_local7 * 255)];
         }
@@ -82,14 +82,14 @@ package io.decagames.rotmg.utils.colors {
             var _local3: int = _local5[1];
             var _local6: * = _arg_2;
             switch (_local6) {
-                case "bright":
-                    _local4 = 55;
-                    break;
-                case "dark":
-                    _local4 = _local3 - 10;
-                    break;
-                case "light":
-                    _local3 = 55;
+            case "bright":
+                _local4 = 55;
+                break;
+            case "dark":
+                _local4 = _local3 - 10;
+                break;
+            case "light":
+                _local3 = 55;
             }
             return this.randomWithin([_local4, _local3]);
         }
@@ -120,15 +120,15 @@ package io.decagames.rotmg.utils.colors {
             var _local4: int = 100;
             var _local6: * = _arg_3;
             switch (_local6) {
-                case "dark":
-                    _local4 = _local5 + 20;
-                    break;
-                case "light":
-                    _local5 = (_local4 + _local5) / 2;
-                    break;
-                case "random":
-                    _local5 = 0;
-                    _local4 = 100;
+            case "dark":
+                _local4 = _local5 + 20;
+                break;
+            case "light":
+                _local5 = (_local4 + _local5) / 2;
+                break;
+            case "random":
+                _local5 = 0;
+                _local4 = 100;
             }
             return this.randomWithin([_local5, _local4]);
         }

@@ -212,21 +212,21 @@ package io.decagames.rotmg.pets.data.vo {
             this._rarity = PetRarityEnum.selectByOrdinal(_arg_1);
             this.unlockAbilitiesBasedOnPetRarity(_arg_1);
             switch (this._rarity) {
-                case PetRarityEnum.COMMON:
-                    this._maxAbilityPower = 30;
-                    break;
-                case PetRarityEnum.UNCOMMON:
-                    this._maxAbilityPower = 50;
-                    break;
-                case PetRarityEnum.RARE:
-                    this._maxAbilityPower = 70;
-                    break;
-                case PetRarityEnum.LEGENDARY:
-                    this._maxAbilityPower = 90;
-                    break;
-                case PetRarityEnum.DIVINE:
-                    this._maxAbilityPower = 100;
-                    break;
+            case PetRarityEnum.COMMON:
+                this._maxAbilityPower = 30;
+                break;
+            case PetRarityEnum.UNCOMMON:
+                this._maxAbilityPower = 50;
+                break;
+            case PetRarityEnum.RARE:
+                this._maxAbilityPower = 70;
+                break;
+            case PetRarityEnum.LEGENDARY:
+                this._maxAbilityPower = 90;
+                break;
+            case PetRarityEnum.DIVINE:
+                this._maxAbilityPower = 100;
+                break;
             }
             this._updated.dispatch();
         }

@@ -24,21 +24,21 @@ package io.decagames.rotmg.ui.tabs {
             this.buttonType = _arg_1;
             var _local3: * = _arg_1;
             switch (_local3) {
-                case "left":
-                    this.defaultBitmap = "tab_button_left_idle";
-                    this.selectedBitmap = "tab_button_center_open";
-                    break;
-                case "right":
-                    this.defaultBitmap = "tab_button_right_idle";
-                    this.selectedBitmap = "tab_button_right_open";
-                    break;
-                case "center":
-                    this.defaultBitmap = "tab_button_center_idle";
-                    this.selectedBitmap = "tab_button_center_open";
-                    break;
-                case "borderless":
-                    this.defaultBitmap = "tab_button_borderless_idle";
-                    this.selectedBitmap = "tab_button_borderless";
+            case "left":
+                this.defaultBitmap = "tab_button_left_idle";
+                this.selectedBitmap = "tab_button_center_open";
+                break;
+            case "right":
+                this.defaultBitmap = "tab_button_right_idle";
+                this.selectedBitmap = "tab_button_right_open";
+                break;
+            case "center":
+                this.defaultBitmap = "tab_button_center_idle";
+                this.selectedBitmap = "tab_button_center_open";
+                break;
+            case "borderless":
+                this.defaultBitmap = "tab_button_borderless_idle";
+                this.selectedBitmap = "tab_button_borderless";
             }
             var _local2: SliceScalingBitmap = TextureParser.instance.getSliceScalingBitmap("UI", this.defaultBitmap);
             super(_local2);

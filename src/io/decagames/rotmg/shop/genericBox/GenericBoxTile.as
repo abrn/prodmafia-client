@@ -371,13 +371,13 @@ package io.decagames.rotmg.shop.genericBox {
             for each(_local2 in _local1) {
                 var _local3: * = _local2;
                 switch (_local3) {
-                    case "best_seller":
-                        this.addTag(new ShopBoxTag("BEST_TAG", "shop_green_tag", "BEST", this._isPopup));
-                        continue;
-                    case "hot":
-                        this.addTag(new ShopBoxTag("HOT_TAG", "shop_orange_tag", "HOT", this._isPopup));
-                        
-                    default:
+                case "best_seller":
+                    this.addTag(new ShopBoxTag("BEST_TAG", "shop_green_tag", "BEST", this._isPopup));
+                    continue;
+                case "hot":
+                    this.addTag(new ShopBoxTag("HOT_TAG", "shop_orange_tag", "HOT", this._isPopup));
+                
+                default:
                     
                 }
             }

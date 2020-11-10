@@ -33,10 +33,10 @@ package io.decagames.rotmg.shop.mysteryBox {
                 _infoButton.alpha = 0;
             }
             switch (int(_local4.length) - 1) {
-                case 0:
-                    break;
-                case 1:
-                    _local2 = 50;
+            case 0:
+                break;
+            case 1:
+                _local2 = 50;
             }
             this.prepareResultGrid(_local4.length);
             while (_local1 < _local4.length) {

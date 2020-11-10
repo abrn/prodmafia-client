@@ -15,7 +15,17 @@ package io.decagames.rotmg.shop.mysteryBox.rollModal.elements {
         
         public const graphic: DisplayObject = new EmbeddedAssets.EvolveBackground();
         
-        private var _degreesPerSecond: int;
+        public function Spinner(param1: int, param2: Boolean = false, param3: int = -1, param4: int = -1) {
+            super();
+            this._degreesPerSecond = param1;
+            this.multicolor = param2;
+            this.secondsElapsed = 0;
+            this.setupStartAndFinalColors(param3, param4);
+            this.addGraphic();
+            this.applyColor(0);
+            addEventListener("enterFrame", this.onEnterFrame);
+            addEventListener("removedFromStage", this.onRemoved);
+        }
         
         private var secondsElapsed: Number;
         
@@ -43,27 +53,10 @@ package io.decagames.rotmg.shop.mysteryBox.rollModal.elements {
         
         private var bFinal: Number = -1;
         
-        public function Spinner(param1: int, param2: Boolean = false, param3: int = -1, param4: int = -1) {
-            super();
-            this._degreesPerSecond = param1;
-            this.multicolor = param2;
-            this.secondsElapsed = 0;
-            this.setupStartAndFinalColors(param3, param4);
-            this.addGraphic();
-            this.applyColor(0);
-            addEventListener("enterFrame", this.onEnterFrame);
-            addEventListener("removedFromStage", this.onRemoved);
-        }
+        private var _degreesPerSecond: int;
         
-        private function addGraphic(): void {
-            addChild(this.graphic);
-            this.graphic.x = -1 * width / 2;
-            this.graphic.y = -1 * height / 2;
-        }
-        
-        private function onRemoved(param1: Event): void {
-            removeEventListener("removedFromStage", this.onRemoved);
-            removeEventListener("enterFrame", this.onEnterFrame);
+        public function get degreesPerSecond(): int {
+            return this._degreesPerSecond;
         }
         
         public function pause(): void {
@@ -75,11 +68,10 @@ package io.decagames.rotmg.shop.mysteryBox.rollModal.elements {
             addEventListener("enterFrame", this.onEnterFrame);
         }
         
-        private function onEnterFrame(param1: Event): void {
-            this.updateTimeElapsed();
-            var _local2: Number = this._degreesPerSecond * this.secondsElapsed % 6 * 60;
-            rotation = _local2;
-            this.applyColor(_local2 / 6 * 60);
+        private function addGraphic(): void {
+            addChild(this.graphic);
+            this.graphic.x = -1 * width / 2;
+            this.graphic.y = -1 * height / 2;
         }
         
         private function applyColor(param1: Number): void {
@@ -136,8 +128,16 @@ package io.decagames.rotmg.shop.mysteryBox.rollModal.elements {
             this.previousSeconds = _local1;
         }
         
-        public function get degreesPerSecond(): int {
-            return this._degreesPerSecond;
+        private function onRemoved(param1: Event): void {
+            removeEventListener("removedFromStage", this.onRemoved);
+            removeEventListener("enterFrame", this.onEnterFrame);
+        }
+        
+        private function onEnterFrame(param1: Event): void {
+            this.updateTimeElapsed();
+            var _local2: Number = this._degreesPerSecond * this.secondsElapsed % 6 * 60;
+            rotation = _local2;
+            this.applyColor(_local2 / 6 * 60);
         }
     }
 }

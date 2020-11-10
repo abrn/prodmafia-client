@@ -115,12 +115,12 @@ package io.decagames.rotmg.social.widgets {
         
         protected function setLabelColorByState(_arg_1: UILabel): void {
             switch (int(this._state) - 1) {
-                case 0:
-                    DefaultLabelFormat.friendsItemLabel(_arg_1, 0x33ff22);
-                    return;
-                case 1:
-                    DefaultLabelFormat.friendsItemLabel(_arg_1, 0xb3b3b3);
-                    return;
+            case 0:
+                DefaultLabelFormat.friendsItemLabel(_arg_1, 0x33ff22);
+                return;
+            case 1:
+                DefaultLabelFormat.friendsItemLabel(_arg_1, 0xb3b3b3);
+                return;
             }
         }
         
@@ -137,17 +137,17 @@ package io.decagames.rotmg.social.widgets {
         
         private function setBaseItemState(): void {
             switch (int(this._state) - 1) {
-                case 0:
-                    this.listBackground = TextureParser.instance.getSliceScalingBitmap("UI", "listitem_content_background");
-                    addChild(this.listBackground);
-                    break;
-                case 1:
-                    this.listBackground = TextureParser.instance.getSliceScalingBitmap("UI", "listitem_content_background_inactive");
-                    addChild(this.listBackground);
-                    break;
-                case 2:
-                    this.listBackground = TextureParser.instance.getSliceScalingBitmap("UI", "listitem_content_background_indicator");
-                    addChild(this.listBackground);
+            case 0:
+                this.listBackground = TextureParser.instance.getSliceScalingBitmap("UI", "listitem_content_background");
+                addChild(this.listBackground);
+                break;
+            case 1:
+                this.listBackground = TextureParser.instance.getSliceScalingBitmap("UI", "listitem_content_background_inactive");
+                addChild(this.listBackground);
+                break;
+            case 2:
+                this.listBackground = TextureParser.instance.getSliceScalingBitmap("UI", "listitem_content_background_indicator");
+                addChild(this.listBackground);
             }
             this.listBackground.height = 40;
             this.listBackground.width = 310;

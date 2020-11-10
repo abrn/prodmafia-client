@@ -300,14 +300,14 @@ package io.decagames.rotmg.shop {
         private function updateShop(_arg_1: TimerEvent): void {
             var _local2: * = this.tabs.currentTabLabel;
             switch (_local2) {
-                case "Mystery Boxes":
-                    this.tryUpdateMysteryBoxes();
-                    return;
-                case "Packages":
-                    this.tryUpdatePackages();
-                    return;
-                default:
-                    return;
+            case "Mystery Boxes":
+                this.tryUpdateMysteryBoxes();
+                return;
+            case "Packages":
+                this.tryUpdatePackages();
+                return;
+            default:
+                return;
             }
         }
     }

@@ -1,5 +1,4 @@
 package com.company.assembleegameclient.screens {
-    import com.company.assembleegameclient.objects.ObjectLibrary;
     import com.company.assembleegameclient.parameters.Parameters;
     
     import flash.events.MouseEvent;
@@ -106,12 +105,10 @@ package com.company.assembleegameclient.screens {
             this.resetCharacterSkins();
             if (_arg_1 == 0) {
                 this.seasonalEventModel.isChallenger = 0;
-                ObjectLibrary.usePatchedData = false;
                 this.runTasks();
             } else if (_arg_1 == 1) {
                 if (this.isAccountCreationDateValid()) {
                     this.seasonalEventModel.isChallenger = 1;
-                    ObjectLibrary.usePatchedData = true;
                     this.runTasks();
                 } else {
                     this.showSeasonalErrorPopUp("Your account must be created before: " + this.seasonalEventModel.accountCreatedBefore.toString() + " to play a Seasonal Event!");

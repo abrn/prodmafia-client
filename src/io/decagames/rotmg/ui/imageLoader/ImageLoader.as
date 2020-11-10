@@ -3,7 +3,7 @@ package io.decagames.rotmg.ui.imageLoader {
     import flash.events.IOErrorEvent;
     import flash.events.SecurityErrorEvent;
     import flash.net.URLRequest;
-    
+
     public class ImageLoader {
         
         
@@ -31,7 +31,7 @@ package io.decagames.rotmg.ui.imageLoader {
                 this._loader.load(new URLRequest(_local4));
                 
             } catch (error: SecurityError) {
-            
+
             }
         }
         

@@ -108,25 +108,25 @@ package io.decagames.rotmg.shop.mysteryBox.contentPopup {
             this._itemBackground.y = 4;
             var _local5: * = this._slotType;
             switch (_local5) {
-                case "CHAR_SLOT":
-                    _local2 = _arg_1.toString() + "x Character Slot";
-                    this._itemBackground.addChild(this.buildCharSlotIcon());
-                    break;
-                case "VAULT_SLOT":
-                    _local2 = _arg_1.toString() + "x Vault Slot";
-                    _local4 = ObjectLibrary.getRedrawnTextureFromType(ObjectLibrary.idToType_["Vault Chest"], this._itemBackground.width * 2, true, false);
-                    this.imageBitmap = new Bitmap(_local4);
-                    this.imageBitmap.x = -Math.round((this.imageBitmap.width - this.itemSize) / 2);
-                    this.imageBitmap.y = -Math.round((this.imageBitmap.height - this.itemSize) / 2);
-                    this._itemBackground.addChild(this.imageBitmap);
-                    break;
-                case "GOLD_SLOT":
-                    _local2 = _arg_1.toString() + " Gold";
-                    _local3 = IconFactory.makeCoin(this._itemBackground.width * 2);
-                    this.imageBitmap = new Bitmap(_local3);
-                    this.imageBitmap.x = -Math.round((this.imageBitmap.width - this.itemSize) / 2);
-                    this.imageBitmap.y = -Math.round((this.imageBitmap.height - this.itemSize) / 2) - 2;
-                    this._itemBackground.addChild(this.imageBitmap);
+            case "CHAR_SLOT":
+                _local2 = _arg_1.toString() + "x Character Slot";
+                this._itemBackground.addChild(this.buildCharSlotIcon());
+                break;
+            case "VAULT_SLOT":
+                _local2 = _arg_1.toString() + "x Vault Slot";
+                _local4 = ObjectLibrary.getRedrawnTextureFromType(ObjectLibrary.idToType_["Vault Chest"], this._itemBackground.width * 2, true, false);
+                this.imageBitmap = new Bitmap(_local4);
+                this.imageBitmap.x = -Math.round((this.imageBitmap.width - this.itemSize) / 2);
+                this.imageBitmap.y = -Math.round((this.imageBitmap.height - this.itemSize) / 2);
+                this._itemBackground.addChild(this.imageBitmap);
+                break;
+            case "GOLD_SLOT":
+                _local2 = _arg_1.toString() + " Gold";
+                _local3 = IconFactory.makeCoin(this._itemBackground.width * 2);
+                this.imageBitmap = new Bitmap(_local3);
+                this.imageBitmap.x = -Math.round((this.imageBitmap.width - this.itemSize) / 2);
+                this.imageBitmap.y = -Math.round((this.imageBitmap.height - this.itemSize) / 2) - 2;
+                this._itemBackground.addChild(this.imageBitmap);
             }
             if (this.showFullName) {
                 this.label.text = _local2;

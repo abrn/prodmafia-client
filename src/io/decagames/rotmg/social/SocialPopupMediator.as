@@ -89,23 +89,23 @@ package io.decagames.rotmg.social {
         private function onDataLoaded(_arg_1: String, _arg_2: Boolean, _arg_3: String): void {
             var _local4: * = _arg_1;
             switch (_local4) {
-                case "SocialDataSignal.FRIENDS_DATA_LOADED":
-                    this.view.clearFriendsList();
-                    if (_arg_2) {
-                        this.showFriends();
-                        this._isFriendsListLoaded = true;
-                    } else {
-                        this._isFriendsListLoaded = false;
-                        this.showError(_arg_1, _arg_3);
-                    }
-                    return;
-                case "SocialDataSignal.GUILD_DATA_LOADED":
-                    this.view.clearGuildList();
-                    this.showGuild();
-                    this._isGuildListLoaded = true;
-                    return;
-                default:
-                    return;
+            case "SocialDataSignal.FRIENDS_DATA_LOADED":
+                this.view.clearFriendsList();
+                if (_arg_2) {
+                    this.showFriends();
+                    this._isFriendsListLoaded = true;
+                } else {
+                    this._isFriendsListLoaded = false;
+                    this.showError(_arg_1, _arg_3);
+                }
+                return;
+            case "SocialDataSignal.GUILD_DATA_LOADED":
+                this.view.clearGuildList();
+                this.showGuild();
+                this._isGuildListLoaded = true;
+                return;
+            default:
+                return;
             }
         }
         
@@ -172,14 +172,14 @@ package io.decagames.rotmg.social {
         private function showError(_arg_1: String, _arg_2: String): void {
             var _local3: * = _arg_1;
             switch (_local3) {
-                case "SocialDataSignal.FRIENDS_DATA_LOADED":
-                    this.view.addFriendCategory("Error: " + _arg_2);
-                    return;
-                case "SocialDataSignal.FRIEND_INVITATIONS_LOADED":
-                    this.view.addFriendCategory("Invitation Error: " + _arg_2);
-                    return;
-                default:
-                    return;
+            case "SocialDataSignal.FRIENDS_DATA_LOADED":
+                this.view.addFriendCategory("Error: " + _arg_2);
+                return;
+            case "SocialDataSignal.FRIEND_INVITATIONS_LOADED":
+                this.view.addFriendCategory("Invitation Error: " + _arg_2);
+                return;
+            default:
+                return;
             }
         }
         
